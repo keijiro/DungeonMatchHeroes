@@ -1,0 +1,10 @@
+{
+  "mappings": [
+    {
+      "message_id": "INT_1",
+      "conversation_id": "5b999c3a-65bf-4a58-8a6b-e692a4dfd491",
+      "content": "Game Data Collection パッケージが何をするものか教えて下さい",
+      "snapshot_message_type": 0
+    }
+  ]
+}

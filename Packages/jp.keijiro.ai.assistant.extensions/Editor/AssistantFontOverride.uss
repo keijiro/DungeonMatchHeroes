@@ -1,0 +1,3 @@
+.unity-text-element {
+    -unity-font-definition: url("project://database/Packages/jp.keijiro.ai.assistant.extensions/Editor/NotoSansJP-Regular.ttf?fileID=12800000&guid=f7d2dd1a328194df9b71491ff2d07e2b&type=3#NotoSansJP-Regular");
+}
