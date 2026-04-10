@@ -26,6 +26,7 @@ public class GridManager : MonoBehaviour
     [Header("Assets")]
     [SerializeField] private Sprite blockBaseSprite;
     [SerializeField] private Sprite[] iconSprites = new Sprite[7];
+    [SerializeField, Range(0.1f, 1.0f)] private float iconScale = 0.8f;
     [SerializeField] private UIDocument uiDocument;
 
     [Header("Generation Settings")]
@@ -122,9 +123,10 @@ public class GridManager : MonoBehaviour
         GameObject iconObj = new GameObject("Icon");
         iconObj.transform.parent = root.transform;
         iconObj.transform.localPosition = Vector3.zero;
+        iconObj.transform.localScale = Vector3.one * iconScale;
 
         var iconRenderer = iconObj.AddComponent<SpriteRenderer>();
-        if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] != null)
+if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] != null)
         {
             iconRenderer.sprite = iconSprites[(int)type];
         }
