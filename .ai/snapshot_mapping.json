@@ -329,6 +329,12 @@
       "conversation_id": "d755b618-5e68-46f1-9006-b967beba7ed2",
       "content": "いや、なんかおかしいですね・・・まずループしてしまっているのが間違いで、確実に「何も無い画像」へと繋がるようにして下さい。また、16-bit ピクセルアート風であることを明示して下さい。解像度が高くなってしまっています。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "INT_1",
+      "conversation_id": "f1f8f90f-b8ab-4c03-a15d-a85a6445c8d2",
+      "content": "プロジェクト内の txt や md から状況を把握して下さい",
+      "snapshot_message_type": 0
     }
   ]
 }
