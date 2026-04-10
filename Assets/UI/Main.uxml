@@ -1,33 +1,35 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi:http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:Style src="Main.uss" />
     <ui:VisualElement name="root" class="container">
-        <ui:VisualElement class="count-box sword">
-            <ui:Label text="SWORD" class="label" />
-            <ui:Label name="SwordCount" text="0" class="count" />
-        </ui:VisualElement>
-        <ui:VisualElement class="count-box shield">
-            <ui:Label text="SHIELD" class="label" />
-            <ui:Label name="ShieldCount" text="0" class="count" />
-        </ui:VisualElement>
-        <ui:VisualElement class="count-box magic">
-            <ui:Label text="MAGIC" class="label" />
-            <ui:Label name="MagicCount" text="0" class="count" />
-        </ui:VisualElement>
-        <ui:VisualElement class="count-box heal">
-            <ui:Label text="HEAL" class="label" />
-            <ui:Label name="HealCount" text="0" class="count" />
-        </ui:VisualElement>
-        <ui:VisualElement class="count-box gem">
-            <ui:Label text="GEM" class="label" />
-            <ui:Label name="GemCount" text="0" class="count" />
-        </ui:VisualElement>
-        <ui:VisualElement class="count-box key">
-            <ui:Label text="KEY" class="label" />
-            <ui:Label name="KeyCount" text="0" class="count" />
-        </ui:VisualElement>
-        <ui:VisualElement class="count-box empty">
-            <ui:Label text="SKA" class="label" />
-            <ui:Label name="EmptyCount" text="0" class="count" />
+        <ui:VisualElement class="hud-panel">
+            <ui:VisualElement class="count-item sword">
+                <ui:Label text="SWORD" class="count-label" />
+                <ui:Label name="SwordCount" text="0" class="count-value" />
+            </ui:VisualElement>
+            <ui:VisualElement class="count-item shield">
+                <ui:Label text="SHIELD" class="count-label" />
+                <ui:Label name="ShieldCount" text="0" class="count-value" />
+            </ui:VisualElement>
+            <ui:VisualElement class="count-item magic">
+                <ui:Label text="MAGIC" class="count-label" />
+                <ui:Label name="MagicCount" text="0" class="count-value" />
+            </ui:VisualElement>
+            <ui:VisualElement class="count-item heal">
+                <ui:Label text="HEAL" class="count-label" />
+                <ui:Label name="HealCount" text="0" class="count-value" />
+            </ui:VisualElement>
+            <ui:VisualElement class="count-item gem">
+                <ui:Label text="GEM" class="count-label" />
+                <ui:Label name="GemCount" text="0" class="count-value" />
+            </ui:VisualElement>
+            <ui:VisualElement class="count-item key">
+                <ui:Label text="KEY" class="count-label" />
+                <ui:Label name="KeyCount" text="0" class="count-value" />
+            </ui:VisualElement>
+            <ui:VisualElement class="count-item ska">
+                <ui:Label text="SKA" class="count-label" />
+                <ui:Label name="EmptyCount" text="0" class="count-value" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

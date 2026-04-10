@@ -1,37 +1,49 @@
+:root {
+    --bg-color: rgba(0, 0, 0, 0.4);
+    --border-color: rgba(255, 255, 255, 0.3);
+    --text-color: #ffffff;
+}
+
 .container {
     flex-grow: 1;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.5);
+    flex-direction: column;
+    padding: 10px;
+}
+
+.hud-panel {
+    background-color: var(--bg-color);
+    border-width: 1px;
+    border-color: var(--border-color);
+    border-radius: 5px;
+    padding: 10px;
     flex-direction: row;
     justify-content: space-around;
-    align-items: flex-start;
+    align-self: center;
+    width: 90%;
 }
 
-.count-box {
+.count-item {
     align-items: center;
-    margin: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: rgba(255, 255, 255, 0.1);
-    min-width: 80px;
+    min-width: 60px;
 }
 
-.label {
-    color: white;
-    font-size: 14px;
+.count-label {
+    color: var(--text-color);
+    font-size: 10px;
     -unity-font-style: bold;
 }
 
-.count {
-    color: white;
-    font-size: 24px;
-    margin-top: 5px;
+.count-value {
+    color: var(--text-color);
+    font-size: 20px;
+    margin-top: 4px;
 }
 
-.sword { border-left-color: red; border-left-width: 5px; }
-.shield { border-left-color: blue; border-left-width: 5px; }
-.magic { border-left-color: purple; border-left-width: 5px; }
-.heal { border-left-color: green; border-left-width: 5px; }
-.gem { border-left-color: yellow; border-left-width: 5px; }
-.key { border-left-color: white; border-left-width: 5px; }
-.empty { border-left-color: gray; border-left-width: 5px; }
+/* Colors for indicator */
+.sword { border-bottom-width: 3px; border-bottom-color: red; }
+.shield { border-bottom-width: 3px; border-bottom-color: blue; }
+.magic { border-bottom-width: 3px; border-bottom-color: purple; }
+.heal { border-bottom-width: 3px; border-bottom-color: green; }
+.gem { border-bottom-width: 3px; border-bottom-color: yellow; }
+.key { border-bottom-width: 3px; border-bottom-color: white; }
+.ska { border-bottom-width: 3px; border-bottom-color: gray; }
