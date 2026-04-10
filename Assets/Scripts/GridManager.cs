@@ -26,8 +26,19 @@ public class GridManager : MonoBehaviour
     [Header("Assets")]
     [SerializeField] private Sprite blockBaseSprite;
     [SerializeField] private Sprite[] iconSprites = new Sprite[7];
-    [SerializeField, Range(0.1f, 1.0f)] private float iconScale = 0.8f;
+    [SerializeField, Range(0.1f, 2.0f)] private float iconScale = 0.8f;
     [SerializeField] private UIDocument uiDocument;
+
+    [Header("Visual Settings")]
+    [SerializeField] private Color[] blockColors = new Color[7] {
+        Color.red,      // Sword
+        Color.blue,     // Shield
+        new Color(0.6f, 0f, 0.8f), // Magic
+        Color.green,    // Heal
+        Color.cyan,     // Gem
+        Color.yellow,   // Key
+        Color.gray      // Ska
+    };
 
     [Header("Generation Settings")]
 [Tooltip("Weights for Sword, Shield, Magic, Heal, Gem, Key (Ska is handled separately)")]
@@ -147,17 +158,12 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
 
     private Color GetColor(BlockType type)
     {
-        return type switch
+        int index = (int)type;
+        if (index >= 0 && index < blockColors.Length)
         {
-            BlockType.Sword => Color.red,
-            BlockType.Shield => Color.blue,
-            BlockType.Magic => new Color(0.6f, 0f, 0.8f), // Purple
-            BlockType.Heal => Color.green,
-            BlockType.Gem => Color.cyan,   // Light Blue
-            BlockType.Key => Color.yellow, // Yellow
-            BlockType.Ska => Color.gray,
-            _ => Color.white
-        };
+            return blockColors[index];
+        }
+        return Color.white;
     }
 
     private void Update()
