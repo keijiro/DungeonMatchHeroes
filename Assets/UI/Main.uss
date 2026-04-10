@@ -1,8 +1,10 @@
 .container {
     flex-grow: 1;
+    flex-direction: row; /* Main container allows elements to be side-by-side */
+    padding: 20px;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0); /* Completely transparent */
+    background-color: rgba(0, 0, 0, 0);
 }
 
 .hud-panel {
@@ -11,36 +13,40 @@
     border-color: #ffffff;
     border-radius: 10px;
     padding: 10px;
-    flex-direction: row;
-    justify-content: space-around;
-    align-self: center;
-    width: 95%;
-    margin-top: 20px;
+    flex-direction: column; /* Change to vertical layout */
+    justify-content: flex-start;
+    align-self: flex-start; /* Place on the left */
+    width: 120px; /* Fixed width for the sidebar */
+    height: 90%; /* Take most of the height */
+    margin-right: 20px;
 }
 
 .count-item {
     align-items: center;
-    min-width: 80px;
+    margin-bottom: 15px; /* Space between vertical items */
+    padding-bottom: 5px;
 }
 
 Label {
     color: #ffffff;
     -unity-font-style: bold;
+    text-align: center;
 }
 
 .count-label {
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .count-value {
-    font-size: 28px;
-    margin-top: 4px;
+    font-size: 24px;
+    margin-top: 2px;
 }
 
-.sword { border-bottom-width: 5px; border-bottom-color: #ff0000; }
-.shield { border-bottom-width: 5px; border-bottom-color: #0000ff; }
-.magic { border-bottom-width: 5px; border-bottom-color: #a000ff; }
-.heal { border-bottom-width: 5px; border-bottom-color: #00ff00; }
-.gem { border-bottom-width: 5px; border-bottom-color: #00ffff; }
-.key { border-bottom-width: 5px; border-bottom-color: #ffff00; }
-.ska { border-bottom-width: 5px; border-bottom-color: #808080; }
+/* Indicators now on the right side of each item for a vertical look */
+.sword { border-right-width: 5px; border-right-color: #ff0000; }
+.shield { border-right-width: 5px; border-right-color: #0000ff; }
+.magic { border-right-width: 5px; border-right-color: #a000ff; }
+.heal { border-right-width: 5px; border-right-color: #00ff00; }
+.gem { border-right-width: 5px; border-right-color: #00ffff; }
+.key { border-right-width: 5px; border-right-color: #ffff00; }
+.ska { border-right-width: 5px; border-right-color: #808080; }
