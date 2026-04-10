@@ -155,6 +155,12 @@
       "conversation_id": "230833d9-7bef-4d22-91cf-05adacd2f430",
       "content": "ブロックの出現率に重み（偏り）を持たせ、Inspector 上で調整できるように変更しました。\n\n### 変更点\n1.  **重み付きランダムの実装**:\n    *   `GetWeightedRandomType()` メソッドを追加し、設定された重みに基づいてブロックの種類を抽選するようにしました。\n2.  **Inspector への露出**:\n    *   `GridManager` コンポーネントに `Type Weights` という配列（長さ 6）を追加しました。\n    *   インデックス 0〜5 がそれぞれ **Sword, Shield, Magic, Heal, Gem, Key** に対応しています。\n3.  **初期値の設定**:\n    *   ご要望に合わせて、以下のデフォルト値を設定しました：\n        *   **Sword, Shield**: 1.0（多い）\n        *   **Magic, Heal**: 0.5（普通）\n        *   **Gem, Key**: 0.2（少ない）\n    *   これにより、Sword や Shield が Gem や Key よりも約 5 倍出現しやすくなっています。\n4.  **適用箇所**:\n    *   ゲーム開始時の盤面生成（`InitializeGrid`）およびブロック補充時（`DecideNewBlockType`）の両方でこの重みが適用されます。\n\n### 修正されたファイル\n*   `Assets/Scripts/GridManager.cs`\n\nUnity Editor の Inspector で `GridManager` を選択すると、`Generation Settings` セクションから各ブロックの出現頻度をリアルタイムに微調整いただけます。コンパイルエラーもございません。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "951bcb47-0a2b-4ea6-84d4-baf26ea37a93",
+      "conversation_id": "230833d9-7bef-4d22-91cf-05adacd2f430",
+      "content": "現在の「スカ（Ska）」ブロックの発生率は、`GridManager.cs` のロジック内で以下のように設定されています。\n\n### 1. ゲーム開始時（初期配置）\n*   **発生率: 0%**\n*   `InitializeGrid` メソッド内では `GetWeightedRandomType()`（Sword〜Key の 6 種を抽選）のみを呼んでいるため、初期状態の盤面にスカブロックが配置されることはありません。\n\n### 2. プレイヤーがクリックして破壊した直後の補充（手動補充）\n*   **発生率: 50%**\n*   `DecideNewBlockType(true)` が呼ばれ、コード内で `if (Random.value < 0.5f) return BlockType.Ska;` とハードコードされているため、2 分の 1 の確率で出現します。\n\n### 3. マッチ消滅による連鎖中の補充（自動補充）\n*   **発生率: 0%**\n*   `DecideNewBlockType(false)` が呼ばれます。この場合、スカブロックを除いた重み付き抽選（Sword〜Key）のみが行われるため、連鎖中にスカブロックが新しく降ってくることはありません。\n\n---\n\n**まとめると：**\n「プレイヤーが手動で最下段を壊した時だけ 50% の確率で出現し、それ以外のタイミング（開始時や連鎖中）では一切出現しない」という設定になっています。\n\nもしこの「50%」という数値や、出現するタイミング（初期配置にも混ぜたい、など）も Inspector で調整できるように変更が必要であれば、すぐに対応可能です。いかがいたしましょうか？",
+      "snapshot_message_type": 1
     }
   ]
 }
