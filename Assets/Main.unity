@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9db4297473044a73acd1b0f03fd51ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridManager
-  blockBaseSprite: {fileID: 0}
+  blockBaseSprite: {fileID: 21300000, guid: 0334d2b1c81334e2b9fb8ade73e24e66, type: 3}
   iconSprites:
   - {fileID: 21300000, guid: ecdeb94f24d744a7db5dd7fd734d85fe, type: 3}
   - {fileID: 21300000, guid: ce7f0ac218c5941f2965b8812a7f78cc, type: 3}
@@ -157,7 +157,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 91af97100533f437091153f0e80225b8, type: 3}
   - {fileID: 21300000, guid: 6c46488dd99ed4cb8bf019bbb0d2241e, type: 3}
   - {fileID: 21300000, guid: 5016f29c614f54d17a169c46cd49f397, type: 3}
-  iconScale: 0.95
+  iconScale: 0.7
   uiDocument: {fileID: 1879991500}
   typeWeights:
   - 1
