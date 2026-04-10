@@ -419,6 +419,12 @@
       "conversation_id": "f1f8f90f-b8ab-4c03-a15d-a85a6445c8d2",
       "content": "お、見た目はいい感じになりましたね。でも中心位置がズレているようです。これをスプライト化するに当たって正しい中心位置にピボットを設定できますか？それとも中心位置を修正するための生成を行なった方が良いですか？",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "aefb6b27-a8ee-48ef-a42a-af74ceb8c5b9",
+      "conversation_id": "f1f8f90f-b8ab-4c03-a15d-a85a6445c8d2",
+      "content": "先ほどは Ask モードだったので実作業ができなかったと思います。Agent モードに移行しました。これで作業できますか？",
+      "snapshot_message_type": 0
     }
   ]
 }
