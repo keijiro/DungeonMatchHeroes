@@ -1,65 +1,75 @@
-This project is a minimal Unity 6 (6000.3.10f1) foundation configured for 2D development using the Universal Render Pipeline (URP). It currently serves as a clean slate or "empty" template with UI Toolkit integrated and a 2D rendering path established.
+# Project Overview: 3-Match RPG Prototype
 
-# 1. Project Description
-The project is a lightweight 2D application framework. It is designed for developers targeting high-performance 2D graphics on macOS (and potentially other standalone platforms) using Unity's modern UI and rendering stacks. The core pillars are:
-*   **Modern 2D Rendering:** Leveraging URP's 2D Renderer for efficient sprite and lighting calculations.
-*   **UI Toolkit Integration:** Utilizing the latest retained-mode UI system for responsive and scalable user interfaces.
-*   **Unity 6 Ready:** Built on the latest LTS-adjacent version of Unity to utilize the newest engine features.
+This project is a technical prototype for a hybrid 3-match puzzle and RPG game. It focuses on validating a unique "bottom-row only" interaction mechanic combined with a cluster-based chain reaction system and a "Ska" (dud) block penalty/bonus loop.
 
-# 2. Gameplay Flow / User Loop
-As the project is in a foundational state, the user loop is currently basic:
-1.  **Boot:** The application launches directly into the `Main.unity` scene.
-2.  **Initialization:** The URP 2D Renderer initializes the camera and the `UIDocument` component loads the root `Main.uxml` layout.
-3.  **Active State:** The user sees a blank screen (defined by the background color of the Camera) with an empty UI overlay.
-4.  **Shutdown:** Standard application exit.
+## 1. Project Description
+The prototype implements a 7x7 grid-based puzzle where the player's influence is restricted to the bottom row. The core experience centers on strategic destruction to trigger cascades. It is designed for PC (Standalone) using Unity 6 and URP's 2D Renderer.
+*   **Core Pillars:**
+    *   **Bottom-Row Interaction:** Players can only manually destroy blocks on the 7th row.
+    *   **Cluster Matching:** Beyond standard 3-match lines, matching blocks trigger "cluster" clearing of all adjacent identical types.
+    *   **Ska Mechanic:** Manual destructions introduce "Ska" (gray/dud) blocks, while chain reactions produce high-value blocks.
+    *   **Chain Reactions:** Gravity-fed cascades are the primary way to score and clear "Ska" blocks via proximity detonation.
 
-# 3. Architecture
-The project follows a component-based architecture typical of Unity, but specifically leans into the **UI Toolkit (UITK)** pattern for interface management and **URP** for the graphics pipeline.
+## 2. Gameplay Flow / User Loop
+1.  **Initialization:** `GridManager` populates a 7x7 grid with weighted random blocks, ensuring no matches exist at the start.
+2.  **Player Input:** The player clicks a block in the bottom row (Y=0).
+3.  **Manual Destruction:** The clicked block is destroyed. This action is "inefficient" as it triggers a refill with a high probability of "Ska" blocks.
+4.  **Gravity & Refill:** Blocks above fall to fill gaps. New blocks enter from the top.
+5.  **Match Detection:** The system checks for horizontal/vertical lines of 3+.
+6.  **Cluster & Detonation:** 
+    *   Identical adjacent blocks are grouped into a "cluster" and cleared.
+    *   Any "Ska" blocks adjacent to a clearing cluster are "detonated" and added to that cluster's score.
+7.  **Chain Reaction:** If matches occurred, steps 4-6 repeat automatically until no matches remain.
+8.  **UI Update:** Scores (match counts) for each block type (Sword, Shield, Magic, etc.) are updated in the HUD.
 
-*   **Rendering Pipeline:** The project uses the `UniversalRenderPipelineAsset` configured to use a `Renderer2DData` asset. This shifts the engine from a 3D-first approach to one optimized for 2D sorting and lighting.
-*   **UI Management:** The UI is managed via `UIDocument` which acts as the entry point for the Visual Tree (`.uxml`). Data binding and event handling are intended to be handled through C# scripts targeting the `VisualElement` API.
+## 3. Architecture
+The project uses a centralized manager pattern to handle the grid logic, with the UI decoupled via UI Toolkit.
+*   **Grid Management:** `GridManager` acts as the "Brain," handling state (logical grid), representation (SpriteRenderers), and the game loop (Coroutines).
+*   **Input Handling:** Uses the New Input System to perform screen-to-world raycasts, filtered by the Y-coordinate of the hit object.
+*   **UI Binding:** The `GridManager` queries the `UIDocument` to update labels by name string, following a simple View-Controller relationship.
+*   **Rendering:** Powered by URP 2D Renderer using simple sprite-based visuals.
 
-`Location: Assets/URP/` (Rendering Configuration)
-`Location: Assets/UI/` (Interface Definition)
+`Location: Assets/Scripts/` (Logic)
+`Location: Assets/URP/` (Pipeline)
 
-# 4. Game Systems & Domain Concepts
-### Rendering System
-*   `UniversalRenderPipelineAsset`: Global settings for the URP.
-*   `Renderer2DData`: Specifically configures the pipeline for 2D sorting layers and 2D lights.
-*   `VolumeProfile`: Used for global post-processing effects (Bloom, Color Grading, etc.).
-`Location: Assets/URP/`
+## 4. Game Systems & Domain Concepts
 
-### UI Framework
-*   `PanelSettings`: Defines how the UI is scaled and rendered (DPI, atlas settings).
-*   `ThemeStyleSheet`: The global USS (Unity Style Sheet) that defines the visual look and feel of UI controls.
-*   `VisualTreeAsset`: The XML-based definition of the UI hierarchy.
+### Grid & Match System
+*   `GridManager`: The core class managing a 2D array of `BlockType` enums and a parallel array of `SpriteRenderer` references.
+*   `BlockType`: Enum defining Sword, Shield, Magic, Heal, Gem, Key, and Ska.
+*   **Matching Logic:** Uses a two-pass approach: first identifying 3-in-a-row triggers, then performing a recursive flood-fill (`FindCluster`) to identify the full connected group.
+*   **Extension:** To add new match rules (e.g., T-shapes), modify `CheckAndApplyMatches`. To add new block behaviors, expand the `BlockType` enum and the scoring logic in `CheckAndApplyMatches`.
+
+### Refill & Weight System
+*   **Weighted Random:** `GetWeightedRandomType` uses an array of floats to determine spawn probabilities.
+*   **Contextual Spawning:** `DecideNewBlockType` distinguishes between "Manual Refill" (high Ska rate) and "Match Refill" (0% Ska rate).
+*   `Location: Assets/Scripts/GridManager.cs`
+
+## 5. Scene Overview
+*   **Main.unity:** The sole functional scene.
+    *   **Camera:** Orthographic, configured for URP 2D.
+    *   **UI Object:** Contains `UIDocument` and references the `Main.uxml` and `PanelSettings`.
+    *   **GridManager Object:** The root for all dynamically generated block GameObjects. Blocks are instantiated as children of this object at runtime.
+
+## 6. UI System
+The project utilizes **UI Toolkit (UITK)** for its HUD.
+*   **Structure:** `Main.uxml` defines the layout with specific `Label` names (`SwordCount`, `ShieldCount`, etc.).
+*   **Styling:** `Main.uss` handles positioning and visual style.
+*   **Logic:** `GridManager.UpdateUI()` finds labels using `rootVisualElement.Q<Label>("Name")` and updates their text property.
+*   **How to Modify:** Open `Main.uxml` in the UI Builder. Adding a new resource requires adding a Label with a unique name and updating the `matchCounts` array indexing in `GridManager.cs`.
+
 `Location: Assets/UI/`
 
-# 5. Scene Overview
-The project currently contains a single scene:
-*   `Main.unity`: The primary entry point. It contains a `Camera` configured for URP and a `UI` GameObject with a `UIDocument` component.
-*   **Scene Flow:** No scene transitions are currently implemented.
+## 7. Asset & Data Model
+*   **Sprites:** Uses a single `White.png` sprite, tinted via `SpriteRenderer.color` to differentiate block types.
+*   **Configurables:**
+    *   `typeWeights`: Inspector-editable array in `GridManager` for balancing drop rates.
+    *   `manualSkaRate`: Slider (0-1) in `GridManager` to tune the penalty for manual clicks.
+*   **Block Colors:** Hardcoded mapping within `GridManager.GetColor(BlockType)`.
 
-# 6. UI System
-The project uses **UI Toolkit (UITK)** instead of UGUI.
-*   **Structure:** The UI is defined in `Main.uxml`. 
-*   **Styling:** Global styles are managed via `DefaultTheme.tss` and internal styles within the UXML.
-*   **Binding:** Currently, there are no C# scripts bound to the UI. To extend this, a `MonoBehaviour` should be created to query the `UIDocument.rootVisualElement` and attach event callbacks.
-*   **Extension:** New screens should be created as `.uxml` files and either swapped in the `UIDocument` or added as children to the root.
-
-# 7. Asset & Data Model
-*   **Layouts:** `Main.uxml` stores the hierarchy of the interface.
-*   **Settings:** `DefaultPanel.asset` handles the resolution and scaling logic for the UI.
-*   **Rendering:** `URP.asset` and `2D Renderer.asset` define the visual constraints.
-*   **Naming Convention:** The project uses standard PascalCase for assets and folders.
-
-# 8. Project Structure
-The folder structure is organized by system type:
-*   `Assets/UI/`: Contains all UI Toolkit assets including layouts, themes, and panel settings.
-*   `Assets/URP/`: Contains all Universal Render Pipeline configuration files.
-*   `Assets/`: Root contains the main scene and meta-documentation.
-
-# 9. Notes, Caveats & Gotchas
-*   **2D Renderer Only:** The URP asset is strictly set to the 2D Renderer. 3D objects using standard URP shaders may not render correctly unless the renderer is changed or a 3D renderer is added to the list.
-*   **Legacy Input:** The project is currently configured to use the **Legacy Input Manager**. If upgrading to the New Input System package, the UI Toolkit event system must be updated in the project settings.
-*   **Empty UXML:** `Main.uxml` is currently an empty container. Any UI elements must be added via the UI Builder or manual XML editing to become visible.
+## 8. Notes, Caveats & Gotchas
+*   **Bottom Row Restriction:** Input is strictly ignored if the clicked block's local Y index is not 0.
+*   **Ska Scoring:** "Ska" blocks do not have their own counter. Instead, they act as score multipliers for whatever cluster triggered their destruction.
+*   **Physics Dependency:** Click detection relies on `BoxCollider2D` and `Physics2D.GetRayIntersection`. If blocks are moved or scaled, ensure the colliders remain reachable by the raycast.
+*   **Coroutine Safety:** `isProcessing` flag prevents multiple simultaneous click inputs while the grid is animating or calculating chains.
+*   **Coordinate System:** The grid's logical (0,0) is the bottom-left. World positions are calculated centered around the `GridManager`'s transform.
