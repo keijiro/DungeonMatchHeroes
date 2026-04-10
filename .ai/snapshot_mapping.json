@@ -17,6 +17,12 @@
       "conversation_id": "5afae8a2-7707-41d7-a9a6-5ee8dcd2f026",
       "content": "プランの承認ありがとうございます。これより、作成したプロトタイプのパズルゲームの実装を開始してよろしいでしょうか？\n\n「はい」と答えていただければ、以下の手順で実装を進めます。\n1.  必要なスクリプト（`BlockManager.cs` 等）の作成。\n2.  UI Toolkit（UXML/USS）によるカウント表示画面の作成。\n3.  シーン内へのパズル盤面の構築と、スクリプトの紐付け。\n4.  動作確認。\n\n実行してよろしいですか？",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_2",
+      "conversation_id": "5afae8a2-7707-41d7-a9a6-5ee8dcd2f026",
+      "content": "実行して下さい",
+      "snapshot_message_type": 0
     }
   ]
 }
