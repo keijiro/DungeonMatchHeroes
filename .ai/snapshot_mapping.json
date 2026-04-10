@@ -197,6 +197,12 @@
       "conversation_id": "230833d9-7bef-4d22-91cf-05adacd2f430",
       "content": "既存のコード（`GridManager.cs`）内のコメントをすべて英語に書き換えました。また、ガイダンス（`Guidance.txt`）への指示追加と、プロトタイプ計画書（`prototype-plan.md`）への最新仕様の反映も完了しております。\n\nプロトタイプのパズル部分は、これで一通りのルール・バランス調整・ドキュメント整理が整った状態です。さらに追加したい機能や、次のステップ（RPG要素の検討など）があればお知らせください。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_2",
+      "conversation_id": "572b26c4-924a-407e-a903-24705e306726",
+      "content": "プロジェクト内にある txt ファイルや md ファイルからプロジェクトの状況を把握して下さい。",
+      "snapshot_message_type": 0
     }
   ]
 }
