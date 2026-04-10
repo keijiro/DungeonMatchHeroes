@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 using System.Collections.Generic;
 
 /// <summary>
-/// 7x7の盤面管理、マッチ判定、落下、補充、入力処理を統括する。
+/// Manages the 7x7 grid, match detection, gravity, refilling, and input handling.
 /// </summary>
 public class GridManager : MonoBehaviour
 {
@@ -100,7 +100,7 @@ public class GridManager : MonoBehaviour
     }
 
     private bool WouldMatch(int x, int y, BlockType type)
-{
+    {
         if (x >= 2 && grid[x - 1, y] == type && grid[x - 2, y] == type) return true;
         if (y >= 2 && grid[x, y - 1] == type && grid[x, y - 2] == type) return true;
         return false;
@@ -116,7 +116,7 @@ public class GridManager : MonoBehaviour
         renderer.sprite = whiteSprite;
         renderer.color = GetColor(type);
         
-        // クリック判定用にコライダーを追加
+        // Add a collider for click detection
         var col = obj.AddComponent<BoxCollider2D>();
         col.size = Vector2.one;
 
@@ -136,8 +136,8 @@ public class GridManager : MonoBehaviour
             BlockType.Shield => Color.blue,
             BlockType.Magic => new Color(0.6f, 0f, 0.8f), // Purple
             BlockType.Heal => Color.green,
-            BlockType.Gem => Color.cyan,   // Light Blue (Updated)
-            BlockType.Key => Color.yellow, // Yellow (Updated)
+            BlockType.Gem => Color.cyan,   // Light Blue
+            BlockType.Key => Color.yellow, // Yellow
             BlockType.Ska => Color.gray,
             _ => Color.white
         };
@@ -145,7 +145,7 @@ public class GridManager : MonoBehaviour
 
     private void Update()
     {
-        // 処理中は入力を受け付けない
+        // Ignore input while processing
         if (isProcessing) return;
 
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
@@ -162,7 +162,7 @@ public class GridManager : MonoBehaviour
 
         if (hit.collider != null)
         {
-            // 最下段（y = 0）のみ干渉可能
+            // Interaction is only possible for the bottom row (y = 0)
             for (int x = 0; x < GridWidth; x++)
             {
                 if (hit.collider.gameObject == renderers[x, 0]?.gameObject)
@@ -178,10 +178,10 @@ public class GridManager : MonoBehaviour
     {
         isProcessing = true;
 
-        // 指定ブロックを破壊
+        // Destroy the specified block
         DestroyBlock(x, y);
 
-        // 落下と補充（手動破壊時はスカ発生率高）
+        // Gravity and refill (high Ska rate when manually destroyed)
         bool firstRefill = true;
         bool hasMatches;
 
@@ -190,7 +190,7 @@ public class GridManager : MonoBehaviour
             yield return StartCoroutine(HandleGravityAndRefill(firstRefill));
             firstRefill = false;
             
-            // マッチ判定
+            // Match detection
             hasMatches = CheckAndApplyMatches();
             if (hasMatches)
             {
@@ -208,14 +208,14 @@ public class GridManager : MonoBehaviour
         {
             Destroy(renderers[x, y].gameObject);
             renderers[x, y] = null;
-            // 論理的な値もリセット
+            // Reset the logical value as well
             grid[x, y] = (BlockType)(-1); 
         }
     }
 
     private System.Collections.IEnumerator HandleGravityAndRefill(bool isManualRefill)
     {
-        // 1. 落下
+        // 1. Gravity (fall)
         for (int x = 0; x < GridWidth; x++)
         {
             int emptyCount = 0;
@@ -227,7 +227,7 @@ public class GridManager : MonoBehaviour
                 }
                 else if (emptyCount > 0)
                 {
-                    // 落下移動
+                    // Move down
                     grid[x, y - emptyCount] = grid[x, y];
                     renderers[x, y - emptyCount] = renderers[x, y];
                     renderers[x, y - emptyCount].gameObject.name = $"Block_{x}_{y - emptyCount}";
@@ -238,7 +238,7 @@ public class GridManager : MonoBehaviour
                 }
             }
 
-            // 2. 補充
+            // 2. Refill
             for (int i = 0; i < emptyCount; i++)
             {
                 int y = GridHeight - emptyCount + i;
@@ -254,13 +254,13 @@ public class GridManager : MonoBehaviour
     {
         if (isManualRefill)
         {
-            // 手動破壊時の補充は「スカ」の発生率を調整可能にする
+            // Make the Ska rate adjustable for manual refills
             if (Random.value < manualSkaRate) return BlockType.Ska;
             return GetWeightedRandomType();
         }
         else
         {
-            // マッチ時の補充では効果のあるブロックだけが登場する
+            // Only effective blocks appear for match-triggered refills
             return GetWeightedRandomType();
         }
     }
@@ -269,7 +269,7 @@ public class GridManager : MonoBehaviour
     {
         HashSet<(int, int)> triggerSet = new HashSet<(int, int)>();
 
-        // 横のマッチ判定（トリガーとなる3列以上の並びを探す）
+        // Horizontal match check (searching for sequences of 3 or more)
         for (int y = 0; y < GridHeight; y++)
         {
             for (int x = 0; x < GridWidth - 2; x++)
@@ -285,7 +285,7 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        // 縦のマッチ判定
+        // Vertical match check
         for (int x = 0; x < GridWidth; x++)
         {
             for (int y = 0; y < GridHeight - 2; y++)
@@ -310,7 +310,7 @@ public class GridManager : MonoBehaviour
             {
                 if (visited.Contains(pos)) continue;
 
-                // このブロックを含む、同色の隣接した全ブロックを抽出
+                // Extract all adjacent blocks of the same color containing this block
                 List<(int, int)> cluster = new List<(int, int)>();
                 FindCluster(pos.Item1, pos.Item2, grid[pos.Item1, pos.Item2], cluster, visited);
                 foreach (var c in cluster) finalMatchedSet.Add(c);
@@ -323,9 +323,9 @@ public class GridManager : MonoBehaviour
             foreach (var pos in finalMatchedSet)
             {
                 BlockType triggerType = grid[pos.Item1, pos.Item2];
-                matchCounts[(int)triggerType]++; // マッチしたブロック自身のポイント
+                matchCounts[(int)triggerType]++; // Points for the matched block itself
 
-                // 周囲のスカブロックを誘爆
+                // Detonate surrounding Ska blocks
                 for (int i = 0; i < 4; i++)
                 {
                     int nx = pos.Item1 + dx[i];
@@ -335,7 +335,7 @@ public class GridManager : MonoBehaviour
                     {
                         if (grid[nx, ny] == BlockType.Ska && !alreadyDestroyedSka.Contains((nx, ny)))
                         {
-                            // 誘爆元となったブロック種別のポイントに加算
+                            // Add to the points of the block type that triggered the explosion
                             matchCounts[(int)triggerType]++;
                             alreadyDestroyedSka.Add((nx, ny));
                         }
@@ -343,32 +343,32 @@ public class GridManager : MonoBehaviour
                 }
             }
 
-            // 論理・物理的な破壊の実行
+            // Execute logical and physical destruction
             foreach (var pos in finalMatchedSet) DestroyBlock(pos.Item1, pos.Item2);
             foreach (var pos in alreadyDestroyedSka) DestroyBlock(pos.Item1, pos.Item2);
 
             return true;
         }
         return false;
-        }
+    }
 
-        private void FindCluster(int x, int y, BlockType type, List<(int, int)> cluster, HashSet<(int, int)> visited)
-        {
+    private void FindCluster(int x, int y, BlockType type, List<(int, int)> cluster, HashSet<(int, int)> visited)
+    {
         if (x < 0 || x >= GridWidth || y < 0 || y >= GridHeight) return;
         if (visited.Contains((x, y)) || grid[x, y] != type) return;
 
         visited.Add((x, y));
         cluster.Add((x, y));
 
-        // 4方向を再帰的に探索
+        // Recursively explore 4 directions
         FindCluster(x + 1, y, type, cluster, visited);
         FindCluster(x - 1, y, type, cluster, visited);
         FindCluster(x, y + 1, type, cluster, visited);
         FindCluster(x, y - 1, type, cluster, visited);
-        }
+    }
 
-        private void UpdateUI()
-        {
+    private void UpdateUI()
+    {
         if (uiDocument == null) uiDocument = FindFirstObjectByType<UIDocument>();
         if (uiDocument == null || uiDocument.rootVisualElement == null) return;
 
@@ -380,7 +380,7 @@ public class GridManager : MonoBehaviour
         UpdateLabel(root, "HealCount", matchCounts[3]);
         UpdateLabel(root, "GemCount", matchCounts[4]);
         UpdateLabel(root, "KeyCount", matchCounts[5]);
-        }
+    }
 
     private bool UpdateLabel(VisualElement root, string name, int value)
     {
@@ -392,4 +392,4 @@ public class GridManager : MonoBehaviour
         }
         return false;
     }
-    }
+}
