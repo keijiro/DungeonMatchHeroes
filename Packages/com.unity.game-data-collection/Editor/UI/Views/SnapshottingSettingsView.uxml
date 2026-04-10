@@ -1,0 +1,46 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xmlns="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:ScrollView>
+        <ui:VisualElement name="snapshottingSettingsRoot" class="snapshotting-settings-root">
+            <ui:VisualElement class="snapshotting-settings-header">
+                <ui:Label text="Snapshotting Settings" class="snapshotting-settings-title" />
+            </ui:VisualElement>
+            
+            <ui:VisualElement class="snapshotting-settings-section">
+                <ui:Toggle name="gameCreationRecordingToggle" text="Game Creation Recording" value="false"
+                           tooltip="Enable or disable game creation recording functionality." />
+            </ui:VisualElement>
+            
+            <ui:VisualElement class="snapshotting-settings-section snapshotting-settings-section--large">
+                <ui:Label text="Game Creation Session Branch" class="snapshotting-settings-section-title" />
+                <ui:TextField name="branchNameTextField" label="Branch Name" tooltip="Specify the name of the game creation session branch." />
+                <ui:VisualElement class="snapshotting-settings-button-row">
+                    <ui:Button name="checkoutBranchButton" text="Checkout Branch" />
+                    <ui:Button name="createBranchButton" text="Create Branch" />
+                </ui:VisualElement>
+                <ui:Label name="branchStatusLabel" text="" class="status-label" />
+            </ui:VisualElement>
+            
+            <ui:VisualElement class="snapshotting-settings-section snapshotting-settings-section--large">
+                <ui:Label text="Snapshot Uploading" class="snapshotting-settings-section-title" />
+                <ui:VisualElement class="snapshotting-settings-section">
+                    <ui:Toggle name="autoUploadToggle" text="Auto Upload" value="true"
+                               tooltip="Automatically upload snapshots to origin after each snapshotting." />
+                </ui:VisualElement>
+                <ui:VisualElement class="snapshotting-settings-button-row">
+                    <ui:Button name="pushToOriginButton" text="Push to Origin" tooltip="Manually push current branch to origin." />
+                </ui:VisualElement>
+                <ui:Label name="pushStatusLabel" text="" class="status-label" />
+            </ui:VisualElement>
+            
+            <ui:VisualElement class="snapshotting-settings-section snapshotting-settings-section--large">
+                <ui:Label text="[Testing] Snapshot Management" class="snapshotting-settings-section-title" />
+                <ui:VisualElement class="snapshotting-settings-button-row">
+                    <ui:Button name="takeSnapshotButton" text="Take Snapshot" tooltip="Manually create a snapshot checkpoint." />
+                    <ui:Button name="rollbackButton" text="Rollback to Previous" tooltip="Rollback to the previous snapshot checkpoint." />
+                </ui:VisualElement>
+                <ui:Label name="snapshotStatusLabel" text="" class="status-label" />
+            </ui:VisualElement>
+            
+        </ui:VisualElement>
+    </ui:ScrollView>
+</ui:UXML>

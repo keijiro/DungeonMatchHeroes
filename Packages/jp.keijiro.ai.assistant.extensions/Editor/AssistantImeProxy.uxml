@@ -1,0 +1,8 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:VisualElement name="ime-proxy-root" class="ime-proxy-root">
+        <ui:VisualElement name="placeholder" class="ime-proxy-panel ime-proxy-placeholder">
+            <ui:Label text="Click here to type a prompt" class="ime-proxy-placeholder__label" />
+        </ui:VisualElement>
+        <ui:VisualElement name="input-root" class="ime-proxy-input-root" style="display: none;" />
+    </ui:VisualElement>
+</ui:UXML>

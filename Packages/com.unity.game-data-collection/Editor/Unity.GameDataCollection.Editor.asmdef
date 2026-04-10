@@ -1,0 +1,22 @@
+{
+    "name": "Unity.AI.Assistant.GameDataCollection.Editor",
+    "rootNamespace": "Unity.AI.Assistant.GameDataCollection.Editor",
+    "references": [
+        "Unity.AI.Assistant.Editor",
+        "Unity.AI.Assistant.UI.Editor",
+        "Unity.AI.Assistant.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Newtonsoft.Json.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

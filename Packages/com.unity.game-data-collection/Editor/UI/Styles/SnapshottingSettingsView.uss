@@ -1,0 +1,51 @@
+.snapshotting-settings-root {
+    padding: 20px;
+}
+
+.snapshotting-settings-header {
+    margin-bottom: 20px;
+}
+
+.snapshotting-settings-title {
+    font-size: 18px;
+    -unity-font-style: bold;
+    margin-bottom: 20px;
+}
+
+.snapshotting-settings-section {
+    margin-top: 10px;
+}
+
+.snapshotting-settings-section--large {
+    margin-top: 20px;
+}
+
+.snapshotting-settings-section-title {
+    font-size: 14px;
+    -unity-font-style: bold;
+    margin-bottom: 10px;
+}
+
+.snapshotting-settings-button-row {
+    flex-direction: row;
+    margin-top: 10px;
+}
+
+.snapshotting-settings-button-row > Button {
+    margin-right: 10px;
+}
+
+.status-label {
+    margin-top: 10px;
+    padding: 5px;
+    display: none;
+    white-space: normal;
+}
+
+.status-label--success {
+    color: rgb(0, 204, 0);
+}
+
+.status-label--error {
+    color: rgb(204, 0, 0);
+}

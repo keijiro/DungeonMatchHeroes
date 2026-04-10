@@ -1,0 +1,58 @@
+.ime-proxy-root {
+    flex-grow: 1;
+    padding: 4px;
+}
+
+.ime-proxy-panel {
+    flex-grow: 1;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.ime-proxy-placeholder {
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(51, 51, 51);
+}
+
+.ime-proxy-placeholder__label {
+    color: rgb(153, 153, 153);
+}
+
+.ime-proxy-input-root {
+    flex-grow: 1;
+}
+
+.ime-input-container {
+    flex-grow: 1;
+    position: relative;
+}
+
+.ime-input-field {
+    flex-grow: 1;
+    overflow: hidden;
+    -unity-font-definition: url("project://database/Packages/jp.keijiro.ai.assistant.extensions/Editor/NotoSansJP-Regular.ttf?fileID=12800000&guid=f7d2dd1a328194df9b71491ff2d07e2b&type=3#NotoSansJP-Regular");
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.ime-input-field__input {
+    -unity-font-definition: url("project://database/Packages/jp.keijiro.ai.assistant.extensions/Editor/NotoSansJP-Regular.ttf?fileID=12800000&guid=f7d2dd1a328194df9b71491ff2d07e2b&type=3#NotoSansJP-Regular");
+    white-space: normal;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.ime-input-hint {
+    position: absolute;
+    right: 10px;
+    bottom: 6px;
+    font-size: 11px;
+    color: rgba(128, 128, 128, 0.6);
+}
