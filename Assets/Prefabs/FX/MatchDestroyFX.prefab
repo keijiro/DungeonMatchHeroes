@@ -286,9 +286,9 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     startSize:
       serializedVersion: 2
-      minMaxState: 0
-      scalar: 0.6
-      minScalar: 0.3
+      minMaxState: 3
+      scalar: 0.90000004
+      minScalar: 0.36
       maxCurve:
         serializedVersion: 2
         m_Curve:
