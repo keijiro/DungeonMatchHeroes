@@ -486,9 +486,9 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
     {
         // 1. Swell and Glow
         float elapsed = 0f;
-        while (elapsed < 0.15f)
+        while (elapsed < 0.075f)
         {
-            float t = elapsed / 0.15f;
+            float t = elapsed / 0.075f;
             float scale = Mathf.Lerp(1.0f, 1.3f, t);
             foreach (var pos in positions)
             {
@@ -505,9 +505,9 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
 
         // 2. Stretch and Particle
         elapsed = 0f;
-        while (elapsed < 0.15f)
+        while (elapsed < 0.075f)
         {
-            float t = elapsed / 0.15f;
+            float t = elapsed / 0.075f;
             Vector3 targetScale = new Vector3(0.2f, 2.0f, 1.0f);
             foreach (var pos in positions)
             {
