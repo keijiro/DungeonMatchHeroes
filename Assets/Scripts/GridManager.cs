@@ -25,9 +25,12 @@ public class GridManager : MonoBehaviour
 
     [Header("Assets")]
     [SerializeField] private Sprite blockBaseSprite;
+    [SerializeField] private Sprite blockCrackedSprite;
     [SerializeField] private Sprite[] iconSprites = new Sprite[7];
     [SerializeField, Range(0.1f, 2.0f)] private float iconScale = 0.8f;
     [SerializeField] private UIDocument uiDocument;
+    [SerializeField] private ParticleSystem manualDestroyFX;
+    [SerializeField] private ParticleSystem matchDestroyFX;
 
     [Header("Visual Settings")]
     [SerializeField] private Color[] blockColors = new Color[7] {
@@ -51,6 +54,7 @@ public class GridManager : MonoBehaviour
     private int[] matchCounts = new int[7];
 
     private bool isProcessing = false;
+    private CameraShake cameraShake;
 
     private void Awake()
     {
@@ -63,6 +67,8 @@ public class GridManager : MonoBehaviour
         if (uiDocument == null) uiDocument = FindFirstObjectByType<UIDocument>();
         if (blockBaseSprite == null) Debug.LogWarning("blockBaseSprite is NULL in GridManager!");
         
+        cameraShake = Camera.main.GetComponent<CameraShake>();
+
         InitializeGrid();
         UpdateUI();
 
@@ -151,7 +157,7 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
         return baseRenderer;
     }
 
-    private Vector3 GetWorldPosition(int x, int y)
+    private Vector3 GetWorldPosition(float x, float y)
     {
         return new Vector3(x - (GridWidth - 1) / 2f, y - (GridHeight - 1) / 2f, 0) * BlockSpacing;
     }
@@ -201,7 +207,10 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
     {
         isProcessing = true;
 
-        // Destroy the specified block
+        // Perform manual destruction animation
+        yield return StartCoroutine(AnimateManualDestroy(renderers[x, y].gameObject));
+        
+        // Logical destruction
         DestroyBlock(x, y);
 
         // Gravity and refill (high Ska rate when manually destroyed)
@@ -214,15 +223,50 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
             firstRefill = false;
             
             // Match detection
-            hasMatches = CheckAndApplyMatches();
+            List<(int, int)> matchedSet = new List<(int, int)>();
+            hasMatches = CheckMatches(out matchedSet);
             if (hasMatches)
             {
+                yield return StartCoroutine(AnimateMatchesAndDestroy(matchedSet));
                 UpdateUI();
-                yield return new WaitForSeconds(0.2f);
             }
         } while (hasMatches);
 
         isProcessing = false;
+    }
+
+    private System.Collections.IEnumerator AnimateManualDestroy(GameObject block)
+    {
+        if (block == null) yield break;
+
+        // 1. Swap sprite to cracked
+        SpriteRenderer sr = block.GetComponent<SpriteRenderer>();
+        if (sr != null && blockCrackedSprite != null)
+        {
+            sr.sprite = blockCrackedSprite;
+        }
+
+        // 2. Vibrate and micro-shake camera
+        if (cameraShake != null) cameraShake.Shake(0.05f, 0.1f);
+
+        Vector3 originalLocalPos = block.transform.localPosition;
+        float elapsed = 0f;
+        while (elapsed < 0.1f)
+        {
+            block.transform.localPosition = originalLocalPos + (Vector3)Random.insideUnitCircle * 0.1f;
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        block.transform.localPosition = originalLocalPos;
+
+        // 3. Particles
+        if (manualDestroyFX != null)
+        {
+            Instantiate(manualDestroyFX, block.transform.position, Quaternion.identity);
+        }
+
+        // Hide visuals before physical destroy to avoid "pop"
+        block.SetActive(false);
     }
 
     private void DestroyBlock(int x, int y)
@@ -238,7 +282,9 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
 
     private System.Collections.IEnumerator HandleGravityAndRefill(bool isManualRefill)
     {
-        // 1. Gravity (fall)
+        // 1. Identify all falling blocks and refill blocks
+        var fallingBlocks = new List<FallingBlockInfo>();
+
         for (int x = 0; x < GridWidth; x++)
         {
             int emptyCount = 0;
@@ -250,27 +296,87 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
                 }
                 else if (emptyCount > 0)
                 {
-                    // Move down
-                    grid[x, y - emptyCount] = grid[x, y];
-                    renderers[x, y - emptyCount] = renderers[x, y];
-                    renderers[x, y - emptyCount].gameObject.name = $"Block_{x}_{y - emptyCount}";
-                    renderers[x, y - emptyCount].transform.position = GetWorldPosition(x, y - emptyCount);
+                    // Existing block needs to fall
+                    int targetY = y - emptyCount;
                     
+                    grid[x, targetY] = grid[x, y];
+                    renderers[x, targetY] = renderers[x, y];
+                    
+                    fallingBlocks.Add(new FallingBlockInfo {
+                        renderer = renderers[x, targetY],
+                        targetPos = GetWorldPosition(x, targetY),
+                        targetY = targetY,
+                        targetX = x
+                    });
+
                     grid[x, y] = (BlockType)(-1);
                     renderers[x, y] = null;
                 }
             }
 
-            // 2. Refill
+            // 2. Refill blocks above the grid
             for (int i = 0; i < emptyCount; i++)
             {
-                int y = GridHeight - emptyCount + i;
+                int targetY = GridHeight - emptyCount + i;
                 BlockType newType = DecideNewBlockType(isManualRefill);
-                grid[x, y] = newType;
-                renderers[x, y] = CreateBlockObject(x, y, newType);
+                
+                // Spawn above the grid
+                Vector3 spawnPos = GetWorldPosition(x, GridHeight + i + 0.5f);
+                SpriteRenderer newSR = CreateBlockObject(x, targetY, newType);
+                newSR.transform.position = spawnPos;
+
+                grid[x, targetY] = newType;
+                renderers[x, targetY] = newSR;
+
+                fallingBlocks.Add(new FallingBlockInfo {
+                    renderer = newSR,
+                    targetPos = GetWorldPosition(x, targetY),
+                    targetY = targetY,
+                    targetX = x
+                });
             }
         }
-        yield return null;
+
+        // 3. Animate all falling blocks
+        if (fallingBlocks.Count > 0)
+        {
+            bool allLanded = false;
+            while (!allLanded)
+            {
+                allLanded = true;
+                foreach (var fb in fallingBlocks)
+                {
+                    if (fb.isLanded) continue;
+                    allLanded = false;
+
+                    // Accelerate
+                    fb.velocity += 15f * Time.deltaTime; // Gravity
+                    Vector3 pos = fb.renderer.transform.position;
+                    pos.y -= fb.velocity * Time.deltaTime;
+
+                    // Check if reached target
+                    if (pos.y <= fb.targetPos.y)
+                    {
+                        pos = fb.targetPos;
+                        fb.isLanded = true;
+                        fb.renderer.gameObject.name = $"Block_{fb.targetX}_{fb.targetY}";
+                        // Subtle camera shake on landing
+                        if (cameraShake != null) cameraShake.Shake(0.01f, 0.05f);
+                    }
+                    fb.renderer.transform.position = pos;
+                }
+                yield return null;
+            }
+        }
+    }
+
+    private class FallingBlockInfo
+    {
+        public SpriteRenderer renderer;
+        public Vector3 targetPos;
+        public int targetX, targetY;
+        public float velocity = 0f;
+        public bool isLanded = false;
     }
 
     private BlockType DecideNewBlockType(bool isManualRefill)
@@ -288,11 +394,12 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
         }
     }
 
-    private bool CheckAndApplyMatches()
+    private bool CheckMatches(out List<(int, int)> finalSet)
     {
+        finalSet = new List<(int, int)>();
         HashSet<(int, int)> triggerSet = new HashSet<(int, int)>();
 
-        // Horizontal match check (searching for sequences of 3 or more)
+        // Horizontal match check
         for (int y = 0; y < GridHeight; y++)
         {
             for (int x = 0; x < GridWidth - 2; x++)
@@ -301,9 +408,7 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
                 if ((int)type == -1 || type == BlockType.Ska) continue;
                 if (grid[x + 1, y] == type && grid[x + 2, y] == type)
                 {
-                    triggerSet.Add((x, y));
-                    triggerSet.Add((x + 1, y));
-                    triggerSet.Add((x + 2, y));
+                    triggerSet.Add((x, y)); triggerSet.Add((x + 1, y)); triggerSet.Add((x + 2, y));
                 }
             }
         }
@@ -317,62 +422,103 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
                 if ((int)type == -1 || type == BlockType.Ska) continue;
                 if (grid[x, y + 1] == type && grid[x, y + 2] == type)
                 {
-                    triggerSet.Add((x, y));
-                    triggerSet.Add((x, y + 1));
-                    triggerSet.Add((x, y + 2));
+                    triggerSet.Add((x, y)); triggerSet.Add((x, y + 1)); triggerSet.Add((x, y + 2));
                 }
             }
         }
 
         if (triggerSet.Count > 0)
         {
-            HashSet<(int, int)> finalMatchedSet = new HashSet<(int, int)>();
+            HashSet<(int, int)> matchedSet = new HashSet<(int, int)>();
             HashSet<(int, int)> visited = new HashSet<(int, int)>();
 
             foreach (var pos in triggerSet)
             {
                 if (visited.Contains(pos)) continue;
-
-                // Extract all adjacent blocks of the same color containing this block
                 List<(int, int)> cluster = new List<(int, int)>();
                 FindCluster(pos.Item1, pos.Item2, grid[pos.Item1, pos.Item2], cluster, visited);
-                foreach (var c in cluster) finalMatchedSet.Add(c);
+                foreach (var c in cluster) matchedSet.Add(c);
             }
 
-            HashSet<(int, int)> alreadyDestroyedSka = new HashSet<(int, int)>();
-            int[] dx = { 1, -1, 0, 0 };
-            int[] dy = { 0, 0, 1, -1 };
+            HashSet<(int, int)> detonationSet = new HashSet<(int, int)>();
+            int[] dx = { 1, -1, 0, 0 }, dy = { 0, 0, 1, -1 };
 
-            foreach (var pos in finalMatchedSet)
+            foreach (var pos in matchedSet)
             {
                 BlockType triggerType = grid[pos.Item1, pos.Item2];
-                matchCounts[(int)triggerType]++; // Points for the matched block itself
+                matchCounts[(int)triggerType]++;
 
-                // Detonate surrounding Ska blocks
                 for (int i = 0; i < 4; i++)
                 {
-                    int nx = pos.Item1 + dx[i];
-                    int ny = pos.Item2 + dy[i];
-
+                    int nx = pos.Item1 + dx[i], ny = pos.Item2 + dy[i];
                     if (nx >= 0 && nx < GridWidth && ny >= 0 && ny < GridHeight)
                     {
-                        if (grid[nx, ny] == BlockType.Ska && !alreadyDestroyedSka.Contains((nx, ny)))
+                        if (grid[nx, ny] == BlockType.Ska && !detonationSet.Contains((nx, ny)))
                         {
-                            // Add to the points of the block type that triggered the explosion
                             matchCounts[(int)triggerType]++;
-                            alreadyDestroyedSka.Add((nx, ny));
+                            detonationSet.Add((nx, ny));
                         }
                     }
                 }
             }
 
-            // Execute logical and physical destruction
-            foreach (var pos in finalMatchedSet) DestroyBlock(pos.Item1, pos.Item2);
-            foreach (var pos in alreadyDestroyedSka) DestroyBlock(pos.Item1, pos.Item2);
-
+            foreach (var pos in matchedSet) finalSet.Add(pos);
+            foreach (var pos in detonationSet) finalSet.Add(pos);
             return true;
         }
         return false;
+    }
+
+    private System.Collections.IEnumerator AnimateMatchesAndDestroy(List<(int, int)> positions)
+    {
+        // 1. Swell and Glow
+        float elapsed = 0f;
+        while (elapsed < 0.15f)
+        {
+            float t = elapsed / 0.15f;
+            float scale = Mathf.Lerp(1.0f, 1.3f, t);
+            foreach (var pos in positions)
+            {
+                var r = renderers[pos.Item1, pos.Item2];
+                if (r != null)
+                {
+                    r.transform.localScale = Vector3.one * scale;
+                    r.color = Color.white;
+                }
+            }
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        // 2. Stretch and Particle
+        elapsed = 0f;
+        while (elapsed < 0.15f)
+        {
+            float t = elapsed / 0.15f;
+            Vector3 targetScale = new Vector3(0.2f, 2.0f, 1.0f);
+            foreach (var pos in positions)
+            {
+                var r = renderers[pos.Item1, pos.Item2];
+                if (r != null)
+                {
+                    r.transform.localScale = Vector3.Lerp(Vector3.one * 1.3f, targetScale, t);
+                    Color c = r.color;
+                    c.a = 1.0f - t;
+                    r.color = c;
+                }
+            }
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        foreach (var pos in positions)
+        {
+            if (matchDestroyFX != null && renderers[pos.Item1, pos.Item2] != null)
+            {
+                Instantiate(matchDestroyFX, renderers[pos.Item1, pos.Item2].transform.position, Quaternion.identity);
+            }
+            DestroyBlock(pos.Item1, pos.Item2);
+        }
     }
 
     private void FindCluster(int x, int y, BlockType type, List<(int, int)> cluster, HashSet<(int, int)> visited)

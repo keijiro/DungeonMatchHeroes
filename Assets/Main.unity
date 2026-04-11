@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridManager
   blockBaseSprite: {fileID: 21300000, guid: 0334d2b1c81334e2b9fb8ade73e24e66, type: 3}
+  blockCrackedSprite: {fileID: 21300000, guid: 5ede13f679c8247019cc8b0588bafab6, type: 3}
   iconSprites:
   - {fileID: 21300000, guid: ecdeb94f24d744a7db5dd7fd734d85fe, type: 3}
   - {fileID: 21300000, guid: ce7f0ac218c5941f2965b8812a7f78cc, type: 3}
@@ -159,6 +160,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 5016f29c614f54d17a169c46cd49f397, type: 3}
   iconScale: 1.215
   uiDocument: {fileID: 1879991500}
+  manualDestroyFX: {fileID: 1637140914699121571, guid: 0a4a84681a4dd46ae88cb0e566b6c731, type: 3}
+  matchDestroyFX: {fileID: 4303154845638419426, guid: a769b054cc5f94d24826ded3204a646b, type: 3}
   blockColors:
   - {r: 1, g: 0.3482667, b: 0.24800003, a: 1}
   - {r: 0.291, g: 0.50369996, b: 1, a: 1}
@@ -202,6 +205,7 @@ GameObject:
   - component: {fileID: 1739684469}
   - component: {fileID: 1739684468}
   - component: {fileID: 1739684471}
+  - component: {fileID: 1739684472}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -327,6 +331,18 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1739684467}
   m_Enabled: 1
+--- !u!114 &1739684472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1739684467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56886c409bbb54a709f93588c9ca5325, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraShake
 --- !u!1 &1879991498
 GameObject:
   m_ObjectHideFlags: 0
