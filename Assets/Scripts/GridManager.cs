@@ -28,7 +28,6 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Sprite blockCrackedSprite;
     [SerializeField] private Sprite[] iconSprites = new Sprite[7];
     [SerializeField, Range(0.1f, 2.0f)] private float iconScale = 0.8f;
-    [SerializeField] private UIDocument uiDocument;
     [SerializeField] private ParticleSystem manualDestroyFX;
     [SerializeField] private ParticleSystem matchDestroyFX;
     [SerializeField] private ParticleSystem shockwaveFX;
@@ -65,13 +64,11 @@ public class GridManager : MonoBehaviour
     private void Start()
     {
         Debug.Log("GridManager.Start() called.");
-        if (uiDocument == null) uiDocument = FindFirstObjectByType<UIDocument>();
         if (blockBaseSprite == null) Debug.LogWarning("blockBaseSprite is NULL in GridManager!");
         
         cameraShake = Camera.main.GetComponent<CameraShake>();
 
         InitializeGrid();
-        UpdateUI();
 
         int count = 0;
         foreach (var r in renderers) if (r != null) count++;
@@ -229,15 +226,14 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
             if (hasMatches)
             {
                 yield return StartCoroutine(AnimateMatchesAndDestroy(matchedSet));
-                UpdateUI();
             }
-        } while (hasMatches);
+            } while (hasMatches);
 
-        isProcessing = false;
-    }
+            isProcessing = false;
+            }
 
-    private System.Collections.IEnumerator AnimateManualDestroy(GameObject block)
-    {
+            private System.Collections.IEnumerator AnimateManualDestroy(GameObject block)
+            {
         if (block == null) yield break;
 
         // 0. Shockwave immediately upon click
@@ -554,31 +550,5 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
         FindCluster(x - 1, y, type, cluster, visited);
         FindCluster(x, y + 1, type, cluster, visited);
         FindCluster(x, y - 1, type, cluster, visited);
-    }
-
-    private void UpdateUI()
-    {
-        if (uiDocument == null) uiDocument = FindFirstObjectByType<UIDocument>();
-        if (uiDocument == null || uiDocument.rootVisualElement == null) return;
-
-        var root = uiDocument.rootVisualElement;
-        
-        UpdateLabel(root, "SwordCount", matchCounts[0]);
-        UpdateLabel(root, "ShieldCount", matchCounts[1]);
-        UpdateLabel(root, "MagicCount", matchCounts[2]);
-        UpdateLabel(root, "HealCount", matchCounts[3]);
-        UpdateLabel(root, "GemCount", matchCounts[4]);
-        UpdateLabel(root, "KeyCount", matchCounts[5]);
-    }
-
-    private bool UpdateLabel(VisualElement root, string name, int value)
-    {
-        var label = root.Q<Label>(name);
-        if (label != null)
-        {
-            label.text = value.ToString();
-            return true;
         }
-        return false;
-    }
-}
+        }

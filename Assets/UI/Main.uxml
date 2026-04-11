@@ -1,31 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements">
     <ui:Style src="Main.uss" />
     <ui:VisualElement name="root" class="container">
-        <ui:VisualElement class="hud-panel">
-            <ui:VisualElement class="count-item sword">
-                <ui:Label text="SWORD" class="count-label" />
-                <ui:Label name="SwordCount" text="0" class="count-value" />
-            </ui:VisualElement>
-            <ui:VisualElement class="count-item shield">
-                <ui:Label text="SHIELD" class="count-label" />
-                <ui:Label name="ShieldCount" text="0" class="count-value" />
-            </ui:VisualElement>
-            <ui:VisualElement class="count-item magic">
-                <ui:Label text="MAGIC" class="count-label" />
-                <ui:Label name="MagicCount" text="0" class="count-value" />
-            </ui:VisualElement>
-            <ui:VisualElement class="count-item heal">
-                <ui:Label text="HEAL" class="count-label" />
-                <ui:Label name="HealCount" text="0" class="count-value" />
-            </ui:VisualElement>
-            <ui:VisualElement class="count-item gem">
-                <ui:Label text="GEM" class="count-label" />
-                <ui:Label name="GemCount" text="0" class="count-value" />
-            </ui:VisualElement>
-            <ui:VisualElement class="count-item key">
-                <ui:Label text="KEY" class="count-label" />
-                <ui:Label name="KeyCount" text="0" class="count-value" />
-            </ui:VisualElement>
-            </ui:VisualElement>
-            </ui:VisualElement>
-            </ui:UXML>
+        <!-- RPG UI will be added here -->
+    </ui:VisualElement>
+</ui:UXML>
