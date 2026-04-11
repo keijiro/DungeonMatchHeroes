@@ -671,6 +671,12 @@
       "conversation_id": "b369705f-fc38-4937-b0ea-fb1b316a5262",
       "content": "ManualDestroy について、発生範囲の大きさを今の 1.5 倍にして、飛び散る勢いも 1.5 倍にして下さい。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "d282357c-2386-4f28-85f9-1dab2494fa50",
+      "conversation_id": "b369705f-fc38-4937-b0ea-fb1b316a5262",
+      "content": "ManualDestroy の発生範囲と勢いを、それぞれ **1.5倍** に調整しました。\n\n*   **発生範囲（Radius）**: `0.2` → `0.3` に拡張し、より広い範囲から破片が出るようにしました。\n*   **勢い（Start Speed）**: `2~5` → `3~7.5` に加速させ、破片が勢いよく四方に飛び散るようにしました。\n\nこれで、手動破壊時の「弾け飛ぶ」感覚がさらに強調されています。動作を確認してみて下さい！",
+      "snapshot_message_type": 1
     }
   ]
 }
