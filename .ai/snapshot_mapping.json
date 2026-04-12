@@ -953,6 +953,12 @@
       "conversation_id": "a6389794-3a53-448a-9641-3e6769ea1c7e",
       "content": "なんかおかしな素材ができてしまっていますね・・・こういった単純な形状については、生成モデルを使うよりも、C# かシェーダーを使って作成した方が良いでしょうかね？検討を行って回答して下さい。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "INT_7",
+      "conversation_id": "a6389794-3a53-448a-9641-3e6769ea1c7e",
+      "content": "それでは C# で blob shadow 用の素材を作成して、現在使われているものと置換して下さい",
+      "snapshot_message_type": 0
     }
   ]
 }
