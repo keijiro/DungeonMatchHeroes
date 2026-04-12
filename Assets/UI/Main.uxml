@@ -1,6 +1,29 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements">
-    <ui:Style src="Main.uss" />
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Main.uss?fileID=7433441132597879392&amp;guid=8524316d860d440d998188544f808f97&amp;type=3#Main" />
     <ui:VisualElement name="root" class="container">
-        <!-- RPG UI will be added here -->
+        <ui:VisualElement name="hud" class="hud-top">
+            <ui:VisualElement name="stats-left" class="stats-group">
+                <ui:VisualElement class="stat-row">
+                    <ui:Label text="HP:" class="stat-label" />
+                    <ui:VisualElement name="hp-bar-bg" class="progress-bar-bg">
+                        <ui:VisualElement name="hp-bar-fill" class="progress-bar-fill hp-fill" />
+                    </ui:VisualElement>
+                    <ui:Label name="hp-text" text="100/100" class="stat-value" />
+                </ui:VisualElement>
+                <ui:VisualElement class="stat-row">
+                    <ui:Label text="SHIELD:" class="stat-label" />
+                    <ui:Label name="shield-text" text="0" class="stat-value" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="stats-right" class="stats-group stats-right">
+                <ui:VisualElement class="stat-row">
+                    <ui:Label text="EXP:" class="stat-label" />
+                    <ui:Label name="exp-text" text="0" class="stat-value" />
+                </ui:VisualElement>
+                <ui:VisualElement class="stat-row">
+                    <ui:Label name="key-label" text="KEY: NO" class="stat-label" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

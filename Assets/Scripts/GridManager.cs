@@ -451,35 +451,37 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
             foreach (var pos in triggerSet)
             {
                 if (visited.Contains(pos)) continue;
+                
                 List<(int, int)> cluster = new List<(int, int)>();
-                FindCluster(pos.Item1, pos.Item2, grid[pos.Item1, pos.Item2], cluster, visited);
-                foreach (var c in cluster) matchedSet.Add(c);
-            }
-
-            HashSet<(int, int)> detonationSet = new HashSet<(int, int)>();
-            int[] dx = { 1, -1, 0, 0 }, dy = { 0, 0, 1, -1 };
-
-            foreach (var pos in matchedSet)
-            {
-                BlockType triggerType = grid[pos.Item1, pos.Item2];
-                matchCounts[(int)triggerType]++;
-
-                for (int i = 0; i < 4; i++)
+                BlockType type = grid[pos.Item1, pos.Item2];
+                FindCluster(pos.Item1, pos.Item2, type, cluster, visited);
+                
+                // Find unique Ska blocks adjacent to this cluster
+                HashSet<(int, int)> skaInCluster = new HashSet<(int, int)>();
+                int[] dx = { 1, -1, 0, 0 }, dy = { 0, 0, 1, -1 };
+                foreach (var c in cluster)
                 {
-                    int nx = pos.Item1 + dx[i], ny = pos.Item2 + dy[i];
-                    if (nx >= 0 && nx < GridWidth && ny >= 0 && ny < GridHeight)
+                    for (int i = 0; i < 4; i++)
                     {
-                        if (grid[nx, ny] == BlockType.Ska && !detonationSet.Contains((nx, ny)))
+                        int nx = c.Item1 + dx[i], ny = c.Item2 + dy[i];
+                        if (nx >= 0 && nx < GridWidth && ny >= 0 && ny < GridHeight)
                         {
-                            matchCounts[(int)triggerType]++;
-                            detonationSet.Add((nx, ny));
+                            if (grid[nx, ny] == BlockType.Ska) skaInCluster.Add((nx, ny));
                         }
                     }
                 }
+
+                // Notify CombatManager for each cluster found
+                if (CombatManager.Instance != null)
+                {
+                    CombatManager.Instance.AddPlayerAction(type, cluster.Count, skaInCluster.Count);
+                }
+
+                foreach (var c in cluster) matchedSet.Add(c);
+                foreach (var s in skaInCluster) matchedSet.Add(s);
             }
 
             foreach (var pos in matchedSet) finalSet.Add(pos);
-            foreach (var pos in detonationSet) finalSet.Add(pos);
             return true;
         }
         return false;
