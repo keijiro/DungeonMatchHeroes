@@ -26,7 +26,7 @@
 
 # 実装ステップ
 ## フェーズ 1: アセット生成
-1. **モデルの選定**: `SupportsSpritesheets` を持つ AI モデルを選択。
+1. **モデルの選定**: スプライトシートの生成には `Kling 2.5 Pro` (ModelId: `14785f64-3fcc-432a-8205-cdd2f582c757`) を使用する。
 2. **スプライトシートの生成**:
    - 各キャラクター（Fighter, Mage, 敵5種）のアニメーションシートを生成。
    - `referenceImageInstanceId` にそれぞれの `_Base.png` を指定する。
