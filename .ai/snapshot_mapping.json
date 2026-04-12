@@ -1157,6 +1157,12 @@
       "conversation_id": "05beec53-b0d9-4bf3-bf33-51f0770384cb",
       "content": "ステータスコンテナを、画面の右下で横に並ぶように変更しました。\n\n以下の変更を行いました：\n1.  **`Main.uss`**: `.hud-bottom` を `flex-direction: row`（横並び）に変更し、各コンテナ間に余白（`margin-left: 10px`）を設定しました。\n2.  **`Main.uxml`**: レイアウト構造はそのままに、各コンテナが自動的に横に並ぶようになります。\n\nこれにより、HP/Shield のパネルと EXP/Key のパネルが、画面右下隅に横一列に表示されるようになります。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_4",
+      "conversation_id": "05beec53-b0d9-4bf3-bf33-51f0770384cb",
+      "content": "先ほど、Magic ブロック消滅時の効果について記述を忘れたような気がします。Magic ブロックを消した際には、Mage による魔法攻撃が発生しますが、これは敵全体に対する攻撃とします。Sword による攻撃よりもダメージ量は少ないですが、全部の的に一斉にダメージを与えることができます。",
+      "snapshot_message_type": 0
     }
   ]
 }
