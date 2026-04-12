@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public enum CombatActionType
 {
     PlayerAttack,
+    PlayerMagicAttack,
     PlayerHeal,
     PlayerShield,
     PlayerExp,
@@ -34,6 +35,7 @@ public class CombatManager : MonoBehaviour
 
     [Header("Player Power (Base)")]
     public int BaseAttack = 5;
+    public int BaseMagicAttack = 3;
     public int BaseHeal = 3;
     public int BaseShield = 2;
     public int BaseExp = 10;
@@ -110,8 +112,12 @@ public class CombatManager : MonoBehaviour
                 action.Type = CombatActionType.PlayerAttack;
                 action.Value = effectiveCount * BaseAttack;
                 break;
+            case GridManager.BlockType.Magic:
+                action.Type = CombatActionType.PlayerMagicAttack;
+                action.Value = effectiveCount * BaseMagicAttack;
+                break;
             case GridManager.BlockType.Heal:
-                action.Type = CombatActionType.PlayerHeal;
+action.Type = CombatActionType.PlayerHeal;
                 action.Value = effectiveCount * BaseHeal;
                 break;
             case GridManager.BlockType.Shield:
@@ -169,12 +175,15 @@ public class CombatManager : MonoBehaviour
             case CombatActionType.PlayerAttack:
                 yield return StartCoroutine(HandlePlayerAttack(action.Value));
                 break;
+            case CombatActionType.PlayerMagicAttack:
+                yield return StartCoroutine(HandlePlayerMagicAttack(action.Value));
+                break;
             case CombatActionType.PlayerHeal:
                 CurrentHP = Mathf.Min(MaxHP, CurrentHP + action.Value);
                 Debug.Log($"Healed {action.Value}. HP: {CurrentHP}");
                 yield return new WaitForSeconds(0.2f);
                 break;
-            case CombatActionType.PlayerShield:
+case CombatActionType.PlayerShield:
                 Shield += action.Value;
                 Debug.Log($"Gained {action.Value} Shield. Total: {Shield}");
                 yield return new WaitForSeconds(0.2f);
@@ -215,14 +224,44 @@ public class CombatManager : MonoBehaviour
             yield return new WaitForSeconds(0.3f);
         }
 
+        CleanupEnemies();
+    }
+
+    private IEnumerator HandlePlayerMagicAttack(int damage)
+    {
+        if (ActiveEnemies.Count == 0) yield break;
+
+        Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
+        
+        // Attack all currently active enemies
+        List<EnemyUnit> targets = new List<EnemyUnit>(ActiveEnemies);
+        foreach (var enemy in targets)
+        {
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damage);
+            }
+        }
+        
+        yield return new WaitForSeconds(0.4f);
+        CleanupEnemies();
+    }
+
+    private void CleanupEnemies()
+    {
         // Cleanup dead enemies
         ActiveEnemies.RemoveAll(e => e == null || e.IsDead);
         
         if (ActiveEnemies.Count == 0)
         {
-            yield return new WaitForSeconds(1.0f);
-            SpawnWave();
+            StartCoroutine(SpawnWaveWithDelay());
         }
+    }
+
+    private IEnumerator SpawnWaveWithDelay()
+    {
+        yield return new WaitForSeconds(1.0f);
+        SpawnWave();
     }
 
     private IEnumerator HandleEnemyAttack(CombatAction action)
