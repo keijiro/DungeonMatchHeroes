@@ -1127,6 +1127,12 @@
       "conversation_id": "05beec53-b0d9-4bf3-bf33-51f0770384cb",
       "content": "敵の表示位置を調整したいです。どのようにすれば良いですか？質問への返答のみ行って下さい。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "1b009c38-0bae-492b-ba44-83be0a9c31cf",
+      "conversation_id": "05beec53-b0d9-4bf3-bf33-51f0770384cb",
+      "content": "敵の出現位置は、ヒエラルキー上の **`CombatManager`** オブジェクトの子要素として作成された **`EnemySpawnPoint_0` 〜 `EnemySpawnPoint_4`** という名前の GameObject の位置で制御されています。\n\nこれらを調整するには、以下の手順を行ってください：\n\n1.  Unity エディタの **Hierarchy** ウィンドウで `CombatManager` を展開します。\n2.  `EnemySpawnPoint_0` などの各スポーンポイントを選択します。\n3.  **Scene** ビューの移動ツール、または **Inspector** の **Transform > Position** を操作して、敵を表示したい位置へ移動させてください。\n\n※ `CombatManager` コンポーネントの `EnemySpawnPoints` 配列フィールドにこれらのオブジェクトが割り当てられているため、位置を動かすだけで次回のスポーンから反映されます。",
+      "snapshot_message_type": 1
     }
   ]
 }
