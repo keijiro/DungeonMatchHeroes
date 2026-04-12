@@ -1193,6 +1193,12 @@
       "conversation_id": "fe92f964-d08e-4722-b3b1-52b075c71e7b",
       "content": "添付したこのプランを実行に移したいと思いますが、その前に、スプライトシートの生成に使用するモデルを確定させたいと思います。ここでは Kling 系のモデルを使用するようにして下さい。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "INT_1",
+      "conversation_id": "2d4d93a5-b1f9-414e-ae7f-398bef52b9a2",
+      "content": "スプライトシートの生成に使用できるモデルをリストアップして下さい。",
+      "snapshot_message_type": 0
     }
   ]
 }
