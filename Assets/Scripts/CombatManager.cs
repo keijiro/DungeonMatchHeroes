@@ -231,7 +231,7 @@ public class CombatManager : MonoBehaviour
             yield return null;
         }
 
-        // Phase 2: Float and Fade (Slow) - Increased travel (3x)
+        // Phase 2: Float and Fade (Slow) - Restored to original travel distance (100% delta)
         elapsed = 0f;
         duration = 1.0f;
         while (elapsed < duration)
@@ -240,8 +240,8 @@ public class CombatManager : MonoBehaviour
             float t = Mathf.Clamp01(elapsed / duration);
             
             label.style.opacity = 1 - t;
-            // From -150% to -450% (delta 300%, was 100%)
-            label.style.translate = new Translate(Length.Percent(-50), Length.Percent(Mathf.Lerp(-150, -450, t)));
+            // From -150% to -250% (delta 100%, matching original travel speed)
+            label.style.translate = new Translate(Length.Percent(-50), Length.Percent(Mathf.Lerp(-150, -250, t)));
             yield return null;
         }
 
