@@ -118,7 +118,7 @@ public class CombatManager : MonoBehaviour
         StartCoroutine(QueueProcessor());
     }
 
-    public void AddPlayerAction(GridManager.BlockType type, int matchCount, int skaCount)
+    public void AddPlayerAction(GridManager.BlockType type, int matchCount, int skaCount, Vector3 worldPos)
     {
         int effectiveCount = matchCount + (skaCount / 3);
         if (effectiveCount <= 0) return;
@@ -153,19 +153,24 @@ public class CombatManager : MonoBehaviour
         }
 
         // Show UI notification
-        ShowActionNotification(action.Type, action.Value);
+        ShowActionNotification(action.Type, action.Value, worldPos);
 
         // Priority: Insert player actions at the head
         eventQueue.AddFirst(action);
         Debug.Log($"Added Player Action: {action.Type} Value: {action.Value}. Interrupting queue.");
     }
 
-    private void ShowActionNotification(CombatActionType type, int value)
+    private void ShowActionNotification(CombatActionType type, int value, Vector3 worldPos)
     {
         if (notificationLayer == null) return;
 
         Label label = new Label();
         label.AddToClassList("notification-label");
+
+        // Position based on world coordinates
+        Vector2 panelPos = RuntimePanelUtils.CameraTransformWorldToPanel(notificationLayer.panel, worldPos, Camera.main);
+        label.style.left = panelPos.x;
+        label.style.top = panelPos.y;
         
         string text = "";
         Color color = Color.white;

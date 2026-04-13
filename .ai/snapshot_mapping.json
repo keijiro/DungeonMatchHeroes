@@ -1307,6 +1307,12 @@
       "conversation_id": "7593d029-84a9-4886-839f-73756f6bd2ae",
       "content": "はい、実行して下さい。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "2dd3721b-a149-4b97-8c71-9dc8c4828024",
+      "conversation_id": "7593d029-84a9-4886-839f-73756f6bd2ae",
+      "content": "「消滅するブロック群の中心位置」から通知が表示されるように、実装を更新しました。\n\n### 主な変更内容：\n- **`GridManager.cs`**: マッチしたクラスター（および隣接する Ska ブロック）の全ブロックの平均座標（中心）を算出し、`CombatManager` に渡すように変更しました。\n- **`CombatManager.cs`**: \n    - `AddPlayerAction` および `ShowActionNotification` に `worldPos` 引数を追加しました。\n    - `RuntimePanelUtils.CameraTransformWorldToPanel` を使用して、ゲーム世界での消滅位置を正確に UI パネル上の座標に変換し、通知ラベルを動的に配置します。\n- **`Main.uss`**: CSS で固定していた 25%/50% の位置指定を削除し、C# からの動的な位置設定を可能にしました。中央寄せのスタイルは維持しています。\n\nこれにより、ブロックが消滅したその場所から、アクション内容（Attack! など）がフワッと浮かび上がる演出にアップグレードされました。\n\n### 動作確認済みの項目：\n- スクリプトのコンパイルが正常に完了していること。\n- UI Toolkit の座標変換処理が組み込まれていること。\n- 各クラスターの中心座標が正しく計算されていること。",
+      "snapshot_message_type": 1
     }
   ]
 }

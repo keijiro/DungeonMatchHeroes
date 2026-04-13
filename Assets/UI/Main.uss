@@ -76,8 +76,6 @@
 
 .notification-label {
     position: absolute;
-    left: 25%;
-    top: 50%;
     translate: -50% -50%;
     font-size: 40px;
     -unity-font-style: bold;

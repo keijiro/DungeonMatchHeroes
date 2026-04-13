@@ -471,10 +471,16 @@ if ((int)type >= 0 && (int)type < iconSprites.Length && iconSprites[(int)type] !
                     }
                 }
 
+                // Calculate center world position of the cluster and its adjacent Ska blocks
+                Vector3 centerWorldPos = Vector3.zero;
+                foreach (var c in cluster) centerWorldPos += GetWorldPosition(c.Item1, c.Item2);
+                foreach (var s in skaInCluster) centerWorldPos += GetWorldPosition(s.Item1, s.Item2);
+                centerWorldPos /= (cluster.Count + skaInCluster.Count);
+
                 // Notify CombatManager for each cluster found
                 if (CombatManager.Instance != null)
                 {
-                    CombatManager.Instance.AddPlayerAction(type, cluster.Count, skaInCluster.Count);
+                    CombatManager.Instance.AddPlayerAction(type, cluster.Count, skaInCluster.Count, centerWorldPos);
                 }
 
                 foreach (var c in cluster) matchedSet.Add(c);
