@@ -61,6 +61,11 @@ public class CombatManager : MonoBehaviour
     [Header("Player Animators")]
     public Animator FighterAnimator;
     public Animator MageAnimator;
+    public Animator TankAnimator;
+
+    private CharacterVisuals fighterVisuals;
+    private CharacterVisuals mageVisuals;
+    private CharacterVisuals tankVisuals;
 
     private void Awake()
     {
@@ -70,7 +75,12 @@ public class CombatManager : MonoBehaviour
         CurrentHP = MaxHP;
         SetupUI();
 
-        // Assign player animators if not assigned in inspector
+        // Assign player animators and visuals
+        SetupPlayerComponents();
+    }
+
+    private void SetupPlayerComponents()
+    {
         if (FighterAnimator == null)
         {
             GameObject f = GameObject.Find("Fighter");
@@ -81,10 +91,26 @@ public class CombatManager : MonoBehaviour
             GameObject m = GameObject.Find("Mage");
             if (m != null) MageAnimator = m.GetComponent<Animator>();
         }
+        if (TankAnimator == null)
+        {
+            GameObject t = GameObject.Find("Tank");
+            if (t != null) TankAnimator = t.GetComponent<Animator>();
+        }
+
+        if (FighterAnimator != null) fighterVisuals = GetOrAddVisuals(FighterAnimator.gameObject);
+        if (MageAnimator != null) mageVisuals = GetOrAddVisuals(MageAnimator.gameObject);
+        if (TankAnimator != null) tankVisuals = GetOrAddVisuals(TankAnimator.gameObject);
+    }
+
+    private CharacterVisuals GetOrAddVisuals(GameObject go)
+    {
+        CharacterVisuals v = go.GetComponent<CharacterVisuals>();
+        if (v == null) v = go.AddComponent<CharacterVisuals>();
+        return v;
     }
 
     private void SetupUI()
-    {
+{
         if (HUD == null) HUD = GetComponent<UIDocument>();
         if (HUD == null) return;
 
@@ -325,6 +351,7 @@ public class CombatManager : MonoBehaviour
         if (ActiveEnemies.Count == 0) yield break;
 
         if (FighterAnimator != null) FighterAnimator.SetTrigger("Attack");
+        if (fighterVisuals != null) fighterVisuals.TriggerAttackEffect();
 
         EnemyUnit target = ActiveEnemies[0];
         if (target != null)
@@ -342,6 +369,7 @@ public class CombatManager : MonoBehaviour
         if (ActiveEnemies.Count == 0) yield break;
 
         if (MageAnimator != null) MageAnimator.SetTrigger("Magic");
+        if (mageVisuals != null) mageVisuals.TriggerAttackEffect();
 
         Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         
@@ -382,8 +410,14 @@ public class CombatManager : MonoBehaviour
         yield return new WaitForSeconds(0.4f); 
 
         int finalDamage = action.Value;
+        
+        // Trigger player damage visual
+        if (fighterVisuals != null) fighterVisuals.TriggerDamageEffect();
+        if (mageVisuals != null) mageVisuals.TriggerDamageEffect();
+        if (tankVisuals != null) tankVisuals.TriggerDamageEffect();
+
         if (action.IsMagic)
-        {
+{
             CurrentHP -= finalDamage;
             Debug.Log($"Magic Attack! HP reduced by {finalDamage}. Current HP: {CurrentHP}");
         }

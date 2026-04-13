@@ -14,11 +14,7 @@ public class EnemyUnit : MonoBehaviour
     private float timer;
 
     private Animator animator;
-    private SpriteRenderer sr;
-    private MaterialPropertyBlock mpb;
-    private Material defaultMaterial;
-    private static Material overlayMaterial;
-    private static readonly int _OverlayColorId = Shader.PropertyToID("_OverlayColor");
+    private CharacterVisuals visuals;
 
     private void Start()
     {
@@ -26,28 +22,11 @@ public class EnemyUnit : MonoBehaviour
         timer = Random.Range(1.0f, AttackInterval); // Random start offset
 
         animator = GetComponent<Animator>();
-        sr = GetComponent<SpriteRenderer>();
-        mpb = new MaterialPropertyBlock();
-        
-        if (sr != null)
-        {
-            defaultMaterial = sr.sharedMaterial;
-        }
-
-        if (overlayMaterial == null)
-        {
-            overlayMaterial = Resources.Load<Material>("EnemyOverlay");
-            // If Resources.Load fails, fallback to specific path via script
-            #if UNITY_EDITOR
-            if (overlayMaterial == null)
-            {
-                overlayMaterial = UnityEditor.AssetDatabase.LoadAssetAtPath<Material>("Assets/Materials/EnemyOverlay.mat");
-            }
-            #endif
-        }
+        visuals = GetComponent<CharacterVisuals>();
+        if (visuals == null) visuals = gameObject.AddComponent<CharacterVisuals>();
 
         // Detect if I am a ZombieMage based on name
-if (gameObject.name.Contains("ZombieMage"))
+        if (gameObject.name.Contains("ZombieMage"))
         {
             IsMagic = true;
             AttackPower = 3; // Magic is slightly weaker but ignores Shield
@@ -72,6 +51,10 @@ if (gameObject.name.Contains("ZombieMage"))
         {
             animator.SetTrigger("Attack");
         }
+        if (visuals != null)
+        {
+            visuals.TriggerAttackEffect();
+        }
     }
 
     public void TakeDamage(int damage)
@@ -81,8 +64,10 @@ if (gameObject.name.Contains("ZombieMage"))
         HP -= damage;
         Debug.Log($"{name} took {damage} damage. HP: {HP}");
         
-        // Add simple visual feedback (shake or color shift)
-        StartCoroutine(HitFeedback());
+        if (visuals != null)
+        {
+            visuals.TriggerDamageEffect();
+        }
 
         if (HP <= 0)
         {
@@ -90,28 +75,9 @@ if (gameObject.name.Contains("ZombieMage"))
         }
     }
 
-    private System.Collections.IEnumerator HitFeedback()
-    {
-        if (sr != null && mpb != null && overlayMaterial != null)
-        {
-            // Swap to overlay material
-            sr.sharedMaterial = overlayMaterial;
-            
-            sr.GetPropertyBlock(mpb);
-            mpb.SetColor(_OverlayColorId, Color.red);
-            sr.SetPropertyBlock(mpb);
-
-            yield return new WaitForSeconds(0.1f);
-
-            // Revert to original material and clear property block
-            sr.SetPropertyBlock(null);
-            sr.sharedMaterial = defaultMaterial;
-        }
-    }
-
     private void Die()
     {
-        IsDead = true;
+IsDead = true;
         Debug.Log($"{name} died!");
         Destroy(gameObject, 0.2f);
     }

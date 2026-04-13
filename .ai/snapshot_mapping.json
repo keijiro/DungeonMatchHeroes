@@ -1439,6 +1439,12 @@
       "conversation_id": "70e04b88-1255-4bf6-b180-c9e1d24c5b07",
       "content": "次はプレイヤーキャラクターと敵キャラクターについて、最低限の演出を追加して下さい。\n- ダメージを受けたとき、赤く光りながら左右に振動する。\n- 攻撃（魔法攻撃含む）を始めるとき、一瞬白く光る。\nこの光る演出にはオーバーレイ色を使用します。 sprite-overlay-flash.md を参考にして下さい。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "cd20cf1a-0a81-49e2-8cd0-03dfe82fc049",
+      "conversation_id": "70e04b88-1255-4bf6-b180-c9e1d24c5b07",
+      "content": "プレイヤーと敵キャラクターにダメージ演出（赤く光る＋振動）と攻撃演出（白く光る）を追加しました。\n\n### 実装内容\n\n1.  **`CharacterVisuals.cs` の作成**: \n    演出ロジックを共通化するため、`SpriteOverlay` シェーダーを使用したフラッシュ効果と、`localPosition` を操作する振動効果を制御するクラスを作成しました。\n2.  **`EnemyUnit.cs` の更新**: \n    ダメージを受けた際および攻撃時に `CharacterVisuals` を介して演出を実行するように変更しました。\n3.  **`CombatManager.cs` の更新**: \n    プレイヤーキャラクター（Fighter, Mage, Tank）に対しても同様の演出を適用しました。敵からダメージを受けた際はパーティ全員が、プレイヤーが攻撃（物理・魔法）を開始する際はそれぞれの担当キャラクターが光るように設定しています。\n\n### 追加・修正されたファイル\n\n*   `Assets/Scripts/CharacterVisuals.cs` (新規)\n*   `Assets/Scripts/EnemyUnit.cs` (修正)\n*   `Assets/Scripts/CombatManager.cs` (修正)\n\nこれにより、戦闘時の視覚的なフィードバックが強化されました。",
+      "snapshot_message_type": 1
     }
   ]
 }
