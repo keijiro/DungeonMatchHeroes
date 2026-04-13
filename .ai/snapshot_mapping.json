@@ -1379,6 +1379,12 @@
       "conversation_id": "b35a4c9e-fa70-4ba8-b550-369a3f325902",
       "content": "ご要望いただいた、`MaterialPropertyBlock` を使用してスプライトの色をアルファブレンディングで上書きするカスタムシェーダーの実装と、それを用いた敵キャラクターのダメージ演出の更新プランを策定しました。\n\nこのアプローチは、マテリアルのインスタンス化を避けつつ、個々のスプライトに異なるオーバーレイ色を適用できるため、バッチングの効率を維持しながら柔軟な表現が可能です。\n\n---\n\n# プラン: カスタムオーバーレイシェーダーの導入とダメージ演出の強化\n\n## プロジェクト概要\n- **ゲームタイトル:** Match-3 RPG Prototype\n- **ターゲット:** 敵キャラクターのダメージ表現の視覚的強化\n- **描画パイプライン:** URP (Universal Render Pipeline) 2D\n\n## 変更の目的\n- `SpriteRenderer.color` による乗算（Multiply）ではなく、指定した色でスプライトを塗りつぶす（Alpha Blend）演出を可能にする。\n- `MaterialPropertyBlock` を用いることで、バッチング（Draw Call の最適化）を維持したまま、個別の敵キャラクターに異なるフラッシュ演出を適用する。\n\n## キーアセットとコンテキスト\n- **新規シェーダー:** `Assets/Shaders/SpriteOverlay.shader`\n  - プロパティ `_OverlayColor` (Color, Default: 0,0,0,0) を追加。\n  - 出力色 = `lerp(元の色, _OverlayColor.rgb, _OverlayColor.a)`\n- **新規マテリアル:** `Assets/Materials/EnemyOverlay.mat`\n  - 上記シェーダーを使用する共通マテリアル。\n- **対象スクリプト:** `Assets/Scripts/EnemyUnit.cs`\n  - `HitFeedback` コルーチンを `MaterialPropertyBlock` を使用する形式に書き換え。\n\n## 実装ステップ\n\n### 1. カスタムシェーダーの作成\nURP 2D 向けの、オーバーレイ色対応シェーダーを作成します。\n- **ファイル:** `Assets/Shaders/SpriteOverlay.shader`\n- **内容:** \n  - `_MainTex` からのサンプリングと頂点カラーの適用。\n  - 最終出力直前に `_OverlayColor` による線形補間（lerp）処理を追加。\n\n### 2. 共通マテリアルの作成と適用\n- **マテリアル作成:** `Assets/Materials/EnemyOverlay.mat` を作成し、上記シェーダーを割り当てます。\n- **プレハブ更新:** 敵キャラクター（Fighter, Mage, Tank）の `SpriteRenderer` に、この新しいマテリアルを設定します。\n\n### 3. `EnemyUnit.cs` の更新\nダメージを受けた際の演出ロジックを変更します。\n- `MaterialPropertyBlock` をクラスのメンバ変数として保持（再利用による最適化）。\n- `HitFeedback` 内で `_OverlayColor` を `(1, 0, 0, 1)`（不透明な赤）に設定し、一定時間後に `(0, 0, 0, 0)` に戻す処理を実装。\n- **注意:** `sr.color` はそのまま（白）にしておき、オーバーレイ側で演出を制御します。\n\n## 検証とテスト\n- **動作確認:** 敵を攻撃した際、キャラクターが単なる「赤暗い色」ではなく、「真っ赤（シルエットが赤で塗りつぶされる状態）」になることを確認。\n- **バッチング確認:** `Frame Debugger` を使用し、複数の敵が同時に出現している際に Draw Call が適切にバッチングされているか（`_OverlayColor` が異なってもバッチングが維持されているか）を確認。\n- **リセット確認:** 演出終了後に元のテクスチャの色に正しく戻ることを確認。\n\n---\n\nこのプランで進めてよろしいでしょうか？承認いただければ、シェーダーの作成から実装を開始いたします。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_4",
+      "conversation_id": "b35a4c9e-fa70-4ba8-b550-369a3f325902",
+      "content": "現在 Plan モードにしています。今回のプランをまとめて下さい。",
+      "snapshot_message_type": 0
     }
   ]
 }
