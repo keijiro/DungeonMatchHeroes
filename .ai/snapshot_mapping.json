@@ -1415,6 +1415,12 @@
       "conversation_id": "b35a4c9e-fa70-4ba8-b550-369a3f325902",
       "content": "GPU Instancing を利用したアプローチを適用しました。\n\n### 変更内容\n1.  **シェーダー (`SpriteOverlay.shader`) の更新**:\n    -   `#pragma multi_compile_instancing` を追加しました。\n    -   `_OverlayColor` を含む各プロパティを `UNITY_INSTANCING_BUFFER` 内で定義するように変更しました。\n    -   バーテックスシェーダーとフラグメントシェーダーの両方で `UNITY_SETUP_INSTANCE_ID` を呼び出し、プロパティへのアクセスを `UNITY_ACCESS_INSTANCED_PROP` を経由するように修正しました。\n    -   `SpriteRenderer` の「Flip」機能が正しく動作するよう、`_Flip` プロパティを頂点計算に含めました。\n\nこれにより、各敵キャラクターが `MaterialPropertyBlock` を介して異なる `_OverlayColor`（ダメージ時の赤フラッシュなど）を設定していても、**GPU Instancing によって描画がバッチング（一括処理）される** ようになります。\n\n### パフォーマンスへの影響\n-   **SRP Batcher**: `MaterialPropertyBlock` を使用すると SRP Batcher は無効になりますが、代わりに GPU Instancing が機能するため、Draw Call 数を低く抑えることができます。\n-   **描画の整合性**: 前回の修正どおり、プレマルチプライド・アルファ処理を最後に行っているため、スプライト周囲にゴミが出る問題も解決された状態を維持しています。\n\nこれで、パフォーマンスとビジュアルの両面で最適化されたダメージ演出が実装されました。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "007682ee-df9c-4839-9091-9547da95332f",
+      "conversation_id": "b35a4c9e-fa70-4ba8-b550-369a3f325902",
+      "content": "ご要望のアプローチに変更しました。\n\n### 変更点\n1.  **プレハブの正常化**:\n    敵キャラクターのプレハブ（Golem, Orc, Skeleton, Slime, ZombieMage）の `SpriteRenderer` を、デフォルトの `Sprite-Unlit-Default` マテリアルを使用するように戻しました。\n2.  **`EnemyUnit.cs` の更新**:\n    -   `Start` 時に、そのスプライトが持っている **元のマテリアル** を保持するようにしました。\n    -   演出が必要なときのみ `sharedMaterial = overlayMaterial` でマテリアルを差し替え、`MaterialPropertyBlock` で発光色を適用します。\n    -   演出が終了（`HitFeedback` コルーチン完了）したら、`SetPropertyBlock(null)` でプロパティを破棄し、マテリアルを元の `defaultMaterial` に戻します。\n\n### メリット\n*   **通常時の最適化**: ゲーム中のほとんどの時間は標準の軽量なスプライト用シェーダーで描画されるため、パスの最適化が最大限に効きます。\n*   **演出の柔軟性**: 攻撃を受けた瞬間など、必要な時だけ多機能なカスタムシェーダーに切り替えることができ、その間はバッチングも可能です。\n*   **副作用の防止**: 演出終了後にマテリアルとプロパティの両方を完全に元に戻すため、予期せぬ色化けなどが防げます。\n\nこれで、パフォーマンスを最優先しつつ、視覚効果を動的に切り替えるアプローチが完成しました。",
+      "snapshot_message_type": 1
     }
   ]
 }

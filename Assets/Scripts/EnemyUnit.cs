@@ -16,6 +16,8 @@ public class EnemyUnit : MonoBehaviour
     private Animator animator;
     private SpriteRenderer sr;
     private MaterialPropertyBlock mpb;
+    private Material defaultMaterial;
+    private static Material overlayMaterial;
     private static readonly int _OverlayColorId = Shader.PropertyToID("_OverlayColor");
 
     private void Start()
@@ -26,6 +28,23 @@ public class EnemyUnit : MonoBehaviour
         animator = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
         mpb = new MaterialPropertyBlock();
+        
+        if (sr != null)
+        {
+            defaultMaterial = sr.sharedMaterial;
+        }
+
+        if (overlayMaterial == null)
+        {
+            overlayMaterial = Resources.Load<Material>("EnemyOverlay");
+            // If Resources.Load fails, fallback to specific path via script
+            #if UNITY_EDITOR
+            if (overlayMaterial == null)
+            {
+                overlayMaterial = UnityEditor.AssetDatabase.LoadAssetAtPath<Material>("Assets/Materials/EnemyOverlay.mat");
+            }
+            #endif
+        }
 
         // Detect if I am a ZombieMage based on name
 if (gameObject.name.Contains("ZombieMage"))
@@ -73,17 +92,20 @@ if (gameObject.name.Contains("ZombieMage"))
 
     private System.Collections.IEnumerator HitFeedback()
     {
-        if (sr != null && mpb != null)
+        if (sr != null && mpb != null && overlayMaterial != null)
         {
+            // Swap to overlay material
+            sr.sharedMaterial = overlayMaterial;
+            
             sr.GetPropertyBlock(mpb);
             mpb.SetColor(_OverlayColorId, Color.red);
             sr.SetPropertyBlock(mpb);
 
             yield return new WaitForSeconds(0.1f);
 
-            sr.GetPropertyBlock(mpb);
-            mpb.SetColor(_OverlayColorId, new Color(0, 0, 0, 0));
-            sr.SetPropertyBlock(mpb);
+            // Revert to original material and clear property block
+            sr.SetPropertyBlock(null);
+            sr.sharedMaterial = defaultMaterial;
         }
     }
 
