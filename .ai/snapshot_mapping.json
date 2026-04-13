@@ -1385,6 +1385,12 @@
       "conversation_id": "b35a4c9e-fa70-4ba8-b550-369a3f325902",
       "content": "現在 Plan モードにしています。今回のプランをまとめて下さい。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "67a3d02f-1ed9-4ab1-89a3-df4a05456419",
+      "conversation_id": "b35a4c9e-fa70-4ba8-b550-369a3f325902",
+      "content": "OKです。プランが承認されました。\n\n承認されたプラン（`Assets/Plans/sprite-overlay-flash.md`）に従って、実装を開始してよろしいでしょうか？\n「はい」と仰っていただければ、以下の順序で作業を進めます。\n\n1.  **カスタムシェーダー `Assets/Shaders/SpriteOverlay.shader` の作成**\n2.  **共通マテリアル `Assets/Materials/EnemyOverlay.mat` の作成**\n3.  **敵キャラクター（Fighter, Mage, Tank）のプレハブへのマテリアル適用**\n4.  **`EnemyUnit.cs` のダメージ演出ロジックの書き換え**\n5.  **動作確認**",
+      "snapshot_message_type": 1
     }
   ]
 }
