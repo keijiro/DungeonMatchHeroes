@@ -3,6 +3,7 @@
     padding: 20px;
     justify-content: flex-end; /* Bottom */
     align-items: flex-end;    /* Right */
+    -unity-font-definition: url("project://database/Assets/UI/Pirata_One/PirataOne-Regular SDF.asset");
 }
 
 .hud-bottom {

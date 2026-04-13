@@ -1271,6 +1271,12 @@
       "conversation_id": "7593d029-84a9-4886-839f-73756f6bd2ae",
       "content": "UI でこの添付したフォントを使用するように変更して下さい",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "e33a6647-f5af-4459-8964-c8617ce6b10d",
+      "conversation_id": "7593d029-84a9-4886-839f-73756f6bd2ae",
+      "content": "UI のフォントを `PirataOne-Regular SDF` に変更しました。\n\n### 変更内容：\n- **Assets/UI/Main.uss**: `.container` クラス（UIのルート要素）に `-unity-font-definition` を追加し、プロジェクト内の `PirataOne-Regular SDF` フォント資産を適用しました。\n- **Assets/UI/Main.uxml**: スタイルシートの参照をクリーンアップし、警告を解消しました。\n\nこれにより、HUD内の「HP:」「SHIELD:」「EXP:」などのテキストがすべて新しいフォントで表示されるようになります。\n\n### 変更後の `Main.uss` (抜粋):\n```uss\n.container {\n    flex-grow: 1;\n    padding: 20px;\n    justify-content: flex-end; /* Bottom */\n    align-items: flex-end;    /* Right */\n    -unity-font-definition: url(\"project://database/Assets/UI/Pirata_One/PirataOne-Regular SDF.asset\");\n}\n```",
+      "snapshot_message_type": 1
     }
   ]
 }
