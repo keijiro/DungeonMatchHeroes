@@ -1655,6 +1655,12 @@
       "conversation_id": "a795c10a-9d34-4c7e-80cb-b2e92ffd13b6",
       "content": "待機モーションは 0.5 にして下さい。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "be34adbb-f58d-4212-80aa-3d859ce04336",
+      "conversation_id": "a795c10a-9d34-4c7e-80cb-b2e92ffd13b6",
+      "content": "すべてのプレイヤーとモンスターの待機（`Idle`）アニメーションの再生速度を `0.5` に設定しました。\n\nこれにより、待機時はキャラクターがゆったりと呼吸しているような落ち着いた動きになり、攻撃時には先ほどの `2.0` 倍速設定によって鋭く動くという、緩急のついた演出になりました。",
+      "snapshot_message_type": 1
     }
   ]
 }
