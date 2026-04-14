@@ -1487,6 +1487,12 @@
       "conversation_id": "fbc8bde1-a604-444f-b096-95a017c4295e",
       "content": "アニメーション待ちの処理を改善しました。\n\n### 改善した内容\n`WaitForAnimation` メソッドを、ステート名を指定して監視する方式に刷新しました。\n\n1.  **ステート開始の待機**: アニメーターが指定されたステート（\"Attack\" や \"Magic\"）に実際に遷移するまでループで待機します。これにより、遷移のラグによる誤判定を防止します。\n2.  **進行度の監視**: アニメーションの進行度（`normalizedTime`）をチェックし、**95%以上再生された時点**で待機を終了するようにしました。100%（完了）を待つよりも少し早めに切り上げることで、次のステート（Idle等）への戻りモーションとスムーズに繋がり、キビキビとしたテンポになります。\n3.  **セーフティタイムアウト**: 万が一アニメーションが再生されなかった場合に進行が止まらないよう、タイムアウト処理も加えています。\n\nこれにより、アニメーション終了後に発生していた「妙な間」が解消され、攻撃が終わった瞬間にダメージや次のアクションへスムーズに移行するようになっているはずです。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "4659b3a0-ead8-4334-a7ef-a412763d6d1e",
+      "conversation_id": "fbc8bde1-a604-444f-b096-95a017c4295e",
+      "content": "演出の調整案をまとめました。現状の `CombatManager.cs` および `CharacterVisuals.cs` の構造に基づき、以下の変更が必要になります。\n\n### 1. CharacterVisuals.cs の拡張\n現在、`TriggerAttackEffect`（白）と `TriggerDamageEffect`（赤）は色が固定されています。演出のバリエーションを増やすため、以下の対応を行います。\n*   **汎用フラッシュメソッドの追加**: `TriggerFlash(Color color, float duration)` のような、色を外部から指定できるメソッドを実装します。\n*   あるいは、特定の演出用メソッド（`TriggerShieldEffect` 等）を追加します。\n\n### 2. CombatManager.cs のロジック変更\n演出をトリガーするタイミングと対象、および色を以下のように調整します。\n\n#### **A. Shield ブロック発動時 (PlayerShield)**\n*   **変更前**: `tankVisuals.TriggerAttackEffect()` (白) を実行。\n*   **変更後**: `tankVisuals` に対して **水色 (Cyan)** のフラッシュを実行するように変更します。\n\n#### **B. 敵の攻撃が Shield で防がれた場合 (HandleEnemyAttack)**\n*   **変更前**: 全員に対して `TriggerDamageEffect()` (赤) を実行。\n*   **変更後**:\n    *   `Shield >= finalDamage` (完全に防いだ場合) またはシールドが減少した判定時に、**Tank のみが 黄色 (Yellow)** に光る演出を実行します。\n    *   シールドを貫通して HP にダメージが及んだ場合のみ、従来通り全員が赤く光るように条件分岐を追加します。\n\n#### **C. Magic ブロック発動時 (PlayerMagicAttack)**\n*   **変更前**: `mageVisuals.TriggerAttackEffect()` (白) のみを実行。\n*   **変更後**: `fighterVisuals`, `mageVisuals`, `tankVisuals` の **全員が 緑色 (Green)** に光る演出を並列で実行するように変更します。\n\n### まとめ：必要な作業内容\n1.  **`CharacterVisuals.cs`**: 任意の色で光らせるための公開メソッドを追加。\n2.  **`CombatManager.cs`**:\n    *   `PlayerShield` 処理内の色指定を更新。\n    *   `PlayerMagicAttack` 処理内で全員を緑に光らせるループ/並列処理を追加。\n    *   `HandleEnemyAttack` 内に「シールド防御成功時」の条件分岐を追加し、演出対象と色を切り替える。\n\n以上の変更により、戦闘状況（防御成功、魔法発動など）が視覚的に明確に区別できるようになります。\n\nこの方針で作業を進めてよろしいでしょうか？",
+      "snapshot_message_type": 1
     }
   ]
 }
