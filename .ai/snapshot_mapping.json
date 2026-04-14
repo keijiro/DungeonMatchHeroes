@@ -1565,6 +1565,12 @@
       "conversation_id": "a795c10a-9d34-4c7e-80cb-b2e92ffd13b6",
       "content": "現在、ブロックの着地音は全て鳴らしていますか？例えば、縦に連なった５個のブロックが落下となり着地した時、５回発音がリクエストされることになりますか？回答のみ行って下さい。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "ddf9a77e-2a54-4891-bdb1-e43c9e395a52",
+      "conversation_id": "a795c10a-9d34-4c7e-80cb-b2e92ffd13b6",
+      "content": "はい、現状は**すべてのブロックの着地音を個別にリクエストしています。**\n\n`GridManager.cs` の `HandleGravityAndRefill` コルーチン内では、落下中のブロックリスト (`fallingBlocks`) をループで回し、各ブロックが目標地点に到達した瞬間に `PlaySEWithRandomPitch(SEType.Land)` を呼び出しています。\n\nそのため、ご質問の通り、5個のブロックが同時に（あるいは数フレームの間に）着地した場合、合計5回の発音がリクエストされることになります。これが短時間に重なることで、先ほどお伝えした `AudioSource` の奪い合い（ピッチ干渉）を引き起こす主な要因となっています。",
+      "snapshot_message_type": 1
     }
   ]
 }
