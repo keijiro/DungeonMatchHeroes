@@ -936,7 +936,7 @@ MonoBehaviour:
     Clip: {fileID: 8300000, guid: e3688ced761db46ce9a4c592de4d3fb9, type: 3}
   - Type: 13
     Clip: {fileID: 8300000, guid: 01ad4454c2f024978a95d41806a649d8, type: 3}
-  poolSize: 8
+  poolSize: 16
 --- !u!4 &846969315
 Transform:
   m_ObjectHideFlags: 0

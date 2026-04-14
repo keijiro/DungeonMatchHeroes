@@ -31,10 +31,10 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance { get; private set; }
 
     [SerializeField] private SEClip[] clips;
-    [SerializeField] private int poolSize = 8;
+    [SerializeField] private int poolSize = 16;
 
     private Dictionary<SEType, AudioClip> clipDictionary = new Dictionary<SEType, AudioClip>();
-    private List<AudioSource> sourcePool = new List<AudioSource>();
+private List<AudioSource> sourcePool = new List<AudioSource>();
     private int nextSourceIndex = 0;
 
     private void Awake()

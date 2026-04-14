@@ -1553,6 +1553,12 @@
       "conversation_id": "a795c10a-9d34-4c7e-80cb-b2e92ffd13b6",
       "content": "プーリング数が８個はとりあえず少な過ぎる気がするので、１６個に増やして下さい。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "c24e368d-0a0d-46d6-809d-45b94f9531f0",
+      "conversation_id": "a795c10a-9d34-4c7e-80cb-b2e92ffd13b6",
+      "content": "`AudioManager.cs` の `poolSize` を 16 に増やし、シーン内の `AudioManager` オブジェクトの設定も 16 に更新しました。\n\nこれにより、短い着地音やクリック音が重なっても、再生中のマッチ音と同じ `AudioSource`（およびそのピッチ設定）を奪い合う確率が大幅に低下します。",
+      "snapshot_message_type": 1
     }
   ]
 }
