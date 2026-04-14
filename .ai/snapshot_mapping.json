@@ -1547,6 +1547,12 @@
       "conversation_id": "a795c10a-9d34-4c7e-80cb-b2e92ffd13b6",
       "content": "原因は、**`AudioManager` の `AudioSource` プーリング数（8個）が不足していること**、および **`PlayOneShot` の仕様** にあります。\n\n### 詳細な原因\n1.  **プールの枯渇と上書き**: \n    現在、`AudioSource` を 8個用意して順番に使い回していますが、グリッド内で大量のブロックが落下すると、各ブロックの着地時に `SE_Land` が多数再生されます。1.5秒という比較的長い `SE_Match` が鳴っている間に 8回以上の効果音が再生されると、同じ `AudioSource` が再利用されます。\n2.  **ピッチ（音程）の共有**:\n    `AudioSource.PlayOneShot` は「1つの Source で複数の音を重ねて鳴らす」ことができますが、**`pitch` プロパティは `AudioSource` ごとに共通**です。そのため、新しい音が同じ Source で再生される際に `source.pitch = randomPitch` と書き換えられると、その Source で**再生継続中の `SE_Match` の音程まで同時に変わってしまいます**。\n\n### 結論\nマッチ演出中の連鎖や、その後の大量のブロック着地音が同じ `AudioSource` に割り当てられた際、着地音側のランダムピッチ設定が再生中のマッチ音に干渉していることが直接の原因です。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "59262ceb-e8db-46cc-9061-f26ad84e9928",
+      "conversation_id": "a795c10a-9d34-4c7e-80cb-b2e92ffd13b6",
+      "content": "プーリング数が８個はとりあえず少な過ぎる気がするので、１６個に増やして下さい。",
+      "snapshot_message_type": 0
     }
   ]
 }
