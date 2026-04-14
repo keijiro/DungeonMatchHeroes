@@ -502,11 +502,15 @@ case CombatActionType.PlayerExp:
         List<Coroutine> responseCoroutines = new List<Coroutine>();
         if (fullBlock)
         {
-            // Only Tank flashes Yellow
-            if (tankVisuals != null) responseCoroutines.Add(StartCoroutine(tankVisuals.TriggerFlash(Color.yellow, 0.3f)));
+            // Only Tank flashes Yellow and Shakes (same shake as damage)
+            if (tankVisuals != null)
+            {
+                responseCoroutines.Add(StartCoroutine(tankVisuals.TriggerFlash(Color.yellow, 0.3f)));
+                responseCoroutines.Add(StartCoroutine(tankVisuals.ShakeRoutine(0.15f, 0.2f)));
+            }
         }
         else
-        {
+{
             // Trigger player damage visual (All characters Red Flash + Shake)
             if (fighterVisuals != null) responseCoroutines.Add(StartCoroutine(fighterVisuals.TriggerDamageEffect()));
             if (mageVisuals != null) responseCoroutines.Add(StartCoroutine(mageVisuals.TriggerDamageEffect()));
