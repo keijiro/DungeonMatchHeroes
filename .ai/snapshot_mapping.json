@@ -1613,6 +1613,12 @@
       "conversation_id": "a795c10a-9d34-4c7e-80cb-b2e92ffd13b6",
       "content": "プレイヤーの攻撃（剣）と魔法攻撃の SE 再生タイミングを変更しました。\n\n### 変更点\n*   **剣の攻撃 (`SEType.Attack`)**: ファイターのアニメーション再生中ではなく、`WaitForAnimation` でアニメーションが終了した直後（敵にヒットして赤く光るタイミング）に再生されるようにしました。\n*   **魔法攻撃 (`SEType.Magic`)**: メイジのアニメーション終了後、敵全員にダメージを与えるタイミングで再生されるようにしました。\n\nこれにより、視覚的なヒット演出と効果音が同期し、より「当たった」感のあるフィードバックが得られるようになっています。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "c6f4f82b-d5f3-4948-b76f-1f2086c1a5d3",
+      "conversation_id": "a795c10a-9d34-4c7e-80cb-b2e92ffd13b6",
+      "content": "`SE_Hit.wav` は、以下の場所で使用されています：\n\n1.  **EnemyUnit.cs**: `TakeDamage` メソッド内で使用されています。プレイヤーから攻撃（剣または魔法）を受けた際、敵がダメージを受けて赤く光る演出と同時に `AudioManager.Instance.PlaySEWithRandomPitch(SEType.Hit, 0.8f)` を通じて再生されます。\n2.  **AudioManager.cs**: `SEType.Hit` に対応する AudioClip として登録されています。\n3.  **AudioManager (シーン内のオブジェクト)**: インスペクターの `clips` リスト内で、`Type: Hit` に対してこのファイルが割り当てられています。",
+      "snapshot_message_type": 1
     }
   ]
 }
