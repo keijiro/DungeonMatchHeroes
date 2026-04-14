@@ -76,8 +76,8 @@
 
 .hint-container {
     position: absolute;
-    left: 25%;
-    bottom: 25%; /* 25% from bottom */
+    left: 30%;
+    bottom: 30%; /* 30% from bottom */
     translate: -50% 0;
     align-items: center;
 }
