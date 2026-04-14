@@ -1499,6 +1499,12 @@
       "conversation_id": "fbc8bde1-a604-444f-b096-95a017c4295e",
       "content": "失礼いたしました。**Heal ブロック** の演出として修正し、改めてまとめ直します。\n\n現状の `CombatManager.cs` および `CharacterVisuals.cs` の構造に基づき、以下の変更が必要になります。\n\n### 1. CharacterVisuals.cs の拡張\n演出のバリエーション（水色、黄色、緑など）に対応するため、以下の対応を行います。\n*   **汎用フラッシュメソッドの追加**: 色を引数で受け取る `TriggerFlash(Color color, float duration)` のようなメソッドを実装し、外部から自由に色を指定できるようにします。\n\n### 2. CombatManager.cs の演出ロジック変更\n各アクション時の演出対象と色を、ご指定の通りに調整します。\n\n#### **A. Shield ブロック発動時 (PlayerShield)**\n*   **対象**: Tank のみ\n*   **色**: **水色 (Cyan)**\n*   **タイミング**: シールド加算処理の直前。\n\n#### **B. 敵の攻撃を Shield で防いだ場合 (HandleEnemyAttack)**\n*   **対象**: **Tank のみ**\n*   **色**: **黄色 (Yellow)**\n*   **ロジック**:\n    *   `Shield >= finalDamage`（ダメージを完全にシールドで吸収した場合）に、Tank だけが黄色く光るように分岐を追加します。\n    *   シールドを貫通して HP にダメージが及んだ場合は、従来通り全員が赤く光る（被ダメージ演出）ようにします。\n\n#### **C. Heal ブロック発動時 (PlayerHeal)**\n*   **対象**: **プレイヤーキャラクター全員** (Fighter, Mage, Tank)\n*   **色**: **緑色 (Green)**\n*   **タイミング**: 回復処理の実行時。全員が同時に光るように並列で処理します。\n\n### まとめ：必要な実装ステップ\n1.  **`CharacterVisuals.cs`**: 任意の色でフラッシュさせる公開メソッドを追加。\n2.  **`CombatManager.cs`**:\n    *   `ExecuteAction` 内の `PlayerHeal` 処理を、全員が緑に光るように更新。\n    *   `ExecuteAction` 内の `PlayerShield` 処理を、Tank が水色に光るように更新。\n    *   `HandleEnemyAttack` 内のダメージ計算後に、「シールドでの防御成功」か「HPへのダメージ」かを判定し、演出（Tankの黄色フラッシュ vs 全員の赤フラッシュ）を出し分ける。\n\n以上の構成で、各ブロックの効果や防御の成功が色で明確に判別できるようになります。\n\nこの方針で作業を進めてよろしいでしょうか？",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "baa47449-7947-44dd-ae02-a695fcc39e37",
+      "conversation_id": "fbc8bde1-a604-444f-b096-95a017c4295e",
+      "content": "演出（VFX）の調整が完了しました。\n\n### 実施した変更内容\n\n1.  **CharacterVisuals.cs の機能拡張**:\n    *   外部から色と持続時間を指定してフラッシュさせることができる汎用メソッド `TriggerFlash(Color color, float duration)` を追加しました。これにより、特定のアクションに応じた多彩な色の演出が可能になりました。\n\n2.  **Heal / Shield 発動時の演出更新**:\n    *   **Heal**: 発動時にプレイヤーキャラクター全員（Fighter, Mage, Tank）が**緑色**にフラッシュするように変更しました。\n    *   **Shield**: 発動時に Tank のみが**水色（Cyan）**にフラッシュするように変更しました。\n\n3.  **防御（シールド）成功時の演出更新**:\n    *   敵の攻撃をシールドで完全に防いだ場合（ダメージがHPに及ばなかった場合）は、全員が赤く揺れるのではなく、**Tank のみが黄色**にフラッシュするようにロジックを修正しました。\n    *   シールドを突き抜けてダメージを受けた場合や魔法攻撃を受けた場合は、従来通り全員が赤くフラッシュし、振動します。\n\n以上の変更により、戦闘中の防御の成否や各アクションの効果が直感的に分かりやすくなりました。",
+      "snapshot_message_type": 1
     }
   ]
 }

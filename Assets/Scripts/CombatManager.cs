@@ -314,18 +314,27 @@ public class CombatManager : MonoBehaviour
                 yield return StartCoroutine(HandlePlayerMagicAttack(action.Value));
                 break;
             case CombatActionType.PlayerHeal:
-                if (tankVisuals != null) yield return StartCoroutine(tankVisuals.TriggerAttackEffect());
+                // All players flash Green
+                List<Coroutine> healCoroutines = new List<Coroutine>();
+                Color healColor = new Color(0f, 1f, 0f, 0.8f);
+                if (fighterVisuals != null) healCoroutines.Add(StartCoroutine(fighterVisuals.TriggerFlash(healColor, 0.3f)));
+                if (mageVisuals != null) healCoroutines.Add(StartCoroutine(mageVisuals.TriggerFlash(healColor, 0.3f)));
+                if (tankVisuals != null) healCoroutines.Add(StartCoroutine(tankVisuals.TriggerFlash(healColor, 0.3f)));
+                foreach (var c in healCoroutines) yield return c;
+
                 CurrentHP = Mathf.Min(MaxHP, CurrentHP + action.Value);
                 Debug.Log($"Healed {action.Value}. HP: {CurrentHP}");
                 yield return new WaitForSeconds(0.2f);
                 break;
             case CombatActionType.PlayerShield:
-                if (tankVisuals != null) yield return StartCoroutine(tankVisuals.TriggerAttackEffect());
+                // Tank flashes Cyan
+                if (tankVisuals != null) yield return StartCoroutine(tankVisuals.TriggerFlash(new Color(0f, 1f, 1f, 0.8f), 0.3f));
+
                 Shield += action.Value;
                 Debug.Log($"Gained {action.Value} Shield. Total: {Shield}");
                 yield return new WaitForSeconds(0.2f);
                 break;
-            case CombatActionType.PlayerExp:
+case CombatActionType.PlayerExp:
                 Experience += action.Value;
                 Debug.Log($"Gained {action.Value} EXP. Total: {Experience}");
                 yield return new WaitForSeconds(0.1f);
@@ -467,8 +476,10 @@ public class CombatManager : MonoBehaviour
             yield return StartCoroutine(WaitForAnimation(enemyAnimator, "Attack"));
         }
 
-        // 2. Apply Damage
+        // 2. Apply Damage and 3. Player Response Visual
         int finalDamage = action.Value;
+        bool fullBlock = false;
+
         if (action.IsMagic)
         {
             CurrentHP -= finalDamage;
@@ -478,6 +489,7 @@ public class CombatManager : MonoBehaviour
             if (Shield >= finalDamage)
             {
                 Shield -= finalDamage;
+                fullBlock = true;
             }
             else
             {
@@ -487,13 +499,21 @@ public class CombatManager : MonoBehaviour
             }
         }
 
-        // 3. Player Damage Visual
-        List<Coroutine> coroutines = new List<Coroutine>();
-        if (fighterVisuals != null) coroutines.Add(StartCoroutine(fighterVisuals.TriggerDamageEffect()));
-        if (mageVisuals != null) coroutines.Add(StartCoroutine(mageVisuals.TriggerDamageEffect()));
-        if (tankVisuals != null) coroutines.Add(StartCoroutine(tankVisuals.TriggerDamageEffect()));
+        List<Coroutine> responseCoroutines = new List<Coroutine>();
+        if (fullBlock)
+        {
+            // Only Tank flashes Yellow
+            if (tankVisuals != null) responseCoroutines.Add(StartCoroutine(tankVisuals.TriggerFlash(Color.yellow, 0.3f)));
+        }
+        else
+        {
+            // Trigger player damage visual (All characters Red Flash + Shake)
+            if (fighterVisuals != null) responseCoroutines.Add(StartCoroutine(fighterVisuals.TriggerDamageEffect()));
+            if (mageVisuals != null) responseCoroutines.Add(StartCoroutine(mageVisuals.TriggerDamageEffect()));
+            if (tankVisuals != null) responseCoroutines.Add(StartCoroutine(tankVisuals.TriggerDamageEffect()));
+        }
         
-        foreach (var c in coroutines) yield return c;
+        foreach (var c in responseCoroutines) yield return c;
 
         if (CurrentHP <= 0)
         {

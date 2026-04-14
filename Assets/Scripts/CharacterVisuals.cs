@@ -45,8 +45,13 @@ public class CharacterVisuals : MonoBehaviour
         yield return StartCoroutine(FlashRoutine(new Color(1f, 1f, 1f, 0.8f), 0.1f));
     }
 
-    public void Flash(Color color, float duration)
+    public IEnumerator TriggerFlash(Color color, float duration)
     {
+        yield return StartCoroutine(FlashRoutine(color, duration));
+    }
+
+    public void Flash(Color color, float duration)
+{
         if (currentFlashCoroutine != null) StopCoroutine(currentFlashCoroutine);
         currentFlashCoroutine = StartCoroutine(FlashRoutine(color, duration));
     }
