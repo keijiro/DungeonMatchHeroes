@@ -1,82 +1,80 @@
-# Project Overview: Match-3 Combat Prototype
-
-This project is a hybrid Match-3 and Turn-Based Combat prototype. Players interact with a 7x7 grid of blocks to trigger actions for a party of three heroes (Fighter, Mage, Tank) against waves of enemies. The game features a reactive combat queue, procedural grid refills, and a robust visual feedback system using UITK and custom shaders.
+# Project Overview: Match-3 Dungeon Crawler Prototype
 
 ## 1. Project Description
-The project is a technical vertical slice of a puzzle-RPG. It targets players who enjoy strategic tile-matching paired with RPG progression.
-- **Core Pillars:**
-    - **Reactive Puzzle Combat:** Matches directly translate to hero actions (Attack, Magic, Heal, Shield).
-    - **Resource Management:** Managing Health, Shields, and EXP while dealing with "Ska" (junk) blocks.
-    - **Visual Feedback:** High-impact animations, screen shakes, and shader-based overlays for combat feedback.
+This project is a 2D match-3 dungeon crawler prototype where puzzle mechanics directly drive turn-based combat. Players interact with a 7x7 grid to perform actions like attacking, healing, and shielding to defeat waves of monsters. The core experience centers on strategic block management—specifically the "Ska" (gray) blocks which serve as both a penalty for manual destruction and a combo multiplier.
 
 ## 2. Gameplay Flow / User Loop
-1. **Boot:** The game initializes the `Main.unity` scene, setting up the `CombatManager` and `GridManager`.
-2. **Setup:** A 7x7 grid is procedurally generated without initial matches. A wave of enemies is spawned.
-3. **Player Phase (Active):** The player clicks blocks in the bottom row to destroy them. This triggers gravity and refills, creating opportunities for automatic matches.
-4. **Matching:** When 3+ identical blocks align, a `CombatAction` is sent to the `CombatManager`.
-5. **Combat Execution:** The `CombatManager` processes actions via a queue, triggering hero animations, enemy damage, and UI updates.
-6. **Enemy Phase (Passive):** Enemies have individual timers. When a timer expires, they add an attack action to the queue.
-7. **Progression:** Defeating enemies grants EXP. Clearing the board triggers new waves.
-8. **Shutdown:** The game persists until the party's HP reaches zero, at which point stats are reset for the prototype loop.
+1.  **Boot/Initialization**: The `Main` scene loads, initializing the `GridManager` and spawning the first wave of enemies via `CombatManager`.
+2.  **Input Phase**: The player clicks on blocks in the bottom row of the 7x7 grid to manually destroy them.
+3.  **Puzzle Resolution**:
+    *   Manual destruction turns the clicked block into a "Ska" (dead) block.
+    *   Gravity pulls blocks down; new blocks (often Ska) refill from the top.
+    *   Matching 3+ blocks triggers a combat action and consumes adjacent Ska blocks to boost power.
+4.  **Combat Execution**: Triggered matches are queued as `CombatAction` objects. The `CombatManager` processes this queue, triggering character animations, visual effects, and damage calculations.
+5.  **Enemy Turn**: Enemies have individual timers (`AttackInterval`) that automatically add attack actions to the combat queue.
+6.  **Progression/Loop**: Defeating all enemies triggers a new wave spawn. If the party's HP hits zero, the game resets state for the prototype loop.
 
 ## 3. Architecture
-The project follows a Manager-centric pattern with a decoupled event-like queue system for combat.
-- **Entry Point:** The `Main.unity` scene containing the `CombatManager` and `GridManager` MonoBehaviours.
-- **Combat Queue:** A `LinkedList<CombatAction>` in `CombatManager` acts as the central coordinator, ensuring animations and logic resolve sequentially.
-- **Input:** Uses the **New Input System** to detect clicks on the grid.
-- **Data Flow:** `GridManager` (Matches) -> `CombatManager` (Action Queue) -> `EnemyUnit`/`CharacterVisuals` (Execution).
+The project follows a manager-driven architecture with a centralized event queue for combat to ensure animations and effects don't overlap.
+
+### Combat Management
+*   `CombatManager`: A Singleton that manages the party stats (HP, Shield, EXP), handles the combat queue, and coordinates animations between players and enemies.
+*   `CombatAction`: A data class representing a pending action (Type, Value, Source).
+*   **Design Pattern**: Command Pattern (Queue-based). Actions are added to a `LinkedList<CombatAction>` and processed sequentially via a Coroutine-based `QueueProcessor`.
+`Location: Assets/Scripts/CombatManager.cs`
+
+### Grid & Match Logic
+*   `GridManager`: Controls the 7x7 board, handles Unity Input System events, and implements gravity and matching logic.
+*   **Design Pattern**: Observer-lite. It directly calls `CombatManager.Instance.AddPlayerAction` when matches are detected.
+`Location: Assets/Scripts/GridManager.cs`
+
+### Visual Feedback System
+*   `CharacterVisuals`: Handles sprite-based effects like flashing (via `MaterialPropertyBlock`) and screen shake.
+*   `CameraShake`: A simple utility for camera-based impact feedback.
+`Location: Assets/Scripts/CharacterVisuals.cs`, `Assets/Scripts/CameraShake.cs`
 
 ## 4. Game Systems & Domain Concepts
 
-### Grid & Match System
-Handles the 7x7 game board logic including gravity, clusters, and Ska block generation.
-- `GridManager`: The core controller for grid state, matching logic, and block instantiation.
-- `BlockType`: Enum defining Sword (Attack), Magic, Heal, Shield, Gem (EXP), Key, and Ska (Junk).
-- **Extension:** Add new block types by extending the `BlockType` enum and updating `GetWeightedRandomType` and `DecideNewBlockType`.
-- **Pattern:** Cluster-based recursive matching.
-- Location: `Assets/Scripts/GridManager.cs`
+### Match-3 Combat System
+Matches of different block types correspond to specific character actions:
+*   `Sword`: Fighter Attack (Single Target)
+*   `Magic`: Mage Attack (AOE)
+*   `Heal`: Party HP Restore
+*   `Shield`: Tank Shield (Blocks physical damage)
+*   `Gem/Key`: Experience and progression bonuses
+*   `Ska`: Dead blocks that do nothing alone but increase the `matchCount` when adjacent to a valid match.
 
-### Combat & Action System
-Sequences all gameplay events to prevent visual overlap and ensure logic consistency.
-- `CombatManager`: Singleton managing party stats (HP, Shield, EXP) and the action queue.
-- `CombatAction`: A data class carrying action type, value, and source references.
-- `EnemyUnit`: Individual enemy logic with independent attack timers and stat tracking.
-- **Extension:** Implement new hero types by adding `Animator` references to `CombatManager` and creating new `CombatActionType` handlers.
-- **Pattern:** Producer-Consumer Queue (Coroutine-based).
-- Location: `Assets/Scripts/CombatManager.cs`, `Assets/Scripts/EnemyUnit.cs`
+### Enemy AI
+*   `EnemyUnit`: Simple timer-based AI. Each enemy instance tracks its own attack cooldown and adds `EnemyAttack` actions to the `CombatManager` queue.
+*   `ZombieMage` (Variant): Uses a specific `IsMagic` flag to bypass player shields.
+`Location: Assets/Scripts/EnemyUnit.cs`
 
-### Visual Feedback System
-Manages the aesthetic "juice" of the game, including flashes, shakes, and UI notifications.
-- `CharacterVisuals`: Handles sprite-based effects like Red/White flashes and horizontal shaking using MaterialPropertyBlocks.
-- `CameraShake`: Provides global screen shake effects triggered by grid interactions or damage.
-- **Extension:** Modify the `SpriteOverlay.shader` or create new `CharacterVisuals` routines for status effects (e.g., Poison, Burn).
-- Location: `Assets/Scripts/CharacterVisuals.cs`, `Assets/Scripts/CameraShake.cs`
+### Audio System
+*   `AudioManager`: Centralized SE management with support for pitch randomization to prevent fatigue during rapid matches.
+`Location: Assets/Scripts/AudioManager.cs`
 
 ## 5. Scene Overview
-- **Main.unity**: The primary gameplay scene. It contains the environment (Dungeon BG), the UI Document (HUD), and the spawn points for enemies and the grid.
-- **Scene Flow**: Currently a single-scene loop. Waves are re-spawned within the same scene context upon victory or defeat.
+*   **Main**: The primary gameplay scene. It contains the `GridManager`, `CombatManager`, `MainCamera` (with shake component), and the `UI` root.
+*   **Scene Flow**: Currently a single-scene loop. `CombatManager.SpawnWave()` handles the transition between combat encounters by resetting enemy lists and spawning new prefabs at designated `EnemySpawnPoints`.
 
 ## 6. UI System
 The project uses **UI Toolkit (UITK)** for its interface.
-- **Structure:** Defined in `Main.uxml` with styles in `Main.uss`.
-- **Binding:** `CombatManager` queries visual elements (HP bar, labels) via `rootVisualElement.Q<T>()` and updates them during the `UpdateUI` call.
-- **Notifications:** World-space to UI-space converted labels (`notification-layer`) that animate upwards and fade out when actions occur.
-- **Modification:** Edit `Main.uxml` for layout changes and `Main.uss` for visual styling (e.g., the `hp-fill` class).
+*   `Main.uxml`: Defines the layout, including the HP bar, Shield/EXP labels, and a `notification-layer`.
+*   `Main.uss`: Handles the styling and the "notification-label" class used for floating combat text.
+*   **Binding**: `CombatManager` manually queries the `VisualElement` tree in `Awake()` and updates values in `UpdateUI()`.
+*   **Floating Text**: Generated dynamically via `RuntimePanelUtils.CameraTransformWorldToPanel` to convert grid world positions to UI screen space.
+`Location: Assets/UI/`
 
 ## 7. Asset & Data Model
-- **Prefabs:** 
-    - `Characters/Monster`: Contains enemy variants like ZombieMage.
-    - `FX`: Particle systems for `ManualDestroyFX` and `MatchDestroyFX`.
-- **ScriptableObjects:** None currently; stats are primarily defined as public fields on `CombatManager` and `EnemyUnit`.
-- **Materials:** 
-    - `EnemyOverlay`: A specialized material using `SpriteOverlay.shader` for flash effects.
-- **Naming Convention:** 
-    - Icons: `Icon_[Type].png`
-    - Animators: `[Role]Controller.controller`
+*   **Prefabs**:
+    *   `Characters/Monster/`: Contains prefabs for Golem, Orc, Skeleton, Slime, and ZombieMage.
+    *   `FX/`: Contains `ShockwaveFX` and `MatchDestroyFX` particle systems.
+*   **Scriptable Content**: The project relies on inspector-assigned arrays in `CombatManager` and `GridManager` for enemy pools and block weights.
+*   **Shaders**: Uses a custom `SpriteOverlay.shader` to allow the `CharacterVisuals` script to perform color flashes without creating new material instances.
+`Location: Assets/Prefabs/`, `Assets/Shaders/`
 
 ## 8. Notes, Caveats & Gotchas
-- **Manual Destruction:** Only blocks in the bottom row (`y=0`) can be clicked.
-- **Ska Blocks:** These are "junk" blocks that don't match with anything. They are generated with a higher probability during manual destruction (`manualSkaRate`).
-- **Queue Interrupts:** Player actions (from matches) are inserted at the **head** of the combat queue (`AddFirst`) to ensure immediate responsiveness over enemy actions.
-- **Zombie Mage:** This specific enemy type sets `IsMagic = true`, which allows its attacks to bypass the party's `Shield` and deal direct HP damage.
-- **Animator Sync:** The `CombatManager` uses a `WaitForAnimation` helper. If you rename animation states in the `AnimatorController`, you must update the string references in `CombatManager.cs`.
+*   **Ska Block Mechanics**: Manual clicks on the bottom row *always* create a Ska block (controlled by `manualSkaRate`). This is a design choice to force combos rather than simple single-clicking.
+*   **Animation Synchronization**: `CombatManager` uses a helper `WaitForAnimation` coroutine. If you add new animations, ensure the `Animator` state names match the strings passed in `CombatManager.ExecuteAction`.
+*   **Layering**: Sprite sorting is critical; Icons are on Order 1, while Block Bases are on Order 0.
+*   **UI Resolution**: The floating notification labels depend on the `notification-layer` being the full size of the screen to map world-to-panel coordinates correctly.
