@@ -1625,6 +1625,12 @@
       "conversation_id": "a795c10a-9d34-4c7e-80cb-b2e92ffd13b6",
       "content": "次に、モンスターのアクションに対しても効果音をつけて下さい。\n- モンスターが攻撃したときに SE_Attack\n- モンスターが魔法攻撃した時に SE_Magic\n- プレイヤーがダメージを受けた時に SE_Hit\n- Tank の防御が成功した時に（新規SE）\n最後の効果音だけは新規となりますので、新たにアセットを生成して下さい。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "0d6dc5cc-68df-4343-bb91-3e5ea1be2c41",
+      "conversation_id": "a795c10a-9d34-4c7e-80cb-b2e92ffd13b6",
+      "content": "次に、モンスターのアクションに対しても効果音をつけて下さい。\n- モンスターが攻撃したときに SE_Attack\n- モンスターが魔法攻撃した時に SE_Magic\n- プレイヤーがダメージを受けた時に SE_Hit\n- Tank の防御が成功した時に（新規SE）\n最後の効果音だけは新規となりますので、新たにアセットを生成して下さい。",
+      "snapshot_message_type": 0
     }
   ]
 }
