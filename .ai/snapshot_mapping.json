@@ -1721,6 +1721,12 @@
       "conversation_id": "c3c04910-8847-41b9-b73b-433acd4304e3",
       "content": "ヒントの縦位置を画面下から **20%** の位置に調整しました。\n\n`Assets/UI/Main.uss` で `bottom: 20%;` と設定し、そこを基点として `abs(sin(t))` による縦方向の振動が適用されるようになっています。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_3",
+      "conversation_id": "c3c04910-8847-41b9-b73b-433acd4304e3",
+      "content": "いや足りないな・・・25%にして下さい",
+      "snapshot_message_type": 0
     }
   ]
 }
