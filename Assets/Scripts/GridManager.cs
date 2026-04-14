@@ -62,8 +62,10 @@ public class GridManager : MonoBehaviour
     private bool isProcessing = false;
     private CameraShake cameraShake;
 
+    public event System.Action OnBottomRowClicked;
+
     private void Awake()
-    {
+{
         Debug.Log("GridManager.Awake() called.");
     }
 
