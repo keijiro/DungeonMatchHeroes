@@ -2,8 +2,11 @@
     <Style src="project://database/Assets/UI/Main.uss" />
     <ui:VisualElement name="root" class="container">
         <ui:VisualElement name="notification-layer" picking-mode="Ignore" class="notification-layer" />
+        <ui:VisualElement name="hint-container" class="hint-container" picking-mode="Ignore">
+            <ui:Label name="start-hint" text="Click bottom row to destroy blocks!" class="start-hint" />
+        </ui:VisualElement>
         <ui:VisualElement name="hud" class="hud-bottom">
-            <ui:VisualElement name="stats-left" class="stats-group">
+<ui:VisualElement name="stats-left" class="stats-group">
                 <ui:VisualElement class="stat-row">
                     <ui:Label text="HP:" class="stat-label" />
                     <ui:VisualElement name="hp-bar-bg" class="progress-bar-bg">

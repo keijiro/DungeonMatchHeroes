@@ -1055,6 +1055,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1147836622}
   - component: {fileID: 1147836621}
+  - component: {fileID: 1147836623}
   m_Layer: 0
   m_Name: GridManager
   m_TagString: Untagged
@@ -1119,6 +1120,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1147836623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147836620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccbd800fb9fa84868bd8d1ac8ddb6eee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RowHighlighter
+  gridManager: {fileID: 1147836621}
+  pulseMaterial: {fileID: 2100000, guid: c92228ecd3acf43d7b250ec95ee9a523, type: 2}
+  pulseColor: {r: 1, g: 1, b: 0.5, a: 0.5}
+  pulseSpeed: 4
+  maxAlpha: 0.5
 --- !u!1 &1158944844
 GameObject:
   m_ObjectHideFlags: 0
@@ -1637,6 +1655,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2091370382}
   - component: {fileID: 2091370381}
+  - component: {fileID: 2091370383}
   m_Layer: 0
   m_Name: CombatManager
   m_TagString: Untagged
@@ -1704,6 +1723,21 @@ Transform:
   - {fileID: 149357444}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2091370383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2091370380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f65701c0073354a67b9987e4f1a11997, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StartHintController
+  hudDocument: {fileID: 1879991500}
+  displayDuration: 4
+  fadeDuration: 0.5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -74,8 +74,35 @@
     height: 100%;
 }
 
-.notification-label {
+.hint-container {
     position: absolute;
+    left: 50%;
+    bottom: 120px; /* Above HUD */
+    translate: -50% 0;
+    align-items: center;
+}
+
+.start-hint {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #FFD700;
+    padding: 10px 20px;
+    border-radius: 15px;
+    border-width: 2px;
+    border-color: #FFD700;
+    font-size: 24px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    transition-property: opacity;
+    transition-duration: 0.5s;
+    opacity: 1;
+}
+
+.start-hint--hidden {
+    opacity: 0;
+}
+
+.notification-label {
+position: absolute;
     translate: -50% -50%;
     font-size: 40px;
     -unity-font-style: bold;

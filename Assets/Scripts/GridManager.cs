@@ -19,9 +19,15 @@ public class GridManager : MonoBehaviour
         Ska = 6      // Gray (Empty effect)
     }
 
-    private const int GridWidth = 7;
-    private const int GridHeight = 7;
+    public const int GridWidth = 7;
+    public const int GridHeight = 7;
     private const float BlockSpacing = 1.1f;
+
+    public SpriteRenderer GetRenderer(int x, int y)
+    {
+        if (x < 0 || x >= GridWidth || y < 0 || y >= GridHeight) return null;
+        return renderers[x, y];
+    }
 
     [Header("Assets")]
     [SerializeField] private Sprite blockBaseSprite;
