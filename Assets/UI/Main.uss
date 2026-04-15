@@ -150,7 +150,10 @@ position: absolute;
     transition-timing-function: ease-out-cubic;
 }
 
-.blackout--active {
+.blackout--visible {
     display: flex;
+}
+
+.blackout--active {
     scale: 1 1;
 }

@@ -1913,6 +1913,12 @@
       "conversation_id": "b3cf21e0-b687-45ed-85d4-2d1ce7b270c6",
       "content": "成功しました。`Main.uxml` 上では `blackout` 要素が `display: none` によって非表示となり、背景の HUD やゲーム画面のデザイン作業を妨げないようになっています。\n\n実行時には、`SceneTransitionController.cs` が以下の手順でアニメーションを制御します：\n1.  開始直後に `blackout--active` クラスを付与（これで `display: flex` となり画面が真っ黒になります）。\n2.  0.1秒待機して初期状態を確定。\n3.  クラスを削除し、中央に向かって幕が開くアニメーション（`scale 1 1` → `1 0`）を開始。\n\nこれにより、デザイン効率とリッチな演出を両立させました。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "278dbdbf-51a5-4116-bfc7-1238baa0616e",
+      "conversation_id": "b3cf21e0-b687-45ed-85d4-2d1ce7b270c6",
+      "content": "修正が完了しました。\n\n### 修正後の動作\n\n*   **USS**: `display: none`（エディタ用）を、`.blackout--visible`（表示中）という追加クラスで打ち消す構造にしました。これにより、アニメーションが終わるまで確実に `display: flex` が維持されます。\n*   **C#**: シーン開始時に「幕を閉じて表示（`active`+`visible`）」状態を作り、その後に幕だけを開ける（`active`削除）ことで、意図通りのアニメーションが確実に走るようになりました。\n\nPlay ボタンを押して確認してみてください。Title シーンからの暗転と、Main シーン開始時の暗転解除がスムーズに繋がるはずです。",
+      "snapshot_message_type": 1
     }
   ]
 }

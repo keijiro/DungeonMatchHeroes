@@ -24,14 +24,22 @@ public class SceneTransitionController : MonoBehaviour
 
         if (blackout != null)
         {
-            // Ensure the blackout is active at start
+            // 1. Make visible and closed
+            blackout.AddToClassList("blackout--visible");
             blackout.AddToClassList("blackout--active");
             
-            // Wait a small amount of time to ensure layout/draw call
+            // 2. Wait a small amount of time to ensure layout/draw call is registered
             yield return new WaitForSeconds(0.1f);
             
-            // Start the transition to height 0
+            // 3. Start the transition by removing 'active' (scale 1 1 -> 1 0)
+            // 'visible' class stays, so display: flex is maintained during animation
             blackout.RemoveFromClassList("blackout--active");
+
+            // 4. Wait for the transition duration (0.8s in USS)
+            yield return new WaitForSeconds(0.8f);
+
+            // 5. Finally hide completely to free up processing/UI-picking
+            blackout.RemoveFromClassList("blackout--visible");
         }
     }
 }
