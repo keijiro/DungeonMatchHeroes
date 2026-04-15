@@ -1895,6 +1895,12 @@
       "conversation_id": "b3cf21e0-b687-45ed-85d4-2d1ce7b270c6",
       "content": "暗転（フェードアウト）演出を追加しました。\n\n### 追加内容\n\n1.  **UXML (`Assets/UI/Title.uxml`)**:\n    *   画面の最前面に `blackout` 要素を追加しました。\n2.  **USS (`Assets/UI/Title.uss`)**:\n    *   `.blackout`: 画面中央（`top: 50%`, `translate: 0 -50%`）を基点として、高さ 0% の状態をデフォルトとしました。\n    *   `.blackout--active`: 高さを 100% に変化させ、`ease-in-cubic` で 0.6秒かけてアニメーションするように設定しました。\n3.  **C# (`Assets/Scripts/TitleScreenController.cs`)**:\n    *   画面クリック時に即座にシーン遷移するのではなく、`StartAdventureSequence` コルーチンを実行するように変更しました。\n    *   このコルーチン内で `blackout--active` クラスを付与し、アニメーションが完了するのを待ってから `Main` シーンをロードします。\n\nクリックすると、画面中央から上下に黒い幕が広がるように画面が覆われ、その後に冒険が始まります。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "9259d7d3-3eef-4631-8bc2-b5736581e77e",
+      "conversation_id": "b3cf21e0-b687-45ed-85d4-2d1ce7b270c6",
+      "content": "失礼しました、UI Toolkit の `translate` と `%` の組み合わせによる計算の挙動で、意図した「中央からの拡大」が不安定になっていた可能性があります。\n\nより確実で標準的な「中央から広がる」演出にするため、`height` ではなく **`scale` (Transform)** を使用した方式に変更しました。\n\n### 修正内容\n\n*   **USS (`Assets/UI/Title.uss`)**:\n    *   `blackout` 要素の `height` を最初から `100%` に固定し、`top: 0` から画面全体を覆うようにしました。\n    *   **`scale: 1 0;`**: X軸はそのまま、Y軸（高さ）だけを 0 に絞り、見た目上は中央の横線にします。\n    *   **`transform-origin: center;`**: 拡大の基点を中央に固定します。\n    *   **`scale: 1 1;`**: アニメーション発動時に高さを元のサイズ（100%）へ戻します。\n\nこれで、要素が画面中央の水平ラインから上下に等しく広がっていく演出が確実に行われるようになります。再度お試しください。",
+      "snapshot_message_type": 1
     }
   ]
 }
