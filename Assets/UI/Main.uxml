@@ -29,7 +29,7 @@
                     <ui:Label name="key-label" text="KEY: NO" class="stat-label" />
                 </ui:VisualElement>
             </ui:VisualElement>
-            </ui:VisualElement>
-            <ui:VisualElement name="blackout" class="blackout blackout--active" picking-mode="Ignore" />
-            </ui:VisualElement>
-            </ui:UXML>
+        </ui:VisualElement>
+        <ui:VisualElement name="blackout" class="blackout" picking-mode="Ignore" />
+    </ui:VisualElement>
+</ui:UXML>

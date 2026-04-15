@@ -135,7 +135,8 @@ position: absolute;
     opacity: 0;
     }
 
-    .blackout {
+.blackout {
+    display: none;
     position: absolute;
     left: 0;
     top: 0;
@@ -147,8 +148,9 @@ position: absolute;
     transition-property: scale;
     transition-duration: 0.8s;
     transition-timing-function: ease-out-cubic;
-    }
+}
 
-    .blackout--active {
+.blackout--active {
+    display: flex;
     scale: 1 1;
-    }
+}
