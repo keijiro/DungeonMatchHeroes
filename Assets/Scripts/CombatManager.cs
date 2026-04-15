@@ -267,9 +267,9 @@ public class CombatManager : MonoBehaviour
             float t = elapsed / totalDuration;
 
             // 1. 跳ねる動き (Physics-like bounce)
-            // Cosの絶対値で跳ねを表現し、時間とともに減衰させる
-            float bounceAmplitude = 60f * Mathf.Max(0, 1f - t * 1.5f);
-            float bounceY = -Mathf.Abs(Mathf.Cos(t * 18f)) * bounceAmplitude;
+            // 減衰率を上げ（Pow）、周波数を高めることでキレを出す
+            float bounceAmplitude = 60f * Mathf.Pow(Mathf.Max(0, 1f - t * 2.0f), 2.0f);
+            float bounceY = -Mathf.Abs(Mathf.Cos(t * 25f)) * bounceAmplitude;
             
             label.style.left = basePos.x;
             label.style.top = basePos.y + bounceY;
