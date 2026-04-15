@@ -1763,6 +1763,12 @@
       "conversation_id": "a5c60cd6-affb-49fe-82e8-fe0ccc64dbad",
       "content": "開始して下さい",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "625e20e0-9cd6-44fd-8a2b-aa792a1b647e",
+      "conversation_id": "a5c60cd6-affb-49fe-82e8-fe0ccc64dbad",
+      "content": "戦闘中のダメージや回復などの数値を分かりやすく表示するための実装が完了しました。\n\n### 実施した主な変更内容：\n\n1.  **UI スタイルの追加 (`Assets/UI/Main.uss`)**\n    *   `.combat-number` クラスを定義し、大きなフォントサイズ、太字、白の縁取り（`-unity-text-outline-color: white`）を設定しました。\n2.  **ポップアップロジックの実装 (`Assets/Scripts/CombatManager.cs`)**\n    *   `ShowCombatNumber`: 指定された数値、色、座標にポップアップを生成するメソッド。\n    *   `AnimateCombatNumber`: 指定されたアニメーション（スケール 0.0→1.0 の瞬間的な出現、1秒間の維持、0.5秒のフェードアウト）を制御するコルーチン。\n    *   `GetPartyCentroid`: パーティーメンバー3人の平均位置（重心）を取得するヘルパーメソッド。\n3.  **各アクションへの統合**\n    *   **ダメージ（赤）**: 敵がダメージを受けた際（`EnemyUnit.TakeDamage`）、およびプレイヤーがダメージを受けた際（`CombatManager.HandleEnemyAttack`）に表示されます。\n    *   **HP回復（緑）**: プレイヤーの回復アクション時に、パーティーの重心位置に表示されます。\n    *   **シールド回復（青）**: シールド回復時に、Tank（盾役）の上に表示されます。\n    *   **シールドブロック（黄色）**: 敵の攻撃をシールドで完全に防いだ際、Tank の上に表示されます。\n\nこれにより、各アクションの効果が数値として直感的に把握できるようになり、既存のフラッシュ演出と相まって戦闘のフィードバックが大幅に強化されました。",
+      "snapshot_message_type": 1
     }
   ]
 }

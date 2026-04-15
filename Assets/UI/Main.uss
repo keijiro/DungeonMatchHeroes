@@ -122,4 +122,15 @@ position: absolute;
     -unity-text-outline-width: 2px;
     -unity-text-outline-color: black;
     opacity: 0;
-}
+    }
+
+    .combat-number {
+    position: absolute;
+    translate: -50% -50%;
+    font-size: 64px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    -unity-text-outline-width: 2px;
+    -unity-text-outline-color: white;
+    opacity: 0;
+    }

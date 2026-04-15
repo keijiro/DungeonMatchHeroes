@@ -234,10 +234,60 @@ public class CombatManager : MonoBehaviour
         notificationLayer.Add(label);
 
         StartCoroutine(AnimateNotification(label));
-    }
+        }
 
-    private IEnumerator AnimateNotification(Label label)
-    {
+        public void ShowCombatNumber(int value, Color color, Vector3 worldPos)
+        {
+            if (notificationLayer == null) return;
+
+            Label label = new Label(value.ToString());
+            label.AddToClassList("combat-number");
+            label.style.color = color;
+
+        Vector2 panelPos = RuntimePanelUtils.CameraTransformWorldToPanel(notificationLayer.panel, worldPos, Camera.main);
+        label.style.left = panelPos.x;
+        label.style.top = panelPos.y;
+
+        notificationLayer.Add(label);
+        StartCoroutine(AnimateCombatNumber(label));
+        }
+
+        private IEnumerator AnimateCombatNumber(Label label)
+        {
+        // 1. 出現 (スケール 0 -> 1 を一瞬で)
+        label.style.scale = new Scale(new Vector3(0, 0, 1));
+        label.style.opacity = 1;
+        yield return null; 
+        label.style.scale = new Scale(new Vector3(1, 1, 1));
+
+        // 2. 1秒間維持
+        yield return new WaitForSeconds(1.0f);
+
+        // 3. 0.5秒でフェードアウト
+        float elapsed = 0f;
+        float duration = 0.5f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            label.style.opacity = 1f - (elapsed / duration);
+            yield return null;
+        }
+
+        label.RemoveFromHierarchy();
+        }
+
+        private Vector3 GetPartyCentroid()
+        {
+        Vector3 sum = Vector3.zero;
+        int count = 0;
+        if (FighterAnimator != null) { sum += FighterAnimator.transform.position; count++; }
+        if (MageAnimator != null) { sum += MageAnimator.transform.position; count++; }
+        if (TankAnimator != null) { sum += TankAnimator.transform.position; count++; }
+        return count > 0 ? (sum / count) + Vector3.up : Vector3.zero;
+        }
+
+        private IEnumerator AnimateNotification(Label label)
+{
         // Initial state: Slightly below center, invisible
         label.style.opacity = 0;
         label.style.translate = new Translate(Length.Percent(-50), Length.Percent(0));
@@ -323,17 +373,21 @@ Color healColor = new Color(0f, 1f, 0f, 0.8f);
                 if (tankVisuals != null) healCoroutines.Add(StartCoroutine(tankVisuals.TriggerFlash(healColor, 0.3f)));
                 foreach (var c in healCoroutines) yield return c;
 
+                ShowCombatNumber(action.Value, Color.green, GetPartyCentroid());
+
                 CurrentHP = Mathf.Min(MaxHP, CurrentHP + action.Value);
                 Debug.Log($"Healed {action.Value}. HP: {CurrentHP}");
                 yield return new WaitForSeconds(0.2f);
                 break;
-            case CombatActionType.PlayerShield:
+                case CombatActionType.PlayerShield:
                 // Tank flashes Cyan
                 if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.Shield);
                 if (tankVisuals != null) yield return StartCoroutine(tankVisuals.TriggerFlash(new Color(0f, 1f, 1f, 0.8f), 0.3f));
 
+                ShowCombatNumber(action.Value, new Color(0.2f, 0.6f, 1f), TankAnimator.transform.position);
+
                 Shield += action.Value;
-                Debug.Log($"Gained {action.Value} Shield. Total: {Shield}");
+Debug.Log($"Gained {action.Value} Shield. Total: {Shield}");
                 yield return new WaitForSeconds(0.2f);
                 break;
             case CombatActionType.PlayerExp:
@@ -525,6 +579,7 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
             {
                 responseCoroutines.Add(StartCoroutine(tankVisuals.TriggerFlash(Color.yellow, 0.3f)));
                 responseCoroutines.Add(StartCoroutine(tankVisuals.ShakeRoutine(0.15f, 0.2f)));
+                ShowCombatNumber(action.Value, Color.yellow, TankAnimator.transform.position + Vector3.up);
             }
         }
         else
@@ -533,11 +588,23 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
             if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.Hit);
 
             // Trigger player damage visual (All characters Red Flash + Shake)
-            if (fighterVisuals != null) responseCoroutines.Add(StartCoroutine(fighterVisuals.TriggerDamageEffect()));
-            if (mageVisuals != null) responseCoroutines.Add(StartCoroutine(mageVisuals.TriggerDamageEffect()));
-            if (tankVisuals != null) responseCoroutines.Add(StartCoroutine(tankVisuals.TriggerDamageEffect()));
+            if (fighterVisuals != null)
+            {
+                responseCoroutines.Add(StartCoroutine(fighterVisuals.TriggerDamageEffect()));
+                ShowCombatNumber(finalDamage, Color.red, FighterAnimator.transform.position + Vector3.up);
+            }
+            if (mageVisuals != null)
+            {
+                responseCoroutines.Add(StartCoroutine(mageVisuals.TriggerDamageEffect()));
+                ShowCombatNumber(finalDamage, Color.red, MageAnimator.transform.position + Vector3.up);
+            }
+            if (tankVisuals != null)
+            {
+                responseCoroutines.Add(StartCoroutine(tankVisuals.TriggerDamageEffect()));
+                ShowCombatNumber(finalDamage, Color.red, TankAnimator.transform.position + Vector3.up);
+            }
         }
-        
+
         foreach (var c in responseCoroutines) yield return c;
 
         if (CurrentHP <= 0)
