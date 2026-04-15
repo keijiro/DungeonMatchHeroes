@@ -75,4 +75,8 @@ MonoBehaviour:
     Clip: {fileID: 8300000, guid: 01ad4454c2f024978a95d41806a649d8, type: 3}
   - Type: 14
     Clip: {fileID: 8300000, guid: b6e9e06c265b647eaaa8c1d69c12cec5, type: 3}
+  - Type: 15
+    Clip: {fileID: 8300000, guid: e67585e9932e648c3862131c6c876b0c, type: 3}
+  - Type: 16
+    Clip: {fileID: 8300000, guid: 733bf0ff4e8ff439da0f516387b08777, type: 3}
   poolSize: 16

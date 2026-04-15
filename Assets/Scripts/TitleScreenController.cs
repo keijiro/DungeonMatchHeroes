@@ -32,6 +32,12 @@ public class TitleScreenController : MonoBehaviour
         
         // Trigger intro animation
         StartCoroutine(TriggerIntro());
+
+        // Play Title SE
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySE(SEType.Title);
+        }
     }
 
     private IEnumerator TriggerIntro()
@@ -71,7 +77,7 @@ public class TitleScreenController : MonoBehaviour
 
         if (AudioManager.Instance != null)
         {
-            AudioManager.Instance.PlaySE(SEType.Click);
+            AudioManager.Instance.PlaySE(SEType.Select);
         }
 
         StartCoroutine(StartAdventureSequence());
