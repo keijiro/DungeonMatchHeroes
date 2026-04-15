@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 using System.Collections.Generic;
 
 public enum SEType
@@ -27,6 +28,7 @@ public struct SEClip
 {
     public SEType Type;
     public AudioClip Clip;
+    public bool UseReverb;
 }
 
 public class AudioManager : MonoBehaviour
@@ -35,8 +37,11 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField] private SEClip[] clips;
     [SerializeField] private int poolSize = 16;
+    [SerializeField] private AudioMixerGroup bypassGroup;
+    [SerializeField] private AudioMixerGroup reverbGroup;
 
     private Dictionary<SEType, AudioClip> clipDictionary = new Dictionary<SEType, AudioClip>();
+    private Dictionary<SEType, bool> reverbDictionary = new Dictionary<SEType, bool>();
     private Dictionary<SEType, int> lastPlayFrame = new Dictionary<SEType, int>();
     private List<AudioSource> sourcePool = new List<AudioSource>();
     private int nextSourceIndex = 0;
@@ -57,6 +62,7 @@ public class AudioManager : MonoBehaviour
         foreach (var sc in clips)
         {
             clipDictionary[sc.Type] = sc.Clip;
+            reverbDictionary[sc.Type] = sc.UseReverb;
             lastPlayFrame[sc.Type] = -1;
         }
 
@@ -86,6 +92,17 @@ public class AudioManager : MonoBehaviour
 
         AudioSource source = sourcePool[nextSourceIndex];
         source.pitch = pitch;
+
+        // Routing to mixer group
+        if (reverbDictionary.ContainsKey(type) && reverbDictionary[type])
+        {
+            source.outputAudioMixerGroup = reverbGroup;
+        }
+        else
+        {
+            source.outputAudioMixerGroup = bypassGroup;
+        }
+
         source.PlayOneShot(clipDictionary[type], volume);
 
         nextSourceIndex = (nextSourceIndex + 1) % poolSize;
