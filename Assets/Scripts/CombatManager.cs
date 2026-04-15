@@ -249,27 +249,41 @@ public class CombatManager : MonoBehaviour
         label.style.top = panelPos.y;
 
         notificationLayer.Add(label);
-        StartCoroutine(AnimateCombatNumber(label));
+        StartCoroutine(AnimateCombatNumber(label, panelPos));
         }
 
-        private IEnumerator AnimateCombatNumber(Label label)
+        private IEnumerator AnimateCombatNumber(Label label, Vector2 basePos)
         {
-        // 1. 出現 (スケール 0 -> 1 を一瞬で)
-        label.style.scale = new Scale(new Vector3(0, 0, 1));
-        label.style.opacity = 1;
-        yield return null; 
-        label.style.scale = new Scale(new Vector3(1, 1, 1));
-
-        // 2. 1秒間維持
-        yield return new WaitForSeconds(1.0f);
-
-        // 3. 0.5秒でフェードアウト
+        float totalDuration = 1.0f;
         float elapsed = 0f;
-        float duration = 0.5f;
-        while (elapsed < duration)
+        
+        // 初期状態
+        label.style.scale = new Scale(new Vector3(1.2f, 1.2f, 1)); 
+        label.style.opacity = 1;
+
+        while (elapsed < totalDuration)
         {
             elapsed += Time.deltaTime;
-            label.style.opacity = 1f - (elapsed / duration);
+            float t = elapsed / totalDuration;
+
+            // 1. 跳ねる動き (Physics-like bounce)
+            // Cosの絶対値で跳ねを表現し、時間とともに減衰させる
+            float bounceAmplitude = 60f * Mathf.Max(0, 1f - t * 1.5f);
+            float bounceY = -Mathf.Abs(Mathf.Cos(t * 18f)) * bounceAmplitude;
+            
+            label.style.left = basePos.x;
+            label.style.top = basePos.y + bounceY;
+
+            // 2. スケール演出 (1.2 -> 1.0)
+            float scale = Mathf.Lerp(1.2f, 1.0f, Mathf.Min(1, t * 8f));
+            label.style.scale = new Scale(new Vector3(scale, scale, 1));
+
+            // 3. フェードアウト (最後の0.3秒で消える)
+            if (t > 0.7f)
+            {
+                label.style.opacity = 1f - (t - 0.7f) / 0.3f;
+            }
+
             yield return null;
         }
 
