@@ -283,7 +283,7 @@ public class CombatManager : MonoBehaviour
         if (FighterAnimator != null) { sum += FighterAnimator.transform.position; count++; }
         if (MageAnimator != null) { sum += MageAnimator.transform.position; count++; }
         if (TankAnimator != null) { sum += TankAnimator.transform.position; count++; }
-        return count > 0 ? (sum / count) + Vector3.up : Vector3.zero;
+        return count > 0 ? (sum / count) : Vector3.zero;
         }
 
         private IEnumerator AnimateNotification(Label label)
@@ -579,31 +579,31 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
             {
                 responseCoroutines.Add(StartCoroutine(tankVisuals.TriggerFlash(Color.yellow, 0.3f)));
                 responseCoroutines.Add(StartCoroutine(tankVisuals.ShakeRoutine(0.15f, 0.2f)));
-                ShowCombatNumber(action.Value, Color.yellow, TankAnimator.transform.position + Vector3.up);
-            }
-        }
-        else
-        {
-            // Trigger Player Hit SE
-            if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.Hit);
+                ShowCombatNumber(action.Value, Color.yellow, TankAnimator.transform.position);
+                }
+                }
+                else
+                {
+                // Trigger Player Hit SE
+                if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.Hit);
 
-            // Trigger player damage visual (All characters Red Flash + Shake)
-            if (fighterVisuals != null)
-            {
+                // Trigger player damage visual (All characters Red Flash + Shake)
+                if (fighterVisuals != null)
+                {
                 responseCoroutines.Add(StartCoroutine(fighterVisuals.TriggerDamageEffect()));
-                ShowCombatNumber(finalDamage, Color.red, FighterAnimator.transform.position + Vector3.up);
-            }
-            if (mageVisuals != null)
-            {
+                ShowCombatNumber(finalDamage, Color.red, FighterAnimator.transform.position);
+                }
+                if (mageVisuals != null)
+                {
                 responseCoroutines.Add(StartCoroutine(mageVisuals.TriggerDamageEffect()));
-                ShowCombatNumber(finalDamage, Color.red, MageAnimator.transform.position + Vector3.up);
-            }
-            if (tankVisuals != null)
-            {
+                ShowCombatNumber(finalDamage, Color.red, MageAnimator.transform.position);
+                }
+                if (tankVisuals != null)
+                {
                 responseCoroutines.Add(StartCoroutine(tankVisuals.TriggerDamageEffect()));
-                ShowCombatNumber(finalDamage, Color.red, TankAnimator.transform.position + Vector3.up);
-            }
-        }
+                ShowCombatNumber(finalDamage, Color.red, TankAnimator.transform.position);
+                }
+                }
 
         foreach (var c in responseCoroutines) yield return c;
 

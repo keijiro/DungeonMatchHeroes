@@ -67,7 +67,7 @@ public class EnemyUnit : MonoBehaviour
         HP -= damage;
         Debug.Log($"{name} took {damage} damage. HP: {HP}");
         
-        CombatManager.Instance.ShowCombatNumber(damage, Color.red, transform.position + Vector3.up);
+        CombatManager.Instance.ShowCombatNumber(damage, Color.red, transform.position);
 
         if (AudioManager.Instance != null)
 {
