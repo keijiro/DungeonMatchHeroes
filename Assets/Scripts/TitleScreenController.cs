@@ -57,7 +57,7 @@ public class TitleScreenController : MonoBehaviour
         while (true)
         {
             startMessage.ToggleInClassList("start-message--hidden");
-            yield return new WaitForSeconds(0.8f);
+            yield return new WaitForSeconds(0.4f);
         }
     }
 

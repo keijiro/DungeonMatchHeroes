@@ -1,5 +1,6 @@
 :root {
     --color-text: rgb(255, 215, 0);
+    --color-message: rgb(173, 216, 230); /* Light Blue (淡い水色) */
     --font-main: url("project://database/Assets/UI/Pirata_One/PirataOne-Regular%20SDF.asset?fileID=11400000&guid=aab34c00bfc7d41b7b9bea53c4674488&type=2#PirataOne-Regular SDF");
 }
 
@@ -82,14 +83,14 @@
 }
 
 .start-message {
-    color: var(--color-text);
+    color: var(--color-message);
     font-size: 40px;
     -unity-font-style: bold;
-    text-shadow: 4px 8px 4px rgb(0, 0, 0);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     -unity-text-outline-width: 1px;
     -unity-text-outline-color: black;
     transition-property: opacity;
-    transition-duration: 0.8s;
+    transition-duration: 0.4s;
     opacity: 1;
 }
 
