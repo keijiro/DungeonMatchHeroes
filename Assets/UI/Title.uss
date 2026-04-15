@@ -1,6 +1,6 @@
 :root {
-    --color-text: #FFD700; /* Gold */
-    --font-main: url("project://database/Assets/UI/Pirata_One/PirataOne-Regular SDF.asset");
+    --color-text: rgb(255, 215, 0);
+    --font-main: url("project://database/Assets/UI/Pirata_One/PirataOne-Regular%20SDF.asset?fileID=11400000&guid=aab34c00bfc7d41b7b9bea53c4674488&type=2#PirataOne-Regular SDF");
 }
 
 .screen {
@@ -15,26 +15,29 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    background-image: url("project://database/Assets/Sprites/UI/Title_Background.png");
+    background-image: url("project://database/Assets/Sprites/UI/Title_Background.png?fileID=21300000&guid=7d38ce48c91e64bd194a747224c89fca&type=3#Title_Background");
     -unity-background-scale-mode: scale-and-crop;
+    -unity-background-image-tint-color: rgb(78, 109, 209);
 }
 
 .heros {
     position: absolute;
-    bottom: 0;
-    width: 80%;
-    height: 60%;
-    background-image: url("project://database/Assets/Sprites/UI/Title_Heros.png");
+    bottom: -30px;
+    height: 100%;
+    background-image: url("project://database/Assets/Sprites/UI/Title_Heros.png?fileID=21300000&guid=22d07c886da6e436787144dacc547fb6&type=3#Title_Heros");
     -unity-background-scale-mode: scale-to-fit;
+    right: -10px;
+    aspect-ratio: 1;
 }
 
 .logo {
     position: absolute;
-    top: 5%;
-    width: 60%;
-    height: 30%;
-    background-image: url("project://database/Assets/Sprites/UI/Title_Logo.png");
+    top: 0%;
+    height: 80%;
+    background-image: url("project://database/Assets/Sprites/UI/Title_Logo.png?fileID=21300000&guid=b6d458a74f90e4a5f95058d0edbe7a2c&type=3#Title_Logo");
     -unity-background-scale-mode: scale-to-fit;
+    aspect-ratio: 1;
+    left: 5%;
 }
 
 .message-container {
