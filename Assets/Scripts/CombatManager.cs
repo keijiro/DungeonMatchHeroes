@@ -381,10 +381,10 @@ public class CombatManager : MonoBehaviour
                 // All players flash Green
                 if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.Heal);
                 List<Coroutine> healCoroutines = new List<Coroutine>();
-Color healColor = new Color(0f, 1f, 0f, 0.8f);
-                if (fighterVisuals != null) healCoroutines.Add(StartCoroutine(fighterVisuals.TriggerFlash(healColor, 0.3f)));
-                if (mageVisuals != null) healCoroutines.Add(StartCoroutine(mageVisuals.TriggerFlash(healColor, 0.3f)));
-                if (tankVisuals != null) healCoroutines.Add(StartCoroutine(tankVisuals.TriggerFlash(healColor, 0.3f)));
+            Color healColor = new Color(0f, 1f, 0f, 0.8f);
+                if (fighterVisuals != null) healCoroutines.Add(StartCoroutine(fighterVisuals.TriggerSoftDoubleFlash(healColor, 0.6f)));
+                if (mageVisuals != null) healCoroutines.Add(StartCoroutine(mageVisuals.TriggerSoftDoubleFlash(healColor, 0.6f)));
+                if (tankVisuals != null) healCoroutines.Add(StartCoroutine(tankVisuals.TriggerSoftDoubleFlash(healColor, 0.6f)));
                 foreach (var c in healCoroutines) yield return c;
 
                 ShowCombatNumber(action.Value, Color.green, GetPartyCentroid());
@@ -396,7 +396,7 @@ Color healColor = new Color(0f, 1f, 0f, 0.8f);
                 case CombatActionType.PlayerShield:
                 // Tank flashes Cyan
                 if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.Shield);
-                if (tankVisuals != null) yield return StartCoroutine(tankVisuals.TriggerFlash(new Color(0f, 1f, 1f, 0.8f), 0.3f));
+                if (tankVisuals != null) yield return StartCoroutine(tankVisuals.TriggerSoftDoubleFlash(new Color(0f, 1f, 1f, 0.8f), 0.6f));
 
                 ShowCombatNumber(action.Value, new Color(0.2f, 0.6f, 1f), TankAnimator.transform.position);
 
