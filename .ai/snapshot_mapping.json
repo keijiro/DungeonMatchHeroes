@@ -1967,6 +1967,12 @@
       "conversation_id": "25c6ca0b-df86-418b-a55c-5f5e76d1304b",
       "content": "指摘の通り、`SE_Title` が鳴らなかった原因は、加算ロード（`Additive Load`）が非同期であるため、`TitleScreenController.OnEnable` が呼ばれたタイミングではまだ `AudioManager` のインスタンスが生成されていなかった可能性が高いです。\n\n対策として、`TitleScreenController.cs` を修正し、`AudioManager.Instance` が有効になるのを待機してから再生を開始するコルーチンを導入しました。\n\n### 修正内容\n*   **`PlayTitleSEWithDelay` コルーチンの追加**:\n    *   `while (AudioManager.Instance == null) yield return null;` により、インスタンスの生成を安全に待ちます。\n    *   念のため `0.2秒` のウェイトを挟んでから `SEType.Title` を再生するようにしました。\n\nこれで、タイトル画面開始時にサウンドが正常に再生されるようになっているはずです。ご確認をお願いいたします。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "de909375-7774-440e-9975-c0f97a75bebe",
+      "conversation_id": "25c6ca0b-df86-418b-a55c-5f5e76d1304b",
+      "content": "Audio Mixer を用いて特定の効果音に残響（Reverb）を付与するためのプラン「**Audio Mixer を用いた残響エフェクト（Reverb）の実装プラン**」を策定しました。\n\nこのプランでは、`Bypass`（通常）と `Reverb`（残響あり）の 2 つのトラックを持つ Audio Mixer を作成し、`AudioManager` の設定（`SEClip`）で音の種類ごとにどちらのトラックを使用するかを選択できるようにします。\n\n詳細は `Assets/Plans/audiomixer-reverb.md` に記載されています。このプランに従って実装を開始してよろしいでしょうか？",
+      "snapshot_message_type": 1
     }
   ]
 }
