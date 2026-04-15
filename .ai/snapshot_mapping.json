@@ -1943,6 +1943,12 @@
       "conversation_id": "25c6ca0b-df86-418b-a55c-5f5e76d1304b",
       "content": "進めてください",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "INT_3",
+      "conversation_id": "25c6ca0b-df86-418b-a55c-5f5e76d1304b",
+      "content": "処理が中断してしまったようです。続行してください。",
+      "snapshot_message_type": 0
     }
   ]
 }
