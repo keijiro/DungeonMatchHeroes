@@ -69,6 +69,11 @@ public class TitleScreenController : MonoBehaviour
         if (isStarting) return;
         isStarting = true;
 
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySE(SEType.Click);
+        }
+
         StartCoroutine(StartAdventureSequence());
     }
 
