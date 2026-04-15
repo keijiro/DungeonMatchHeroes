@@ -33,8 +33,8 @@ public class TitleScreenController : MonoBehaviour
 
     private IEnumerator TriggerIntro()
     {
-        // Wait for one frame to ensure classes are applied before removal
-        yield return null;
+        // Wait a bit to ensure the UI has been painted at least once in its intro state
+        yield return new WaitForSeconds(0.1f);
         
         root.Q("background")?.RemoveFromClassList("background--intro");
         root.Q("heros")?.RemoveFromClassList("heros--intro");

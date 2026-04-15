@@ -1871,6 +1871,12 @@
       "conversation_id": "b3cf21e0-b687-45ed-85d4-2d1ce7b270c6",
       "content": "アニメーションを追加しました。\n\n### 追加したアニメーション内容\n\n1.  **Heros & Shadow**:\n    *   **フェードイン**: `alpha=0` から `alpha=1` へ 1.5秒かけて変化します。\n    *   **スライド**: 右側（`+200px`）から元の位置へ `Ease Out Cubic` で移動してきます。影（Shadow）も同様の軌跡を描きつつ、設定されたオフセット位置に収束します。\n\n2.  **Background**:\n    *   **ズームアウト**: 通常より 20% 拡大された状態（`scale: 1.2`）から、2秒かけて等倍（`scale: 1.0`）へ `Ease Out Cubic` で縮小します。\n\n### 実装の仕組み\n*   **USS (`Assets/UI/Title.uss`)**: アニメーションの最終状態と、`--intro` 接尾辞のついた開始状態のクラスを定義し、`transition-property` でアニメーションを制御しています。\n*   **C# (`Assets/Scripts/TitleScreenController.cs`)**: シーン開始時に 1フレーム待機してから `--intro` クラスを削除することで、UITK の Transition システムを介した滑らかなアニメーションを開始させています。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "e30aaf74-3525-441b-a270-d31c59018918",
+      "conversation_id": "b3cf21e0-b687-45ed-85d4-2d1ce7b270c6",
+      "content": "アニメーションが正しく再生されるように、以下の 2 点を修正しました：\n\n1.  **C# スクリプトの調整**: シーン開始直後（1フレーム目）ではなく、わずかな時間（0.1秒）を空けてからアニメーション用クラス（`--intro`）を削除するようにしました。これにより、UI Toolkit が初期位置（右にズレた状態など）を確実に認識した後に、目標地点への移動（Transition）を開始するようになります。\n2.  **USS の最適化**: \n    *   `transition-property` を `all` に変更し、すべてのプロパティ変更がアニメーション対象となるようにしました。\n    *   影（`heros-shadow`）のズレを `margin` で制御するようにし、ベースとなる `.heros` と共通の `translate` プロパティを使って一緒に動くように再構成しました。\n\nPlay ボタンを押して確認してみてください。背景がゆっくりと引いていき、ヒーローたちが影を伴って右からフェードインしてくるはずです。",
+      "snapshot_message_type": 1
     }
   ]
 }
