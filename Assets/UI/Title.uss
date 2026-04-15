@@ -62,6 +62,13 @@
     -unity-background-scale-mode: scale-to-fit;
     aspect-ratio: 1;
     left: 5%;
+    filter: blur(0);
+    transition-property: filter;
+    transition-duration: 2s;
+    transition-timing-function: linear;
+}
+
+.logo--intro {
     filter: blur(24);
 }
 

@@ -39,7 +39,8 @@ public class TitleScreenController : MonoBehaviour
         root.Q("background")?.RemoveFromClassList("background--intro");
         root.Q("heros")?.RemoveFromClassList("heros--intro");
         root.Q("heros-shadow")?.RemoveFromClassList("heros--intro");
-    }
+        root.Q("logo")?.RemoveFromClassList("logo--intro");
+        }
 
     private void OnDisable()
     {
