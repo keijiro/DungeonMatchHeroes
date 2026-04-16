@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -301,7 +302,7 @@ public class CombatManager : MonoBehaviour
         }
 
         private IEnumerator AnimateNotification(Label label)
-{
+        {
         // Initial state: Slightly below center, invisible
         label.style.opacity = 0;
         label.style.translate = new Translate(Length.Percent(-50), Length.Percent(0));
@@ -625,11 +626,9 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         {
             CurrentHP = 0;
             if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.GameOver);
-            Debug.LogError("Game Over (Party Wiped) - Restarting prototype stats.");
+            Debug.Log("Game Over (Party Wiped) - Transitioning to Game Over scene.");
             yield return new WaitForSeconds(1.0f);
-CurrentHP = MaxHP;
-            Shield = 0;
-            SpawnWave(); 
+            SceneManager.LoadScene("GameOver");
         }
 
         UpdateUI();
