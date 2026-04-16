@@ -35,13 +35,15 @@
     width: 100%;
     height: 100%;
     background-color: black;
-    opacity: 1;
+    /* デフォルトは透明・非干渉にして作業しやすくする */
+    opacity: 0;
+    picking-mode: Ignore;
     transition-property: opacity;
     transition-duration: 0.8s;
     transition-timing-function: ease-in-out;
 }
 
-.blackout--hidden {
-    opacity: 0;
-    picking-mode: Ignore;
+.blackout--active {
+    opacity: 1;
+    picking-mode: Position;
 }

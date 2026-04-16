@@ -22,6 +22,9 @@ public class GameOverScreenController : MonoBehaviour
         root = uiDocument.rootVisualElement;
         blackout = root.Q("blackout");
 
+        // Runtime check: Immediately make it black for the starting fade-in
+        blackout?.AddToClassList("blackout--active");
+
         // Click to return to title
         root.RegisterCallback<PointerDownEvent>(OnRootClicked);
 
@@ -42,7 +45,7 @@ public class GameOverScreenController : MonoBehaviour
         // Wait a bit to ensure the UI has been painted at least once in its initial state.
         // This ensures the transition from opaque to transparent is correctly triggered.
         yield return new WaitForSeconds(0.1f);
-        blackout?.AddToClassList("blackout--hidden");
+        blackout?.RemoveFromClassList("blackout--active");
     }
 
     private void OnRootClicked(PointerDownEvent evt)
@@ -61,7 +64,7 @@ public class GameOverScreenController : MonoBehaviour
     private IEnumerator TransitionSequence()
     {
         // Trigger Fade-Out
-        blackout?.RemoveFromClassList("blackout--hidden");
+        blackout?.AddToClassList("blackout--active");
 
         // Wait for animation (uss duration is 0.8s)
         yield return new WaitForSeconds(1.0f);
