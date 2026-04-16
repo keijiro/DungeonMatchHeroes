@@ -2147,6 +2147,12 @@
       "conversation_id": "cba3a0a6-2dff-4773-8a83-c05134f0fae9",
       "content": "メッセージの横位置を画面右から25%（`left: 75%`）の位置に調整しました。これにより、敵が出現するバトルエリアに近い位置でアナウンスが表示されるようになります。\n\n他にご要望はございますか？",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_3",
+      "conversation_id": "cba3a0a6-2dff-4773-8a83-c05134f0fae9",
+      "content": "これらのメッセージの文字の大きさを今の半分にしてください",
+      "snapshot_message_type": 0
     }
   ]
 }
