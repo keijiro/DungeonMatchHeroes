@@ -2189,6 +2189,12 @@
       "conversation_id": "cba3a0a6-2dff-4773-8a83-c05134f0fae9",
       "content": "敵が登場する際のフラッシュ演出を、1秒かけてゆっくりと元の色に戻るフェードアウト形式に変更しました。\n\n具体的には：\n1.  `CharacterVisuals.cs` に新しく `FadeFlashRoutine` を追加し、指定された時間をかけてオーバーレイの色を透明にするロジックを実装しました。\n2.  `CombatManager.cs` で敵をスポーンさせる際、この `FadeFlashRoutine` を1秒の持続時間で呼び出すように設定しました。\n\nこれにより、敵が眩い光の中から徐々に姿を現すような、より雰囲気のある登場演出になりました。他に調整したい部分はございますか？",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "7916fdd0-ce75-4b53-b737-bacab7c21ac8",
+      "conversation_id": "cba3a0a6-2dff-4773-8a83-c05134f0fae9",
+      "content": "敵が登場する際のフラッシュ演出を、0.5秒かけて戻るように調整しました。これにより、1秒の時よりもキレがありつつ、パッと消えるよりも滑らかな、バランスの良い登場感になったかと思います。\n\n他に調整が必要な箇所はありますでしょうか？",
+      "snapshot_message_type": 1
     }
   ]
 }

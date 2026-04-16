@@ -716,7 +716,7 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
             // White fade flash
             CharacterVisuals v = unit.GetComponent<CharacterVisuals>();
             if (v == null) v = unit.gameObject.AddComponent<CharacterVisuals>();
-            StartCoroutine(v.FadeFlashRoutine(Color.white, 1.0f));
+            StartCoroutine(v.FadeFlashRoutine(Color.white, 0.5f));
             
             yield return new WaitForSeconds(0.4f);
 }
