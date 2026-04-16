@@ -10,6 +10,7 @@ public class GameOverScreenController : MonoBehaviour
 
     private VisualElement blackout;
     private VisualElement root;
+    private Label lossMessage;
     private bool isTransitioning = false;
 
     private void OnEnable()
@@ -21,6 +22,7 @@ public class GameOverScreenController : MonoBehaviour
 
         root = uiDocument.rootVisualElement;
         blackout = root.Q("blackout");
+        lossMessage = root.Q<Label>("loss-message");
 
         // Runtime check: Immediately make it black for the starting fade-in
         blackout?.AddToClassList("blackout--active");
@@ -29,7 +31,7 @@ public class GameOverScreenController : MonoBehaviour
         root.RegisterCallback<PointerDownEvent>(OnRootClicked);
 
         // Start Fade-In
-        StartCoroutine(FadeIn());
+        StartCoroutine(FadeInSequence());
     }
 
     private void OnDisable()
@@ -40,12 +42,19 @@ public class GameOverScreenController : MonoBehaviour
         }
     }
 
-    private IEnumerator FadeIn()
+    private IEnumerator FadeInSequence()
     {
         // Wait a bit to ensure the UI has been painted at least once in its initial state.
-        // This ensures the transition from opaque to transparent is correctly triggered.
         yield return new WaitForSeconds(0.1f);
+        
+        // Start Fade-In
         blackout?.RemoveFromClassList("blackout--active");
+        
+        // Wait for blackout fade-in to finish (0.8s) before showing message
+        yield return new WaitForSeconds(0.8f);
+        
+        // Show loss message with a scale-up animation
+        lossMessage?.AddToClassList("loss-message--visible");
     }
 
     private void OnRootClicked(PointerDownEvent evt)

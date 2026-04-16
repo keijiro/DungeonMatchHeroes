@@ -28,6 +28,26 @@
     -unity-text-outline-color: black;
 }
 
+.loss-message {
+    color: rgb(220, 20, 60);
+    font-size: 80px;
+    -unity-font-style: bold;
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.9);
+    margin-bottom: 20px;
+    -unity-text-outline-width: 2px;
+    -unity-text-outline-color: black;
+    transition-property: opacity, scale;
+    transition-duration: 2s;
+    transition-timing-function: ease-out-back;
+    opacity: 0;
+    scale: 0.8;
+}
+
+.loss-message--visible {
+    opacity: 1;
+    scale: 1;
+}
+
 .blackout {
     position: absolute;
     left: 0;
@@ -35,9 +55,8 @@
     width: 100%;
     height: 100%;
     background-color: black;
-    /* デフォルトは透明・非干渉にして作業しやすくする */
+    /* デフォルトは透明にして作業しやすくする */
     opacity: 0;
-    picking-mode: Ignore;
     transition-property: opacity;
     transition-duration: 0.8s;
     transition-timing-function: ease-in-out;
@@ -45,5 +64,4 @@
 
 .blackout--active {
     opacity: 1;
-    picking-mode: Position;
 }
