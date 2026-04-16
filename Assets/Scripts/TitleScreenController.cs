@@ -57,8 +57,8 @@ public class TitleScreenController : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         
         root.Q("background")?.RemoveFromClassList("background--intro");
-        root.Q("heros")?.RemoveFromClassList("heros--intro");
-        root.Q("heros-shadow")?.RemoveFromClassList("heros--intro");
+        root.Q("heroes")?.RemoveFromClassList("heroes--intro");
+        root.Q("heroes-shadow")?.RemoveFromClassList("heroes--intro");
         root.Q("logo")?.RemoveFromClassList("logo--intro");
         }
 

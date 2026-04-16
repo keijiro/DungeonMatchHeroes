@@ -2,8 +2,8 @@
     <Style src="project://database/Assets/UI/Title.uss" />
     <ui:VisualElement name="root" class="screen">
         <ui:VisualElement name="background" class="background background--intro" picking-mode="Ignore" />
-        <ui:VisualElement name="heros-shadow" class="heros heros-shadow heros--intro" picking-mode="Ignore" />
-        <ui:VisualElement name="heros" class="heros heros--intro" picking-mode="Ignore" />
+        <ui:VisualElement name="heroes-shadow" class="heroes heroes-shadow heroes--intro" picking-mode="Ignore" />
+        <ui:VisualElement name="heroes" class="heroes heroes--intro" picking-mode="Ignore" />
         <ui:VisualElement name="logo" class="logo logo--intro" picking-mode="Ignore" />
         <ui:VisualElement name="message-container" class="message-container" picking-mode="Ignore">
             <ui:Label name="start-message" text="CLICK TO START ADVENTURE" class="start-message" />

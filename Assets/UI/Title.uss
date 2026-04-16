@@ -29,11 +29,11 @@
     scale: 1.25;
 }
 
-.heros {
+.heroes {
     position: absolute;
     bottom: -30px;
     height: 100%;
-    background-image: url("project://database/Assets/Sprites/UI/Title_Heros.png?fileID=21300000&guid=22d07c886da6e436787144dacc547fb6&type=3#Title_Heros");
+    background-image: url("project://database/Assets/Sprites/UI/Title_Heroes.png?fileID=21300000&guid=22d07c886da6e436787144dacc547fb6&type=3#Title_Heroes");
     -unity-background-scale-mode: scale-to-fit;
     right: -10px;
     aspect-ratio: 1;
@@ -44,12 +44,12 @@
     translate: 0 0;
 }
 
-.heros--intro {
+.heroes--intro {
     opacity: 0;
     translate: 200px 0;
 }
 
-.heros-shadow {
+.heroes-shadow {
     -unity-background-image-tint-color: rgb(60, 0, 31);
     margin-right: -30px;
     margin-bottom: -15px;
