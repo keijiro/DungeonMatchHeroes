@@ -572,7 +572,8 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
 
     private IEnumerator SpawnWaveWithDelay()
     {
-yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(1.0f);
+        yield return StartCoroutine(ShowCenterMessageRoutine("MONSTERS APPROACH!", new Color(1f, 0.4f, 0.2f)));
         yield return StartCoroutine(SpawnWaveSequentially());
     }
 
