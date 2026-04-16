@@ -47,11 +47,11 @@ public class GameOverScreenController : MonoBehaviour
         // Wait a bit to ensure the UI has been painted at least once in its initial state.
         yield return new WaitForSeconds(0.1f);
         
-        // Start Fade-In
+        // Start Fade-In (0.8s transition)
         blackout?.RemoveFromClassList("blackout--active");
         
-        // Wait for blackout fade-in to finish (0.8s) before showing message
-        yield return new WaitForSeconds(0.8f);
+        // Start showing message earlier (e.g. 0.2s after fade start)
+        yield return new WaitForSeconds(0.2f);
         
         // Show loss message with a scale-up animation
         lossMessage?.AddToClassList("loss-message--visible");
