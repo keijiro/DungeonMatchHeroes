@@ -713,13 +713,13 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
             
             ActiveEnemies.Add(unit);
             
-            // White flash
+            // White fade flash
             CharacterVisuals v = unit.GetComponent<CharacterVisuals>();
             if (v == null) v = unit.gameObject.AddComponent<CharacterVisuals>();
-            StartCoroutine(v.FlashRoutine(Color.white, 0.3f));
+            StartCoroutine(v.FadeFlashRoutine(Color.white, 1.0f));
             
             yield return new WaitForSeconds(0.4f);
-        }
+}
         Debug.Log($"New wave spawned sequentially: {count} enemies.");
     }
 }

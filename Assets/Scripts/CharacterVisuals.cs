@@ -160,6 +160,33 @@ sr = GetComponent<SpriteRenderer>();
         currentFlashCoroutine = null;
     }
 
+    public IEnumerator FadeFlashRoutine(Color color, float duration)
+    {
+        if (sr == null || overlayMaterial == null) yield break;
+
+        sr.sharedMaterial = overlayMaterial;
+        float elapsed = 0f;
+        float baseAlpha = color.a;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            // Smoothly fade out the overlay
+            float alpha = Mathf.Lerp(baseAlpha, 0f, t);
+
+            sr.GetPropertyBlock(mpb);
+            Color c = color;
+            c.a = alpha;
+            mpb.SetColor(_OverlayColorId, c);
+            sr.SetPropertyBlock(mpb);
+            yield return null;
+        }
+
+        ResetMaterial();
+        currentFlashCoroutine = null;
+    }
+
     public IEnumerator ShakeRoutine(float amount, float duration)
     {
         float elapsed = 0f;
