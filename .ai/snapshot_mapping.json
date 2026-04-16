@@ -2117,6 +2117,12 @@
       "conversation_id": "cba3a0a6-2dff-4773-8a83-c05134f0fae9",
       "content": "プランが承認されました。実装を開始してもよろしいでしょうか？「はい」と仰っていただければ、計画に沿って実装を進めます。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_2",
+      "conversation_id": "cba3a0a6-2dff-4773-8a83-c05134f0fae9",
+      "content": "進めてください",
+      "snapshot_message_type": 0
     }
   ]
 }
