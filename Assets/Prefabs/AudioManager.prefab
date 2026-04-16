@@ -80,7 +80,7 @@ MonoBehaviour:
     UseReverb: 0
   - Type: 11
     Clip: {fileID: 8300000, guid: 5dd70754582214c02b81c609f8e85f99, type: 3}
-    UseReverb: 0
+    UseReverb: 1
   - Type: 12
     Clip: {fileID: 8300000, guid: e3688ced761db46ce9a4c592de4d3fb9, type: 3}
     UseReverb: 0
