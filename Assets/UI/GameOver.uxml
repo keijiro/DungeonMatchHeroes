@@ -1,6 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/GameOver.uss" />
     <ui:VisualElement name="root" class="screen" picking-mode="Position">
+        <ui:VisualElement name="vignette" class="vignette" picking-mode="Ignore" />
         <ui:Label name="loss-message" text="YOUR ADVENTURE ENDS HERE" class="loss-message" picking-mode="Ignore" />
         <ui:VisualElement name="hero-image" class="hero-image" picking-mode="Ignore" />
         <ui:Label name="prompt-label" text="CLICK TO RETURN TO TITLE" class="prompt-label" picking-mode="Ignore" />
