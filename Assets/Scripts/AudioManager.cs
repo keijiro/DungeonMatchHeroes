@@ -20,7 +20,8 @@ public enum SEType
     EnemyDie,
     ShieldBlock,
     Select,
-    Title
+    Title,
+    GameOver2
     }
 
 [System.Serializable]

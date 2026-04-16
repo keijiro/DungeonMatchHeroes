@@ -625,7 +625,11 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         if (CurrentHP <= 0)
         {
             CurrentHP = 0;
-            if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.GameOver);
+            if (AudioManager.Instance != null)
+            {
+                AudioManager.Instance.PlaySE(SEType.GameOver);
+                AudioManager.Instance.PlaySE(SEType.GameOver2);
+            }
             Debug.Log("Game Over (Party Wiped) - Transitioning to Game Over scene.");
             yield return new WaitForSeconds(1.0f);
             SceneManager.LoadScene("GameOver");
