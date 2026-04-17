@@ -60,6 +60,7 @@ public class CombatManager : MonoBehaviour
     private VisualElement notificationLayer;
 
     [Header("Treasure Chest Settings")]
+    [Range(0f, 1f)] public float TreasureSpawnChance = 0.5f;
     public Sprite ChestClosedSprite;
     public Sprite ChestOpenSprite;
     private VisualElement treasureOverlay;
@@ -587,8 +588,8 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         yield return new WaitForSeconds(0.8f);
         yield return StartCoroutine(ShowCenterMessageRoutine("VICTORY!", new Color(1f, 0.8f, 0.2f)));
         
-        // 50% chance for treasure chest
-        if (Random.value < 0.5f)
+        // Use configured spawn chance
+        if (Random.value < TreasureSpawnChance)
         {
             yield return StartCoroutine(TreasureChestEventRoutine());
         }

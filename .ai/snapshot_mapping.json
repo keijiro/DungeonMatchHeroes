@@ -2279,6 +2279,12 @@
       "conversation_id": "92939ee3-1ac2-4975-bd11-1d42dfbafbcb",
       "content": "宝箱の出現率は、`Assets/Scripts/CombatManager.cs` 内の `HandleWaveClear` というメソッドの中で定義されています。\n\n具体的には、以下のコード箇所です（578行目付近）：\n\n```csharp\nprivate IEnumerator HandleWaveClear()\n{\n    yield return new WaitForSeconds(0.8f);\n    yield return StartCoroutine(ShowCenterMessageRoutine(\"VICTORY!\", new Color(1f, 0.8f, 0.2f)));\n    \n    // 50% chance for treasure chest\n    if (Random.value < 0.5f) // ここで確率を決定しています\n    {\n        yield return StartCoroutine(TreasureChestEventRoutine());\n    }\n\n    yield return StartCoroutine(SpawnWaveWithDelay());\n}\n```\n\n`Random.value` は 0.0 から 1.0 の間のランダムな値を返すため、`0.5f` と比較することで **50%** の確率を実現しています。\n\nもしこの確率を変更したい場合は、この数値を調整してください。\n*   **30%** にしたい場合： `0.3f`\n*   **100%**（必ず出す）にしたい場合： `1.0f`（または条件文を外す）",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "7fe77e26-2c6d-4ea9-8434-2d9d577d911c",
+      "conversation_id": "92939ee3-1ac2-4975-bd11-1d42dfbafbcb",
+      "content": "宝箱の出現確率を Inspector 上で調整できるように変更しました。\n\n### 変更内容：\n*   `CombatManager.cs` の `Treasure Chest Settings` セクションに `TreasureSpawnChance` という項目を追加しました。\n*   `[Range(0f, 1f)]` 属性を付けているため、Inspector 上のスライダーで **0.0 (0%) から 1.0 (100%)** の範囲で直感的に調整可能です。\n*   初期値はこれまでの実装通り `0.5` (50%) に設定されています。\n\nUnity エディタ上の `Combat Manager` コンポーネントを確認し、お好みの確率に調整してください。",
+      "snapshot_message_type": 1
     }
   ]
 }
