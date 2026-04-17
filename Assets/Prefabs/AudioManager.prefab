@@ -108,6 +108,9 @@ MonoBehaviour:
   - Type: 20
     Clip: {fileID: 8300000, guid: 00495e2c8d0364dcc966f05a684f8b32, type: 3}
     UseReverb: 1
+  - Type: 21
+    Clip: {fileID: 8300000, guid: 9655559ad80174f49970d23bde9c5084, type: 3}
+    UseReverb: 1
   poolSize: 16
   bypassGroup: {fileID: -8087892221537202930, guid: f38a8174a59834c24997849367770eb9, type: 2}
   reverbGroup: {fileID: -6341384464240216204, guid: f38a8174a59834c24997849367770eb9, type: 2}

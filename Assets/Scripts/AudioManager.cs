@@ -24,7 +24,8 @@ public enum SEType
     GameOver2,
     Approach,
     Victory,
-    ChestOpen
+    ChestOpen,
+    LevelUp
     }
 
 [System.Serializable]

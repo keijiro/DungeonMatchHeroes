@@ -186,25 +186,26 @@ public class CombatManager : MonoBehaviour
         
         if (AudioManager.Instance != null)
         {
-            AudioManager.Instance.PlaySE(SEType.Victory);
+            AudioManager.Instance.PlaySE(SEType.LevelUp);
         }
 
         ShowLevelUpPopup();
         UpdateUI();
-    }
+        }
 
-    private void ShowLevelUpPopup()
-    {
+        private void ShowLevelUpPopup()
+        {
         StartCoroutine(ShowLevelUpPopupRoutine());
-    }
+        }
 
-    private IEnumerator ShowLevelUpPopupRoutine()
-    {
+        private IEnumerator ShowLevelUpPopupRoutine()
+        {
         if (HUD == null) yield break;
         var root = HUD.rootVisualElement;
 
         Label label = new Label("LEVEL UP!");
         label.AddToClassList("center-message");
+        label.AddToClassList("level-up-message");
         label.style.color = Color.cyan;
         root.Add(label);
 
@@ -218,7 +219,7 @@ public class CombatManager : MonoBehaviour
         label.AddToClassList("center-message--hiding");
         yield return new WaitForSeconds(0.4f); // Wait for fade out transition
         root.Remove(label);
-    }
+        }
 
     private void UpdateUI()
     {
