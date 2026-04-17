@@ -307,9 +307,9 @@ yield return null;
                 break;
             case GridManager.BlockType.Key:
                 action.Type = CombatActionType.PlayerKey;
-                action.Value = KeyBonusExp; 
+                action.Value = effectiveCount * BaseExp;
                 break;
-        }
+            }
 
         // Show UI notification
         ShowActionNotification(action.Type, action.Value, worldPos);
@@ -357,10 +357,17 @@ yield return null;
                 color = Color.cyan;
                 break;
             case CombatActionType.PlayerKey:
-                text = $"Key! +{value} EXP";
+                if (!HasKey)
+                {
+                    text = "Key Obtained!";
+                }
+                else
+                {
+                    text = $"Key! +{value} EXP";
+                }
                 color = Color.yellow;
                 break;
-        }
+            }
 
         label.text = text;
         label.style.color = color;
@@ -550,7 +557,10 @@ Debug.Log($"Gained {action.Value} Shield. Total: {Shield}");
                     HasKey = true;
                     Debug.Log("Key Obtained!");
                 }
-                AddExperience(action.Value);
+                else
+                {
+                    AddExperience(action.Value);
+                }
                 yield return new WaitForSeconds(0.3f);
                 break;
             case CombatActionType.EnemyAttack:
