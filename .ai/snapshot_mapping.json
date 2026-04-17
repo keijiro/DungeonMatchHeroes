@@ -2231,6 +2231,12 @@
       "conversation_id": "889eff8d-888a-40ae-96f5-eaf897007fc6",
       "content": "1. については = default で警告を抑制し、 2., 3. については削除してください。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "INT_3",
+      "conversation_id": "889eff8d-888a-40ae-96f5-eaf897007fc6",
+      "content": "1. については = default で警告を抑制し、 2., 3. については削除してください。",
+      "snapshot_message_type": 0
     }
   ]
 }
