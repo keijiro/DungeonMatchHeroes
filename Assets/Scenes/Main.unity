@@ -1637,6 +1637,7 @@ MonoBehaviour:
   - {fileID: 149357444}
   ActiveEnemies: []
   HUD: {fileID: 1879991500}
+  TreasureSpawnChance: 1
   ChestClosedSprite: {fileID: 21300000, guid: a70874bb16c374cdda19dd9b3b6788a3, type: 3}
   ChestOpenSprite: {fileID: 21300000, guid: 2e0bf235796a9477ba0af902f1759527, type: 3}
   FighterAnimator: {fileID: 0}
