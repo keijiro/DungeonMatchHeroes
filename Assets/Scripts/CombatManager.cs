@@ -626,9 +626,9 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
             // Play elegant harp SE
             if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.ChestOpen);
             
-            // Fade out current sprite
+            // Fade out current sprite (Closed)
             treasureImage.style.opacity = 0;
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.3f); // Wait for fade out to complete
 
             if (ChestOpenSprite != null)
                 treasureImage.style.backgroundImage = new StyleBackground(ChestOpenSprite);
