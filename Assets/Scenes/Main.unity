@@ -1612,6 +1612,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c18af56757964221a541711f89ba819, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CombatManager
+  Level: 1
   MaxHP: 100
   CurrentHP: 0
   Shield: 0
