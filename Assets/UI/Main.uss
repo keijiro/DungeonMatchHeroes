@@ -66,6 +66,24 @@
 }
 
 /* Notification Styles */
+.hud-fixed-size {
+    width: 450px;
+    height: 85px;
+    margin-left: 0;
+}
+
+.others-row {
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-top: 5px;
+}
+
+.stat-sub-item {
+    flex-direction: row;
+    align-items: center;
+    margin-right: 25px;
+}
+
 .notification-layer {
     position: absolute;
     top: 0;
