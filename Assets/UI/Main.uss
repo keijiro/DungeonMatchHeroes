@@ -48,7 +48,7 @@
     border-radius: 3px;
     margin-right: 10px;
     overflow: hidden;
-    margin-top: 6px; /* Offset for font baseline */
+    margin-top: 4px; /* Move slightly up (was 6px) */
 }
 
 .progress-bar-fill {
@@ -70,7 +70,7 @@
 
 /* Notification Styles */
 .hud-fixed-size {
-    width: 620px;
+    width: 500px;
     height: 100px;
     margin-left: 0;
 }
