@@ -620,16 +620,14 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
 
         yield return new WaitForSeconds(1.0f);
 
-        // Fade out dialogue box before changing message
-        if (dialogueBox != null)
-        {
-            dialogueBox.style.opacity = 0;
-            yield return new WaitForSeconds(0.3f);
-        }
-
         if (HasKey)
         {
-            // Opening success
+            // Sync fade out for both dialogue box and closed chest
+            if (dialogueBox != null) dialogueBox.style.opacity = 0;
+            treasureImage.style.opacity = 0;
+            yield return new WaitForSeconds(0.3f);
+
+            // Opening success logic
             HasKey = false;
             Experience += KeyBonusExp;
             UpdateUI();
@@ -637,23 +635,23 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
             // Play elegant harp SE
             if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.ChestOpen);
             
-            // Fade out current sprite (Closed)
-            treasureImage.style.opacity = 0;
-            yield return new WaitForSeconds(0.3f); // Wait for fade out to complete
-
+            // Switch sprite to open state
             if (ChestOpenSprite != null)
                 treasureImage.style.backgroundImage = new StyleBackground(ChestOpenSprite);
             
-            // Fade in opened sprite and dialogue box with new message
-            treasureImage.style.opacity = 1;
+            // Sync fade in for both dialogue box (with new message) and open chest
             treasureMessage.text = "Unlocked with the key!\nBonus EXP obtained!";
+            treasureImage.style.opacity = 1;
             if (dialogueBox != null) dialogueBox.style.opacity = 1;
             
             yield return new WaitForSeconds(2.5f);
         }
         else
         {
-            // Opening failure - Change text and fade back in
+            // Opening failure - Only fade the dialogue box
+            if (dialogueBox != null) dialogueBox.style.opacity = 0;
+            yield return new WaitForSeconds(0.3f);
+
             treasureMessage.text = "No key to open it...";
             if (dialogueBox != null) dialogueBox.style.opacity = 1;
             yield return new WaitForSeconds(1.5f);
