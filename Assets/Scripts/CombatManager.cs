@@ -65,6 +65,7 @@ public class CombatManager : MonoBehaviour
     public Sprite ChestOpenSprite;
     private VisualElement treasureOverlay;
     private VisualElement treasureImage;
+    private VisualElement dialogueBox;
     private Label treasureMessage;
 
     [Header("Player Animators")]
@@ -132,6 +133,7 @@ public class CombatManager : MonoBehaviour
         notificationLayer = root.Q<VisualElement>("notification-layer");
         treasureOverlay = root.Q<VisualElement>("treasure-overlay");
         treasureImage = root.Q<VisualElement>("treasure-chest-image");
+        dialogueBox = root.Q<VisualElement>("dialogue-box");
         treasureMessage = root.Q<Label>("treasure-message");
         
         UpdateUI();
@@ -609,7 +611,7 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         }
             
         treasureMessage.text = "You found a chest!";
-        treasureMessage.style.opacity = 1;
+        if (dialogueBox != null) dialogueBox.style.opacity = 1;
         
         // Show overlay
         treasureOverlay.style.display = DisplayStyle.Flex;
@@ -618,9 +620,12 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
 
         yield return new WaitForSeconds(1.0f);
 
-        // Fade out message before changing
-        treasureMessage.style.opacity = 0;
-        yield return new WaitForSeconds(0.3f);
+        // Fade out dialogue box before changing message
+        if (dialogueBox != null)
+        {
+            dialogueBox.style.opacity = 0;
+            yield return new WaitForSeconds(0.3f);
+        }
 
         if (HasKey)
         {
@@ -639,10 +644,10 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
             if (ChestOpenSprite != null)
                 treasureImage.style.backgroundImage = new StyleBackground(ChestOpenSprite);
             
-            // Fade in opened sprite and new message
+            // Fade in opened sprite and dialogue box with new message
             treasureImage.style.opacity = 1;
             treasureMessage.text = "Unlocked with the key!\nBonus EXP obtained!";
-            treasureMessage.style.opacity = 1;
+            if (dialogueBox != null) dialogueBox.style.opacity = 1;
             
             yield return new WaitForSeconds(2.5f);
         }
@@ -650,7 +655,7 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         {
             // Opening failure - Change text and fade back in
             treasureMessage.text = "No key to open it...";
-            treasureMessage.style.opacity = 1;
+            if (dialogueBox != null) dialogueBox.style.opacity = 1;
             yield return new WaitForSeconds(1.5f);
         }
 

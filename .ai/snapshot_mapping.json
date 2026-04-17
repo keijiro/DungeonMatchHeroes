@@ -2333,6 +2333,12 @@
       "conversation_id": "92939ee3-1ac2-4975-bd11-1d42dfbafbcb",
       "content": "宝箱イベントの終了時に、表示がパッと消えるのではなく、滑らかにフェードアウトするように修正しました。\n\n### 修正内容：\n1.  **USSの修正**:\n    *   `pointer-events` など UITK でサポートされていないプロパティを整理し、フェードの基本状態を `opacity: 0;`、表示状態を `opacity: 1;` に設定しました。\n2.  **スクリプト (`CombatManager.cs`) の修正**:\n    *   **開始時**: `display = DisplayStyle.Flex` を設定してからフェードインを開始するようにし、確実に要素が表示されるようにしました。\n    *   **終了時**: フェードアウト用のクラスを削除した後、`yield return new WaitForSeconds(0.5f)` でフェードが完了するのを待ってから `display = DisplayStyle.None` を設定するようにしました。\n\nこれにより、背景の暗転、宝箱、メッセージパネルのすべてが 0.5 秒かけて美しくフェードアウトし、パズル画面へと戻るようになります。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "6e952a59-c864-480a-8240-49de482ce3cd",
+      "conversation_id": "92939ee3-1ac2-4975-bd11-1d42dfbafbcb",
+      "content": "メッセージの切り替え時に、テキストだけでなく**メッセージパネル全体（dialogue-box）がフェードアウト・フェードインする**ように修正しました。\n\n### 変更点：\n*   **USS**: `.dialogue-box` クラスに `transition-property: opacity` を追加しました。また、文字だけのフェードと重複しないよう `.dialogue-text` の遷移設定を整理しました。\n*   **CombatManager.cs**: メッセージを更新する際、`dialogueBox.style.opacity` を制御することで、パネルごと滑らかに消えて、新しいメッセージと共に再び現れる演出に変更しました。\n\nこれで、メッセージの切り替わりがより視覚的に分かりやすく、かつリッチな印象になります。",
+      "snapshot_message_type": 1
     }
   ]
 }
