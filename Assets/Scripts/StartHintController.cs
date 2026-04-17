@@ -5,7 +5,6 @@ using System.Collections;
 public class StartHintController : MonoBehaviour
 {
     [SerializeField] private UIDocument hudDocument;
-    [SerializeField] private float displayDuration = 4.0f;
     [SerializeField] private float fadeDuration = 0.5f;
     [SerializeField] private float oscillationAmplitude = 15.0f;
     [SerializeField] private float oscillationSpeed = 3.0f;

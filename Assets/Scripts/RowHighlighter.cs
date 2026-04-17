@@ -5,7 +5,6 @@ public class RowHighlighter : MonoBehaviour
     [SerializeField] private GridManager gridManager;
     [SerializeField] private Material pulseMaterial;
     [SerializeField] private Color pulseColor = Color.white;
-    [SerializeField, Range(1f, 10f)] private float pulseSpeed = 4f;
     [SerializeField, Range(0f, 1f)] private float maxAlpha = 0.5f;
 
     private SpriteRenderer[] highlightRenderers = new SpriteRenderer[GridManager.GridWidth];

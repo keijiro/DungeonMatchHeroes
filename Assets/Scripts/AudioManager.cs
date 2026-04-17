@@ -38,7 +38,7 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance { get; private set; }
 
-    [SerializeField] private SEClip[] clips;
+    [SerializeField] private SEClip[] clips = default;
     [SerializeField] private int poolSize = 16;
     [SerializeField] private AudioMixerGroup bypassGroup;
     [SerializeField] private AudioMixerGroup reverbGroup;
