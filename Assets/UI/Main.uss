@@ -24,7 +24,7 @@
 .stat-row {
     flex-direction: row;
     align-items: center;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
 }
 
 .stat-label {
@@ -32,20 +32,23 @@
     -unity-font-style: bold;
     font-size: 27px;
     margin-right: 10px;
+    -unity-text-align: middle-left;
 }
 
 .stat-value {
     color: white;
     font-size: 27px;
+    -unity-text-align: middle-left;
 }
 
 .progress-bar-bg {
-    width: 150px;
-    height: 15px;
+    width: 220px;
+    height: 18px;
     background-color: #333;
     border-radius: 3px;
     margin-right: 10px;
     overflow: hidden;
+    margin-top: 6px; /* Offset for font baseline */
 }
 
 .progress-bar-fill {
@@ -67,8 +70,8 @@
 
 /* Notification Styles */
 .hud-fixed-size {
-    width: 450px;
-    height: 85px;
+    width: 620px;
+    height: 100px;
     margin-left: 0;
 }
 
