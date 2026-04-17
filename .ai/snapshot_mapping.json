@@ -2429,6 +2429,12 @@
       "conversation_id": "8d52f079-cfe9-4bbb-a8db-9ec2f953ef15",
       "content": "SE の設定とメッセージ位置の調整が完了しました。\n\n### 変更点\n- **オーディオの設定**:\n    - `SEType` 列挙型に `LevelUp` を追加。\n    - `AudioManager` プレハブの `clips` リストに、提供いただいた `SE_LevelUp.wav` を登録しました。\n    - レベルアップ時に `SEType.LevelUp` が再生されるように変更しました。\n- **UI の調整**:\n    - `Main.uss` に `.level-up-message` クラスを新設し、画面下から30%の位置（`top: 70%`）に表示されるように設定しました。\n    - レベルアップ時のポップアップにこの新しいスタイルを適用しました。\n\nこれで、レベルアップ時に専用の SE が流れ、指定された位置にメッセージが表示されるようになっています。作業を終了します。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "c2bf9f8a-b6d9-4bc5-8d26-b240a8d1fbe9",
+      "conversation_id": "8d52f079-cfe9-4bbb-a8db-9ec2f953ef15",
+      "content": "現在の実装では、鍵（Key）ブロックをマッチさせるたびに、**鍵の所持状態に関わらず常に経験値が入る**ようになっています。\n\n具体的には `CombatManager.cs` の以下のロジックに基づいています：\n\n```csharp\ncase CombatActionType.PlayerKey:\n    if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.Key);\n    if (!HasKey)\n    {\n        HasKey = true;\n        Debug.Log(\"Key Obtained!\");\n    }\n    // 常に経験値を加算（action.Value = 15）\n    AddExperience(action.Value); \n    yield return new WaitForSeconds(0.3f);\n    break;\n```\n\nこのため、鍵を既に持っている状態（`HasKey` が true）でさらに鍵をマッチさせた場合でも、15 XP が加算されます。\n\nもし「初めて鍵を拾った時だけ経験値が入る」あるいは「既に鍵を持っている場合に拾ったらボーナスとして経験値が入る」といった特定の条件に変更したい場合は、この `if (!HasKey)` の中身や条件を調整することが可能です。現状は「鍵ブロックを消すこと自体の報酬」として常に経験値が入る挙動になっています。",
+      "snapshot_message_type": 1
     }
   ]
 }
