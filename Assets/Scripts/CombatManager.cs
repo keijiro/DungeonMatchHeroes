@@ -59,6 +59,13 @@ public class CombatManager : MonoBehaviour
     private Label keyLabel;
     private VisualElement notificationLayer;
 
+    [Header("Treasure Chest Settings")]
+    public Sprite ChestClosedSprite;
+    public Sprite ChestOpenSprite;
+    private VisualElement treasureOverlay;
+    private VisualElement treasureImage;
+    private Label treasureMessage;
+
     [Header("Player Animators")]
     public Animator FighterAnimator;
     public Animator MageAnimator;
@@ -122,6 +129,9 @@ public class CombatManager : MonoBehaviour
         expText = root.Q<Label>("exp-text");
         keyLabel = root.Q<Label>("key-label");
         notificationLayer = root.Q<VisualElement>("notification-layer");
+        treasureOverlay = root.Q<VisualElement>("treasure-overlay");
+        treasureImage = root.Q<VisualElement>("treasure-chest-image");
+        treasureMessage = root.Q<Label>("treasure-message");
         
         UpdateUI();
     }
@@ -576,7 +586,58 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
     {
         yield return new WaitForSeconds(0.8f);
         yield return StartCoroutine(ShowCenterMessageRoutine("VICTORY!", new Color(1f, 0.8f, 0.2f)));
+        
+        // 50% chance for treasure chest
+        if (Random.value < 0.5f)
+        {
+            yield return StartCoroutine(TreasureChestEventRoutine());
+        }
+
         yield return StartCoroutine(SpawnWaveWithDelay());
+    }
+
+    private IEnumerator TreasureChestEventRoutine()
+    {
+        if (treasureOverlay == null) yield break;
+
+        // Reset state
+        if (ChestClosedSprite != null)
+            treasureImage.style.backgroundImage = new StyleBackground(ChestClosedSprite);
+            
+        treasureMessage.text = "You found a treasure chest!";
+        
+        // Show overlay
+        treasureOverlay.AddToClassList("treasure-overlay--visible");
+        yield return new WaitForSeconds(0.5f); // Fade in time
+
+        yield return new WaitForSeconds(1.0f);
+
+        if (HasKey)
+        {
+            // Opening success
+            HasKey = false;
+            Experience += KeyBonusExp;
+            UpdateUI();
+
+            if (AudioManager.Instance != null) AudioManager.Instance.PlaySE(SEType.Victory);
+            
+            if (ChestOpenSprite != null)
+                treasureImage.style.backgroundImage = new StyleBackground(ChestOpenSprite);
+                
+            treasureMessage.text = "The chest was opened with the key!\nYou gained bonus EXP!";
+            
+            yield return new WaitForSeconds(2.5f);
+        }
+        else
+        {
+            // Opening failure
+            treasureMessage.text = "You don't have a key to open it...";
+            yield return new WaitForSeconds(1.5f);
+        }
+
+        // Hide overlay
+        treasureOverlay.RemoveFromClassList("treasure-overlay--visible");
+        yield return new WaitForSeconds(0.5f); // Fade out time
     }
 
     private IEnumerator SpawnWaveWithDelay()

@@ -1059,7 +1059,6 @@ MonoBehaviour:
   gridManager: {fileID: 1147836621}
   pulseMaterial: {fileID: 2100000, guid: c92228ecd3acf43d7b250ec95ee9a523, type: 2}
   pulseColor: {r: 1, g: 1, b: 0.5, a: 0.5}
-  pulseSpeed: 4
   maxAlpha: 0.5
 --- !u!1 &1158944844
 GameObject:
@@ -1638,6 +1637,8 @@ MonoBehaviour:
   - {fileID: 149357444}
   ActiveEnemies: []
   HUD: {fileID: 1879991500}
+  ChestClosedSprite: {fileID: 21300000, guid: a70874bb16c374cdda19dd9b3b6788a3, type: 3}
+  ChestOpenSprite: {fileID: 21300000, guid: 2e0bf235796a9477ba0af902f1759527, type: 3}
   FighterAnimator: {fileID: 0}
   MageAnimator: {fileID: 0}
   TankAnimator: {fileID: 0}
@@ -1674,7 +1675,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StartHintController
   hudDocument: {fileID: 1879991500}
-  displayDuration: 4
   fadeDuration: 0.5
   oscillationAmplitude: 15
   oscillationSpeed: 3

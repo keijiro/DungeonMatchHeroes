@@ -6,6 +6,12 @@
             <ui:Label name="start-hint" text="Click bottom row to destroy blocks!" class="start-hint" />
             <ui:VisualElement name="hint-notch" class="hint-notch" />
         </ui:VisualElement>
+<ui:VisualElement name="treasure-overlay" class="treasure-overlay" picking-mode="Ignore">
+    <ui:VisualElement name="treasure-chest-image" class="treasure-chest-image" />
+    <ui:VisualElement name="dialogue-box" class="dialogue-box">
+        <ui:Label name="treasure-message" text="You found a treasure chest!" class="dialogue-text" />
+    </ui:VisualElement>
+</ui:VisualElement>
 <ui:VisualElement name="hud" class="hud-bottom">
 <ui:VisualElement name="stats-left" class="stats-group">
                 <ui:VisualElement class="stat-row">
