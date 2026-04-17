@@ -21,7 +21,9 @@ public enum SEType
     ShieldBlock,
     Select,
     Title,
-    GameOver2
+    GameOver2,
+    Approach,
+    Victory
     }
 
 [System.Serializable]

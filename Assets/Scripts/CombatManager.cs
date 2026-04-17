@@ -154,8 +154,15 @@ public class CombatManager : MonoBehaviour
         label.style.color = color;
         root.Add(label);
 
+        // Play SE based on text
+        if (AudioManager.Instance != null)
+        {
+            if (text.Contains("MONSTERS")) AudioManager.Instance.PlaySE(SEType.Approach);
+            else if (text.Contains("VICTORY")) AudioManager.Instance.PlaySE(SEType.Victory);
+        }
+
         // Small delay to allow UITK to pick up the initial state for transition
-        yield return null;
+yield return null;
         label.AddToClassList("center-message--visible");
 
         yield return new WaitForSeconds(1.5f);

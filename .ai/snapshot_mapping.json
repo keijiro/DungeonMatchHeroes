@@ -2207,6 +2207,12 @@
       "conversation_id": "cba3a0a6-2dff-4773-8a83-c05134f0fae9",
       "content": "\"VICTORY\" メッセージが表示されるタイミングを 0.8 秒遅らせるように調整しました。\nこれにより、最後の敵が倒された直後ではなく、少し間を置いてから勝利のメッセージが表示されるようになります。\n\n他に調整が必要な箇所はありますでしょうか？",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "f2c4a2e8-8a41-4b00-906e-9855e4f2dbd1",
+      "conversation_id": "cba3a0a6-2dff-4773-8a83-c05134f0fae9",
+      "content": "ご提示いただいたSEをそれぞれのメッセージが表示されるタイミングで鳴るように実装しました。\n\n### 実装内容\n1.  **AudioManagerの拡張**: `SEType` 列挙型に `Approach` と `Victory` を追加し、`AudioManager` プレハブに提供されたオーディオクリップ（`SE_Approach.wav`, `SE_Victory.wav`）を登録しました。\n2.  **SE再生のトリガー**: `CombatManager` のメッセージ表示ルーチン内で、表示されるテキストの内容に応じて適切なSEを再生するようにしました。\n    *   \"MONSTERS APPROACH!\" 表示時：`SE_Approach` を再生\n    *   \"VICTORY!\" 表示時：`SE_Victory` を再生\n\nこれにより、視覚的な演出と聴覚的なフィードバックが同期し、ゲームの進行がよりダイナミックに感じられるようになりました。\n\n他にご要望はありますか？",
+      "snapshot_message_type": 1
     }
   ]
 }
