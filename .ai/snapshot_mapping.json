@@ -2405,6 +2405,12 @@
       "conversation_id": "8d52f079-cfe9-4bbb-a8db-9ec2f953ef15",
       "content": "プランが承認されました。ありがとうございます。\n承認されたプラン（`Assets/Plans/level-up-system.md`）に基づき、レベルアップ要素の実装を開始してよろしいでしょうか？「はい」と答えていただければ、すぐに作業に移ります。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_6",
+      "conversation_id": "8d52f079-cfe9-4bbb-a8db-9ec2f953ef15",
+      "content": "はい！進めてください！",
+      "snapshot_message_type": 0
     }
   ]
 }
