@@ -609,6 +609,7 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         }
             
         treasureMessage.text = "You found a chest!";
+        treasureMessage.style.opacity = 1;
         
         // Show overlay
         treasureOverlay.style.display = DisplayStyle.Flex;
@@ -616,6 +617,10 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         yield return new WaitForSeconds(0.5f); // Fade in time
 
         yield return new WaitForSeconds(1.0f);
+
+        // Fade out message before changing
+        treasureMessage.style.opacity = 0;
+        yield return new WaitForSeconds(0.3f);
 
         if (HasKey)
         {
@@ -634,16 +639,18 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
             if (ChestOpenSprite != null)
                 treasureImage.style.backgroundImage = new StyleBackground(ChestOpenSprite);
             
-            // Fade in opened sprite
+            // Fade in opened sprite and new message
             treasureImage.style.opacity = 1;
             treasureMessage.text = "Unlocked with the key!\nBonus EXP obtained!";
+            treasureMessage.style.opacity = 1;
             
             yield return new WaitForSeconds(2.5f);
         }
         else
         {
-            // Opening failure
+            // Opening failure - Change text and fade back in
             treasureMessage.text = "No key to open it...";
+            treasureMessage.style.opacity = 1;
             yield return new WaitForSeconds(1.5f);
         }
 

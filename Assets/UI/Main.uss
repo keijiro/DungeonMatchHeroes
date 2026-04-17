@@ -263,5 +263,7 @@ text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.9);
     -unity-text-align: middle-center;
     -unity-font-definition: url("project://database/Assets/UI/Pirata_One/PirataOne-Regular SDF.asset");
     white-space: normal;
+    transition-property: opacity;
+    transition-duration: 0.3s;
     }
 
