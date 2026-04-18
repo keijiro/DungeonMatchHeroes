@@ -4,114 +4,72 @@ using UnityEditor;
 [CustomEditor(typeof(GameBalanceData))]
 public class GameBalanceDataEditor : Editor
 {
-    private int previewWave = 1;
+    private GUIStyle descriptionStyle;
+
+    private void OnEnable()
+    {
+        descriptionStyle = new GUIStyle(EditorStyles.miniLabel);
+        descriptionStyle.wordWrap = true;
+        descriptionStyle.normal.textColor = new Color(0.6f, 0.6f, 0.6f);
+    }
 
     public override void OnInspectorGUI()
     {
         GameBalanceData data = (GameBalanceData)target;
 
-        EditorGUI.BeginChangeCheck();
+        serializedObject.Update();
 
-        base.OnInspectorGUI();
-
-        EditorGUILayout.Space(20);
-        EditorGUILayout.LabelField("Simulation & Analysis", EditorStyles.boldLabel);
-
-        DrawPlayerProgressionTable(data);
-        EditorGUILayout.Space(10);
-        DrawMonsterAnalysis(data);
-        EditorGUILayout.Space(10);
-        DrawWaveSimulator(data);
-
-        if (EditorGUI.EndChangeCheck())
+        if (GUILayout.Button("Open Simulation Window", GUILayout.Height(30)))
         {
-            EditorUtility.SetDirty(data);
+            GameBalanceSimulationWindow.Open(data);
         }
-    }
 
-    private void DrawPlayerProgressionTable(GameBalanceData data)
-    {
-        EditorGUILayout.LabelField("Player Progression Preview", EditorStyles.boldLabel);
-        EditorGUILayout.HelpBox("Shows stats and EXP requirements for each level.", MessageType.Info);
+        EditorGUILayout.Space(10);
 
-        EditorGUILayout.BeginVertical("box");
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Lv", GUILayout.Width(30));
-        EditorGUILayout.LabelField("HP", GUILayout.Width(50));
-        EditorGUILayout.LabelField("ATK", GUILayout.Width(50));
-        EditorGUILayout.LabelField("Next Req", GUILayout.Width(70));
-        EditorGUILayout.LabelField("Gem EXP", GUILayout.Width(60));
-        EditorGUILayout.EndHorizontal();
-
-        for (int lv = 1; lv <= 15; lv++)
-        {
-            int hp = Mathf.RoundToInt(data.PlayerBaseHP + (lv - 1) * data.HPIncreasePerLevel);
-            int atk = data.PlayerBaseAttack + (lv - 1) * data.AttackIncreasePerLevel;
-            int nextReq = data.ExpBaseRequirement + (lv - 1) * data.ExpIncreasePerLevel;
-            int gemExp = Mathf.Max(1, nextReq / data.GemExpDivisor);
-
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(lv.ToString(), GUILayout.Width(30));
-            EditorGUILayout.LabelField(hp.ToString(), GUILayout.Width(50));
-            EditorGUILayout.LabelField(atk.ToString(), GUILayout.Width(50));
-            EditorGUILayout.LabelField(nextReq.ToString(), GUILayout.Width(70));
-            EditorGUILayout.LabelField(gemExp.ToString(), GUILayout.Width(60));
-            EditorGUILayout.EndHorizontal();
-        }
-        EditorGUILayout.EndVertical();
-    }
-
-    private void DrawMonsterAnalysis(GameBalanceData data)
-    {
-        EditorGUILayout.LabelField("Monster Combat Analysis (vs Lv 1 Player)", EditorStyles.boldLabel);
+        DrawFieldWithDescription("SkaDivisor", "お邪魔ブロック1個が何個の通常マッチとしてカウントされるか（3.0なら3個で1マッチ分）。");
         
-        int playerAtk = data.PlayerBaseAttack;
-        int playerHP = data.PlayerBaseHP;
+        EditorGUILayout.Space(10);
+        EditorGUILayout.LabelField("Player Scaling", EditorStyles.boldLabel);
+        DrawFieldWithDescription("PlayerBaseHP", "レベル1時点での最大ヒットポイント。");
+        DrawFieldWithDescription("PlayerBaseAttack", "レベル1時点での物理攻撃力。");
+        DrawFieldWithDescription("HPIncreasePerLevel", "レベルが1上がるごとに加算される最大HPの量。");
+        DrawFieldWithDescription("AttackIncreasePerLevel", "レベルが1上がるごとに加算される物理攻撃力の量。");
+        DrawFieldWithDescription("MagicAttackRatio", "物理攻撃力に対する魔法攻撃力の割合（0.33なら33%）。");
 
-        if (data.EnemyDefinitions == null || data.EnemyDefinitions.Count == 0)
-        {
-            EditorGUILayout.HelpBox("No enemies defined.", MessageType.Warning);
-            return;
-        }
+        EditorGUILayout.Space(10);
+        EditorGUILayout.LabelField("Experience Scaling", EditorStyles.boldLabel);
+        DrawFieldWithDescription("ExpBaseRequirement", "レベル1から2へ上がるために必要な経験値。");
+        DrawFieldWithDescription("ExpIncreasePerLevel", "レベルが上がるごとに必要経験値に加算される量。");
+        DrawFieldWithDescription("GemExpDivisor", "1レベル分の必要経験値をこの数で割った値がGem1個あたりのEXPになります。");
+        DrawFieldWithDescription("ChestExpDivisor", "1レベル分の必要経験値をこの数で割った値が宝箱1個あたりのEXPになります。");
 
-        foreach (var enemy in data.EnemyDefinitions)
-        {
-            if (string.IsNullOrEmpty(enemy.Name)) continue;
+        EditorGUILayout.Space(10);
+        EditorGUILayout.LabelField("Actions", EditorStyles.boldLabel);
+        DrawFieldWithDescription("HealAttackRatio", "攻撃力に対する回復量の倍率（0.6なら攻撃力の60%回復）。");
+        DrawFieldWithDescription("ShieldMaxBlocksToReachMaxHP", "シールドを最大HP分貯めるのに必要なブロック数。");
 
-            float hitsToKillEnemy = playerAtk > 0 ? (float)enemy.HP / playerAtk : float.PositiveInfinity;
-            float hitsToKillPlayer = enemy.ATK > 0 ? (float)playerHP / enemy.ATK : float.PositiveInfinity;
+        EditorGUILayout.Space(10);
+        DrawFieldWithDescription("EnemyDefinitions", "モンスターの種類ごとの基本設定リスト。");
 
-            string analysis = string.Format("{0}: Takes {1:F1} hits to kill. Kills player in {2:F1} hits.", 
-                enemy.Name, hitsToKillEnemy, hitsToKillPlayer);
-            
-            EditorGUILayout.LabelField(analysis);
-        }
+        EditorGUILayout.Space(10);
+        EditorGUILayout.LabelField("Wave Balancing", EditorStyles.boldLabel);
+        DrawFieldWithDescription("InitialWaveBudget", "ウェーブ1時点での敵パーティーの合計レベル上限。");
+        DrawFieldWithDescription("BudgetIncreasePerWave", "ウェーブが進むごとに増加する予算。");
+        DrawFieldWithDescription("FormationPenaltyFactor", "後方に配置された敵の攻撃頻度の減衰率（0.75なら25%減少）。");
+
+        serializedObject.ApplyModifiedProperties();
     }
 
-    private void DrawWaveSimulator(GameBalanceData data)
+    private void DrawFieldWithDescription(string propertyName, string description)
     {
-        EditorGUILayout.LabelField("Wave Simulator", EditorStyles.boldLabel);
-        previewWave = EditorGUILayout.IntSlider("Preview Wave", previewWave, 1, 50);
-
-        int budget = Mathf.FloorToInt(data.InitialWaveBudget + (previewWave - 1) * data.BudgetIncreasePerWave);
-        EditorGUILayout.LabelField(string.Format("Budget for Wave {0}: {1}", previewWave, budget));
-
-        if (data.EnemyDefinitions == null || data.EnemyDefinitions.Count == 0) return;
-
-        // Show examples of what could fit in this budget
-        string example = "Examples: ";
-        int tempBudget = budget;
-        int count = 0;
-        foreach (var def in data.EnemyDefinitions)
+        SerializedProperty prop = serializedObject.FindProperty(propertyName);
+        if (prop != null)
         {
-            if (def.Level <= 0) continue;
-            if (def.Level <= tempBudget)
-            {
-                int num = tempBudget / def.Level;
-                example += string.Format("{0}x {1}, ", num, def.Name);
-                if (++count > 2) break;
-            }
+            EditorGUILayout.PropertyField(prop, true);
+            EditorGUI.indentLevel++;
+            EditorGUILayout.LabelField(description, descriptionStyle);
+            EditorGUI.indentLevel--;
+            EditorGUILayout.Space(2);
         }
-        EditorGUILayout.LabelField(example.TrimEnd(' ', ','));
     }
 }
