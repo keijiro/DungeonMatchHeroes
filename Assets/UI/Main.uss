@@ -49,15 +49,21 @@
     margin-right: 10px;
     overflow: hidden;
     margin-top: 4px; /* Move slightly up (was 6px) */
+    flex-direction: column;
 }
 
 .progress-bar-fill {
-    height: 100%;
     width: 100%;
 }
 
 .hp-fill {
+    height: 70%;
     background-color: #FF4136; /* Red */
+}
+
+.shield-fill {
+    height: 30%;
+    background-color: #0074D9; /* Blue */
 }
 
 .shield-text {

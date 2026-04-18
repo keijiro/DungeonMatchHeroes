@@ -70,8 +70,9 @@ public class CombatManager : MonoBehaviour
     [Header("UI References")]
     public UIDocument HUD;
     private VisualElement hpBarFill;
+    private VisualElement shieldBarFill;
     private Label hpText;
-    private Label shieldText;
+private Label shieldText;
     private Label expText;
     private Label keyLabel;
     private VisualElement notificationLayer;
@@ -175,8 +176,9 @@ public class CombatManager : MonoBehaviour
 
         var root = HUD.rootVisualElement;
         hpBarFill = root.Q<VisualElement>("hp-bar-fill");
+        shieldBarFill = root.Q<VisualElement>("shield-bar-fill");
         hpText = root.Q<Label>("hp-text");
-        shieldText = root.Q<Label>("shield-text");
+shieldText = root.Q<Label>("shield-text");
         expText = root.Q<Label>("exp-text");
         keyLabel = root.Q<Label>("key-label");
         notificationLayer = root.Q<VisualElement>("notification-layer");
@@ -250,8 +252,13 @@ public class CombatManager : MonoBehaviour
             float percentage = (float)CurrentHP / MaxHP * 100f;
             hpBarFill.style.width = new Length(percentage, LengthUnit.Percent);
         }
+        if (shieldBarFill != null)
+        {
+            float percentage = (float)Shield / MaxHP * 100f;
+            shieldBarFill.style.width = new Length(percentage, LengthUnit.Percent);
+        }
         if (hpText != null) hpText.text = $"{CurrentHP}/{MaxHP}";
-        if (shieldText != null) shieldText.text = Shield.ToString();
+if (shieldText != null) shieldText.text = Shield.ToString();
         if (expText != null) expText.text = Experience.ToString();
         if (keyLabel != null) keyLabel.text = HasKey ? "KEY: YES" : "KEY: NO";
     }

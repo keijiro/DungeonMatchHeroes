@@ -18,8 +18,9 @@
             <ui:Label text="HP:" class="stat-label" />
             <ui:VisualElement name="hp-bar-bg" class="progress-bar-bg">
                 <ui:VisualElement name="hp-bar-fill" class="progress-bar-fill hp-fill" />
+                <ui:VisualElement name="shield-bar-fill" class="progress-bar-fill shield-fill" />
             </ui:VisualElement>
-            <ui:Label name="hp-text" text="100/100" class="stat-value" />
+<ui:Label name="hp-text" text="100/100" class="stat-value" />
         </ui:VisualElement>
         <ui:VisualElement name="others-row" class="stat-row others-row">
             <ui:VisualElement class="stat-sub-item">
