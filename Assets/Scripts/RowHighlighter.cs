@@ -44,26 +44,44 @@ private static readonly int PulseColorID = Shader.PropertyToID("_PulseColor");
     {
         if (gridManager == null) return;
 
-        bool shouldPulse = (Time.time < MinimumDisplayTime) || !hasBeenClicked;
+        bool isTutorial = (Time.time < MinimumDisplayTime) || !hasBeenClicked;
 
-        // Custom pulse pattern: 1s wait, then two quick flashes
-        // Cycle: Wait(1.0s) -> Flash(0.2s) -> Gap(0.1s) -> Flash(0.2s) = 1.5s total
-        float cycleTime = 1.5f;
-        float timeInCycle = Time.time % cycleTime;
         float alpha = 0;
 
-        if (shouldPulse && timeInCycle > 1.0f)
+        if (isTutorial)
         {
-            float flashPhase = timeInCycle - 1.0f; // 0.0 to 0.5
-            if (flashPhase < 0.2f)
+            // [Tutorial: Strong] Custom pulse pattern: 1s wait, then two quick flashes
+            // Cycle: Wait(1.0s) -> Flash(0.2s) -> Gap(0.1s) -> Flash(0.2s) = 1.5s total
+            float cycleTime = 1.5f;
+            float timeInCycle = Time.time % cycleTime;
+
+            if (timeInCycle > 1.0f)
             {
-                // First flash: 0.0 to 0.2
-                alpha = Mathf.Sin((flashPhase / 0.2f) * Mathf.PI) * maxAlpha;
+                float flashPhase = timeInCycle - 1.0f; // 0.0 to 0.5
+                if (flashPhase < 0.2f)
+                {
+                    // First flash: 0.0 to 0.2
+                    alpha = Mathf.Sin((flashPhase / 0.2f) * Mathf.PI) * maxAlpha;
+                }
+                else if (flashPhase > 0.3f && flashPhase < 0.5f)
+                {
+                    // Second flash: 0.3 to 0.5
+                    alpha = Mathf.Sin(((flashPhase - 0.3f) / 0.2f) * Mathf.PI) * maxAlpha;
+                }
             }
-            else if (flashPhase > 0.3f && flashPhase < 0.5f)
+        }
+        else
+        {
+            // [Normal: Weak] 3.0s cycle, 1 slow flash, lower alpha (40% of maxAlpha)
+            float cycleTime = 3.0f;
+            float timeInCycle = Time.time % cycleTime;
+            float flashDuration = 1.0f;
+            float flashStart = 2.0f; // 2 seconds wait, then 1 second flash
+
+            if (timeInCycle > flashStart)
             {
-                // Second flash: 0.3 to 0.5
-                alpha = Mathf.Sin(((flashPhase - 0.3f) / 0.2f) * Mathf.PI) * maxAlpha;
+                float flashPhase = timeInCycle - flashStart;
+                alpha = Mathf.Sin((flashPhase / flashDuration) * Mathf.PI) * (maxAlpha * 0.4f);
             }
         }
 
