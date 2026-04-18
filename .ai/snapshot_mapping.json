@@ -2531,6 +2531,12 @@
       "conversation_id": "18ff67a1-bebb-4e2b-aa68-50bea1252b36",
       "content": "プランが承認されました。これより実装を開始してもよろしいでしょうか？",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_4",
+      "conversation_id": "18ff67a1-bebb-4e2b-aa68-50bea1252b36",
+      "content": "開始してください",
+      "snapshot_message_type": 0
     }
   ]
 }
