@@ -63,18 +63,21 @@ DrawFieldWithDescription("PlayerBaseHP", "Maximum HP at Level 1.");
         if (EditorGUI.EndChangeCheck())
         {
             serializedObject.ApplyModifiedProperties();
-            // Force the simulation window to repaint if it is open
-            if (HasWindow<GameBalanceSimulationWindow>())
-            {
-                EditorWindow.GetWindow<GameBalanceSimulationWindow>().Repaint();
-            }
+            // Force the simulation window to repaint if it is open, without stealing focus
+            RepaintSimulatorIfOpen();
         }
         }
 
-        private bool HasWindow<T>() where T : EditorWindow
+        private void RepaintSimulatorIfOpen()
         {
-        T[] windows = Resources.FindObjectsOfTypeAll<T>();
-        return windows != null && windows.Length > 0;
+        GameBalanceSimulationWindow[] windows = Resources.FindObjectsOfTypeAll<GameBalanceSimulationWindow>();
+        if (windows != null)
+        {
+            foreach (var window in windows)
+            {
+                window.Repaint();
+            }
+        }
         }
 
     private void DrawFieldWithDescription(string propertyName, string description)
