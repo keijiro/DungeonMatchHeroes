@@ -129,8 +129,8 @@ public class CombatManager : MonoBehaviour
 
     private int GetAttackForLevel(int level)
     {
-        // Plan: 10 + 2 * (level - 1)
-        return 10 + 2 * (level - 1);
+        // Half of previous growth (2 -> 1)
+        return 10 + (level - 1);
     }
 
     private int GetMagicAttackForLevel(int level)
@@ -337,10 +337,10 @@ yield return null;
                 break;
             case GridManager.BlockType.Shield:
                 action.Type = CombatActionType.PlayerShield;
-                // Plan: MaxHP / 10 (min 1)
-                action.Value = effectiveCount * Mathf.Max(1, MaxHP / 10);
+                // 20 blocks to reach MaxHP: MaxHP / 20 (min 1)
+                action.Value = effectiveCount * Mathf.Max(1, MaxHP / 20);
                 break;
-            case GridManager.BlockType.Gem:
+case GridManager.BlockType.Gem:
                 action.Type = CombatActionType.PlayerExp;
                 // Plan: Max(1, Req(Level)/10)
                 action.Value = effectiveCount * Mathf.Max(1, currentReq / 10);
@@ -581,11 +581,11 @@ yield return null;
 
                 ShowCombatNumber(action.Value, new Color(0.2f, 0.6f, 1f), TankAnimator.transform.position);
 
-                Shield += action.Value;
-Debug.Log($"Gained {action.Value} Shield. Total: {Shield}");
+                Shield = Mathf.Min(MaxHP, Shield + action.Value);
+                Debug.Log($"Gained {action.Value} Shield. Total: {Shield} (Max: {MaxHP})");
                 yield return new WaitForSeconds(0.2f);
                 break;
-            case CombatActionType.PlayerExp:
+case CombatActionType.PlayerExp:
                 if (AudioManager.Instance != null) AudioManager.Instance.PlaySEWithRandomPitch(SEType.Exp, 0.7f);
                 AddExperience(action.Value);
                 Debug.Log($"Gained {action.Value} EXP. Total: {Experience}");
