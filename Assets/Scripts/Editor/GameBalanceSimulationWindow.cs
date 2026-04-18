@@ -70,13 +70,16 @@ private GameBalanceData balanceData;
         EditorGUILayout.EndVertical();
     }
 
+    private int previewPlayerLevel = 1;
+
     private void DrawMonsterAnalysis()
     {
-        EditorGUILayout.LabelField("Monster Combat Analysis (vs Lv 1 Player)", EditorStyles.boldLabel);
-        EditorGUILayout.HelpBox("Combat simulation vs a Lv1 player. Shows how many hits are needed to kill/die.", MessageType.Info);
+        EditorGUILayout.LabelField("Monster Combat Analysis", EditorStyles.boldLabel);
+        previewPlayerLevel = EditorGUILayout.IntSlider("Player Level", previewPlayerLevel, 1, 20);
+        EditorGUILayout.HelpBox(string.Format("Combat simulation vs a Lv{0} player. Shows how many hits are needed to kill/die.", previewPlayerLevel), MessageType.Info);
 
-        int playerAtk = balanceData.PlayerBaseAttack;
-        int playerHP = balanceData.PlayerBaseHP;
+        int playerAtk = balanceData.PlayerBaseAttack + (previewPlayerLevel - 1) * balanceData.AttackIncreasePerLevel;
+        int playerHP = Mathf.RoundToInt(balanceData.PlayerBaseHP + (previewPlayerLevel - 1) * balanceData.HPIncreasePerLevel);
 
         if (balanceData.EnemyDefinitions == null || balanceData.EnemyDefinitions.Count == 0)
         {
