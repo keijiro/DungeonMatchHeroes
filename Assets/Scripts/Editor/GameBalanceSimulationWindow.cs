@@ -146,9 +146,11 @@ private GameBalanceData balanceData;
             composition += "None (Budget too low)";
         }
 
-        EditorGUILayout.LabelField(composition);
+        GUIStyle labelStyle = new GUIStyle(EditorStyles.label);
+        labelStyle.wordWrap = true;
+        EditorGUILayout.LabelField(composition, labelStyle);
         
         // Restore random state
-        Random.state = oldState;
+Random.state = oldState;
     }
 }

@@ -2561,6 +2561,12 @@
       "conversation_id": "18ff67a1-bebb-4e2b-aa68-50bea1252b36",
       "content": "スクリーンショットでのご指摘、ありがとうございました。\n\nラベルが重複していた理由は、元のスクリプトに記述していた `[Header]` 属性と、カスタムインスペクターで手動で追加した `EditorGUILayout.LabelField` が両方表示されていたためです。\n\n### 修正内容：\n\n1.  **`GameBalanceData.cs` から属性を削除**:\n    *   `[Header]` および `[Tooltip]` 属性をすべて削除しました。これにより、インスペクターの表示制御を完全にカスタムエディター側へ移行しました。\n2.  **`GameBalanceDataEditor.cs` の整理**:\n    *   すべてのセクション（Matching Rules, Player Scaling, Experience Scaling, Actions, Enemies, Wave Balancing）に対して、一貫したデザインでセクションラベルが表示されるように調整しました。\n\nこれで重複が解消され、各項目の下に英語の説明テキストが配置された、スッキリとしたインスペクター画面になっているはずです。ご確認いただけますでしょうか？",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "452555fe-ad35-4ec7-ae68-7b753f410d4a",
+      "conversation_id": "18ff67a1-bebb-4e2b-aa68-50bea1252b36",
+      "content": "「Example Party」の表示にワードラップ（折り返し）を適用しました。\n\nこれにより、高ウェーブ数で予算が増え、多くの敵が選出された場合でも、全ての構成例がウィンドウ内に収まって表示されるようになります。\n\n他に修正や追加したい機能はございますか？",
+      "snapshot_message_type": 1
     }
   ]
 }
