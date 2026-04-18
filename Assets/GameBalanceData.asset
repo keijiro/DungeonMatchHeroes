@@ -17,7 +17,7 @@ MonoBehaviour:
   PlayerBaseHP: 100
   PlayerBaseAttack: 10
   HPIncreasePerLevel: 11.111111
-  AttackIncreasePerLevel: 1
+  AttackIncreasePerLevel: 3
   MagicAttackRatio: 0.3333333
   ExpBaseRequirement: 80
   ExpIncreasePerLevel: 26
@@ -58,4 +58,4 @@ MonoBehaviour:
     IsMagic: 0
   InitialWaveBudget: 6
   BudgetIncreasePerWave: 1.2
-  FormationPenaltyFactor: 0.75
+  FormationPenaltyFactor: 0.66
