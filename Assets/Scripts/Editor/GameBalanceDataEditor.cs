@@ -26,36 +26,36 @@ public class GameBalanceDataEditor : Editor
 
         EditorGUILayout.Space(10);
 
-        DrawFieldWithDescription("SkaDivisor", "お邪魔ブロック1個が何個の通常マッチとしてカウントされるか（3.0なら3個で1マッチ分）。");
+        DrawFieldWithDescription("SkaDivisor", "The multiplier for Ska blocks. (e.g., if set to 3.0, 3 Ska blocks count as 1 normal match).");
         
         EditorGUILayout.Space(10);
         EditorGUILayout.LabelField("Player Scaling", EditorStyles.boldLabel);
-        DrawFieldWithDescription("PlayerBaseHP", "レベル1時点での最大ヒットポイント。");
-        DrawFieldWithDescription("PlayerBaseAttack", "レベル1時点での物理攻撃力。");
-        DrawFieldWithDescription("HPIncreasePerLevel", "レベルが1上がるごとに加算される最大HPの量。");
-        DrawFieldWithDescription("AttackIncreasePerLevel", "レベルが1上がるごとに加算される物理攻撃力の量。");
-        DrawFieldWithDescription("MagicAttackRatio", "物理攻撃力に対する魔法攻撃力の割合（0.33なら33%）。");
+        DrawFieldWithDescription("PlayerBaseHP", "Maximum HP at Level 1.");
+        DrawFieldWithDescription("PlayerBaseAttack", "Base Physical Attack power at Level 1.");
+        DrawFieldWithDescription("HPIncreasePerLevel", "Amount of Max HP added per level up.");
+        DrawFieldWithDescription("AttackIncreasePerLevel", "Amount of Physical Attack power added per level up.");
+        DrawFieldWithDescription("MagicAttackRatio", "Ratio of Magic Attack power relative to Physical Attack. (e.g., 0.33 means 33%).");
 
         EditorGUILayout.Space(10);
         EditorGUILayout.LabelField("Experience Scaling", EditorStyles.boldLabel);
-        DrawFieldWithDescription("ExpBaseRequirement", "レベル1から2へ上がるために必要な経験値。");
-        DrawFieldWithDescription("ExpIncreasePerLevel", "レベルが上がるごとに必要経験値に加算される量。");
-        DrawFieldWithDescription("GemExpDivisor", "1レベル分の必要経験値をこの数で割った値がGem1個あたりのEXPになります。");
-        DrawFieldWithDescription("ChestExpDivisor", "1レベル分の必要経験値をこの数で割った値が宝箱1個あたりのEXPになります。");
+        DrawFieldWithDescription("ExpBaseRequirement", "EXP required to level up from 1 to 2.");
+        DrawFieldWithDescription("ExpIncreasePerLevel", "Amount added to the EXP requirement for each subsequent level.");
+        DrawFieldWithDescription("GemExpDivisor", "Next level's total EXP requirement divided by this number equals the EXP per Gem block.");
+        DrawFieldWithDescription("ChestExpDivisor", "Next level's total EXP requirement divided by this number equals the EXP per treasure chest.");
 
         EditorGUILayout.Space(10);
         EditorGUILayout.LabelField("Actions", EditorStyles.boldLabel);
-        DrawFieldWithDescription("HealAttackRatio", "攻撃力に対する回復量の倍率（0.6なら攻撃力の60%回復）。");
-        DrawFieldWithDescription("ShieldMaxBlocksToReachMaxHP", "シールドを最大HP分貯めるのに必要なブロック数。");
+        DrawFieldWithDescription("HealAttackRatio", "Multiplier for Heal amount based on Attack power. (e.g., 0.6 means 60% of Attack).");
+        DrawFieldWithDescription("ShieldMaxBlocksToReachMaxHP", "Number of blocks required to reach full shield (equal to Max HP).");
 
         EditorGUILayout.Space(10);
-        DrawFieldWithDescription("EnemyDefinitions", "モンスターの種類ごとの基本設定リスト。");
+        DrawFieldWithDescription("EnemyDefinitions", "List of base settings for each monster type.");
 
         EditorGUILayout.Space(10);
         EditorGUILayout.LabelField("Wave Balancing", EditorStyles.boldLabel);
-        DrawFieldWithDescription("InitialWaveBudget", "ウェーブ1時点での敵パーティーの合計レベル上限。");
-        DrawFieldWithDescription("BudgetIncreasePerWave", "ウェーブが進むごとに増加する予算。");
-        DrawFieldWithDescription("FormationPenaltyFactor", "後方に配置された敵の攻撃頻度の減衰率（0.75なら25%減少）。");
+        DrawFieldWithDescription("InitialWaveBudget", "The combined level budget for the enemy party at Wave 1.");
+        DrawFieldWithDescription("BudgetIncreasePerWave", "The increase in level budget for each subsequent wave.");
+        DrawFieldWithDescription("FormationPenaltyFactor", "The attack frequency reduction factor for enemies in the back row. (e.g., 0.75 means 25% slower).");
 
         serializedObject.ApplyModifiedProperties();
     }
