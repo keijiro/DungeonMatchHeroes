@@ -35,13 +35,8 @@ public class CombatManager : MonoBehaviour
     public int Experience;
     public bool HasKey;
 
-    [Header("Player Power (Base)")]
-    public int BaseAttack = 5;
-    public int BaseMagicAttack = 3;
-    public int BaseHeal = 3;
-    public int BaseShield = 2;
-    public int BaseExp = 1;
-    public int KeyBonusExp = 15;
+    [Header("Game Balance")]
+    public GameBalanceData balanceData;
 
     [Header("Enemy Settings")]
     public GameObject[] EnemyPrefabs;
@@ -49,33 +44,24 @@ public class CombatManager : MonoBehaviour
     public List<EnemyUnit> ActiveEnemies = new List<EnemyUnit>();
     public int WaveCount = 0;
 
-    [System.Serializable]
-    public class EnemyDefinition
-    {
-        public string Name;
-        public int Level;
-        public int HP;
-        public float ATK;
-        public float CD;
-        public bool IsMagic;
-    }
+    private Dictionary<string, GameBalanceData.EnemyDefinition> enemyDefs = new Dictionary<string, GameBalanceData.EnemyDefinition>();
 
-    private Dictionary<string, EnemyDefinition> enemyDefs = new Dictionary<string, EnemyDefinition>()
+    private void InitializeEnemyDefs()
     {
-        { "Slime", new EnemyDefinition { Name = "Slime", Level = 2, HP = 30, ATK = 4f, CD = 3f, IsMagic = false } },
-        { "Skeleton", new EnemyDefinition { Name = "Skeleton", Level = 3, HP = 40, ATK = 4.5f, CD = 3f, IsMagic = false } },
-        { "ZombieMage", new EnemyDefinition { Name = "ZombieMage", Level = 6, HP = 40, ATK = 4f, CD = 3f, IsMagic = true } },
-        { "Orc", new EnemyDefinition { Name = "Orc", Level = 7, HP = 112, ATK = 10.8f, CD = 3f, IsMagic = false } },
-        { "Golem", new EnemyDefinition { Name = "Golem", Level = 10, HP = 225, ATK = 16.2f, CD = 3f, IsMagic = false } }
-    };
-// Wait, I should stick to the plan's exact values if possible. I'll change AttackPower to float in EnemyUnit if needed, but for now I'll use int.
-    // Let's use 4.5 -> 4, 5.4 -> 5, 8.1 -> 8 (Floor/Round as appropriate).
-    // Actually, I'll use floats in the definition and round when applying.
+        enemyDefs.Clear();
+        if (balanceData != null && balanceData.EnemyDefinitions != null)
+        {
+            foreach (var def in balanceData.EnemyDefinitions)
+            {
+                enemyDefs[def.Name] = def;
+            }
+        }
+    }
 
     private int GetMaxLevelForWave(int wave)
     {
-        // Plan: 6 + 1.2 * wave
-        return Mathf.FloorToInt(6f + 1.2f * wave);
+        if (balanceData == null) return Mathf.FloorToInt(6f + 1.2f * wave);
+        return Mathf.FloorToInt(balanceData.InitialWaveBudget + (wave - 1) * balanceData.BudgetIncreasePerWave);
     }
 
     private LinkedList<CombatAction> eventQueue = new LinkedList<CombatAction>();
@@ -111,31 +97,31 @@ public class CombatManager : MonoBehaviour
     private int GetThresholdForLevel(int targetLevel)
     {
         if (targetLevel <= 1) return 0;
-        // Plan: Req(L) = 80 + 26(L-1) (Doubled from previous 40 + 13)
+        if (balanceData == null) return 0;
         float total = 0;
         for (int i = 1; i < targetLevel; i++)
         {
-            total += 80f + (i - 1) * 26f;
+            total += (float)balanceData.ExpBaseRequirement + (i - 1) * balanceData.ExpIncreasePerLevel;
         }
         return Mathf.RoundToInt(total);
     }
 
     private int GetMaxHPForLevel(int level)
     {
-        // Plan: 100 + (100/9) * (level - 1)
-        return Mathf.RoundToInt(100f + (level - 1) * (100f / 9f));
+        if (balanceData == null) return 100;
+        return Mathf.RoundToInt(balanceData.PlayerBaseHP + (level - 1) * balanceData.HPIncreasePerLevel);
     }
 
     private int GetAttackForLevel(int level)
     {
-        // Half of previous growth (2 -> 1)
-        return 10 + (level - 1);
+        if (balanceData == null) return 10;
+        return balanceData.PlayerBaseAttack + (level - 1) * balanceData.AttackIncreasePerLevel;
     }
 
     private int GetMagicAttackForLevel(int level)
     {
-        // Plan: Attack / 3
-        return GetAttackForLevel(level) / 3;
+        if (balanceData == null) return 3;
+        return Mathf.RoundToInt(GetAttackForLevel(level) * balanceData.MagicAttackRatio);
     }
 
     private void Awake()
@@ -143,6 +129,8 @@ public class CombatManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
+        InitializeEnemyDefs();
+        MaxHP = GetMaxHPForLevel(Level);
         CurrentHP = MaxHP;
         SetupUI();
 
@@ -313,7 +301,8 @@ yield return null;
 
     public void AddPlayerAction(GridManager.BlockType type, int matchCount, int skaCount, Vector3 worldPos)
     {
-        int effectiveCount = matchCount + (skaCount / 3);
+        float divisor = (balanceData != null) ? balanceData.SkaDivisor : 3.0f;
+        int effectiveCount = matchCount + Mathf.FloorToInt(skaCount / divisor);
         if (effectiveCount <= 0) return;
 
         CombatAction action = new CombatAction();
@@ -331,25 +320,25 @@ yield return null;
                 break;
             case GridManager.BlockType.Heal:
                 action.Type = CombatActionType.PlayerHeal;
-                // Plan: Attack * 0.6 (min 1)
-                action.Value = effectiveCount * Mathf.Max(1, Mathf.RoundToInt(GetAttackForLevel(Level) * 0.6f));
+                float healRatio = (balanceData != null) ? balanceData.HealAttackRatio : 0.6f;
+                action.Value = effectiveCount * Mathf.Max(1, Mathf.RoundToInt(GetAttackForLevel(Level) * healRatio));
                 break;
             case GridManager.BlockType.Shield:
                 action.Type = CombatActionType.PlayerShield;
-                // 20 blocks to reach MaxHP: MaxHP / 20 (min 1)
-                action.Value = effectiveCount * Mathf.Max(1, MaxHP / 20);
+                int shieldDivisor = (balanceData != null) ? balanceData.ShieldMaxBlocksToReachMaxHP : 20;
+                action.Value = effectiveCount * Mathf.Max(1, MaxHP / shieldDivisor);
                 break;
-case GridManager.BlockType.Gem:
-    action.Type = CombatActionType.PlayerExp;
-    // Halved pace: Max(1, Req(Level)/20) - takes 20 blocks
-    action.Value = effectiveCount * Mathf.Max(1, currentReq / 20);
-    break;
-case GridManager.BlockType.Key:
-    action.Type = CombatActionType.PlayerKey;
-    // Halved pace: Max(1, Req(Level)/20)
-    action.Value = effectiveCount * Mathf.Max(1, currentReq / 20);
-    break;
-}
+            case GridManager.BlockType.Gem:
+                action.Type = CombatActionType.PlayerExp;
+                int gemDivisor = (balanceData != null) ? balanceData.GemExpDivisor : 20;
+                action.Value = effectiveCount * Mathf.Max(1, currentReq / gemDivisor);
+                break;
+            case GridManager.BlockType.Key:
+                action.Type = CombatActionType.PlayerKey;
+                int keyDivisor = (balanceData != null) ? balanceData.GemExpDivisor : 20;
+                action.Value = effectiveCount * Mathf.Max(1, currentReq / keyDivisor);
+                break;
+        }
 
         // Show UI notification
         ShowActionNotification(action.Type, action.Value, worldPos);
@@ -762,8 +751,8 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
             // Opening success logic
             HasKey = false;
             int currentReq = GetThresholdForLevel(Level + 1) - GetThresholdForLevel(Level);
-            // Halved pace: 1/8 of current requirement (takes 8 chests)
-            AddExperience(Mathf.Max(1, currentReq / 8));
+            int chestDivisor = (balanceData != null) ? balanceData.ChestExpDivisor : 8;
+            AddExperience(Mathf.Max(1, currentReq / chestDivisor));
             UpdateUI();
 
             // Play elegant harp SE
@@ -950,7 +939,7 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
 
             int prefabIndex = validIndices[Random.Range(0, validIndices.Count)];
             GameObject prefab = EnemyPrefabs[prefabIndex];
-            EnemyDefinition def = enemyDefs[prefab.name];
+            GameBalanceData.EnemyDefinition def = enemyDefs[prefab.name];
 
             currentBudget -= def.Level;
 

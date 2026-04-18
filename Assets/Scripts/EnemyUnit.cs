@@ -41,14 +41,17 @@ public class EnemyUnit : MonoBehaviour
             float effectiveInterval = AttackInterval;
             if (!IsMagic && CombatManager.Instance != null)
             {
+                float factor = (CombatManager.Instance.balanceData != null) ? 
+                    CombatManager.Instance.balanceData.FormationPenaltyFactor : 0.75f;
+                
                 int index = CombatManager.Instance.ActiveEnemies.IndexOf(this);
                 if (index > 0)
                 {
-                    // Back row enemies attack slower: Interval / 0.75^index
-                    effectiveInterval /= Mathf.Pow(0.75f, index);
+                    // Back row enemies attack slower: Interval / factor^index
+                    effectiveInterval /= Mathf.Pow(factor, index);
                 }
             }
-            timer = effectiveInterval;
+timer = effectiveInterval;
         }
     }
 

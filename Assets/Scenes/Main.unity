@@ -1618,12 +1618,7 @@ MonoBehaviour:
   Shield: 0
   Experience: 0
   HasKey: 0
-  BaseAttack: 5
-  BaseMagicAttack: 3
-  BaseHeal: 3
-  BaseShield: 2
-  BaseExp: 10
-  KeyBonusExp: 50
+  balanceData: {fileID: 11400000, guid: d515760b8816140898539bc163270cd8, type: 2}
   EnemyPrefabs:
   - {fileID: 1399748460166610062, guid: 75ce6fd79f93b4699960703f542f2dfc, type: 3}
   - {fileID: 2988917637237933671, guid: db768ea2c4d38452592cd0816e5df6f0, type: 3}
