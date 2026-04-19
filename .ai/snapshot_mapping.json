@@ -2915,6 +2915,12 @@
       "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
       "content": "`README.md` 内の用語を修正し、一貫性を持たせました。\n\n### 修正内容\n*   **用語の統一:** `item block` という表現を、見出しの用語と合わせて **`elemental block`** に変更しました。\n    *   修正前: \"Shattering an item block always causes...\" / \"result in a new item block...\"\n    *   修正後: \"Shattering an **elemental block** always causes...\" / \"result in a new **elemental block**...\"\n\nこれにより、6つの基本ブロック（Sword, Shield, Magic, Heal, Gem, Key）を指す用語が統一され、プレイヤーにとっても理解しやすい解説となりました。\n\n今回の実装・調整のすべてが完了しました。\n- 用語（Match, Shatter, Blast）の定義とTIPSの作成\n- 各ウェーブ終了後のTIPS表示機能（アイコン付き、UIレイアウト調整済み）の実装\n- プレイヤー向けに最適化された `README.md` の作成\n\n他に何かお手伝いできることがあれば、いつでもお知らせください。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "93f34592-d1b8-4548-9fb9-c113097a6e15",
+      "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
+      "content": "I will update the `TIPS` array in `CombatManager.cs` to use \"elemental block\" instead of \"item\" and review `Project_Overview.md` for any remaining references.\n\nWould you like me to proceed with these changes?",
+      "snapshot_message_type": 1
     }
   ]
 }
