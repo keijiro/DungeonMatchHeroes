@@ -63,57 +63,35 @@ EditorGUILayout.Space(10);
 
         private void DrawLevelProjection()
         {
-        EditorGUILayout.LabelField("Player Level Projection", EditorStyles.boldLabel);
-        EditorGUILayout.HelpBox("Roughly estimates player level progression. Assumes ~30% of level EXP is gained from Gem/Key matches and Chests per wave, plus enemy rewards.", MessageType.Info);
+            EditorGUILayout.LabelField("Player Level Projection", EditorStyles.boldLabel);
+            previewProjectionWave = EditorGUILayout.IntSlider("Target Wave", previewProjectionWave, 1, 100);
+            EditorGUILayout.HelpBox("Estimates the player's status at the end of the selected wave.", MessageType.Info);
 
-        EditorGUILayout.BeginVertical("box");
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Wave", GUILayout.Width(40));
-        EditorGUILayout.LabelField("Budget", GUILayout.Width(50));
-        EditorGUILayout.LabelField("Est. Level", GUILayout.Width(60));
-        EditorGUILayout.LabelField("Cumul. EXP", GUILayout.Width(80));
-        EditorGUILayout.EndHorizontal();
+            int simulatedLevel = 1;
+            int simulatedExp = 0;
+            int targetWave = previewProjectionWave;
 
-        int simulatedLevel = 1;
-        int simulatedExp = 0;
-
-        for (int w = 1; w <= 30; w++)
-        {
-            int budget = Mathf.FloorToInt(balanceData.InitialWaveBudget + (w - 1) * balanceData.BudgetIncreasePerWave);
-            
-            // 1. Enemy Kill EXP (5 per level as defined in EnemyUnit.Die)
-            int enemyExp = 5 * budget;
-            
-            // 2. Puzzle/Chest EXP Estimate
-            // Assume 1 Gem match (15%), 0.5 Key match (7.5%), and 50% chest chance (6.25%)
-            // Roughly 30% of current level requirement
-            int currentReq = balanceData.ExpBaseRequirement + (simulatedLevel - 1) * balanceData.ExpIncreasePerLevel;
-            int puzzleExp = Mathf.RoundToInt(currentReq * 0.3f);
-
-            simulatedExp += (enemyExp + puzzleExp);
-
-            // Check for level ups
-            while (true)
+            for (int w = 1; w <= targetWave; w++)
             {
-                int nextThreshold = GetThresholdForLevel(simulatedLevel + 1);
-                if (simulatedExp >= nextThreshold)
+                int budget = Mathf.FloorToInt(balanceData.InitialWaveBudget + (w - 1) * balanceData.BudgetIncreasePerWave);
+                int enemyExp = 5 * budget;
+                int currentReq = balanceData.ExpBaseRequirement + (simulatedLevel - 1) * balanceData.ExpIncreasePerLevel;
+                int puzzleExp = Mathf.RoundToInt(currentReq * 0.3f);
+                simulatedExp += (enemyExp + puzzleExp);
+
+                while (simulatedExp >= GetThresholdForLevel(simulatedLevel + 1))
                 {
                     simulatedLevel++;
                 }
-                else
-                {
-                    break;
-                }
             }
 
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(w.ToString(), GUILayout.Width(40));
-            EditorGUILayout.LabelField(budget.ToString(), GUILayout.Width(50));
-            EditorGUILayout.LabelField(simulatedLevel.ToString(), GUILayout.Width(60));
-            EditorGUILayout.LabelField(simulatedExp.ToString(), GUILayout.Width(80));
-            EditorGUILayout.EndHorizontal();
-        }
-        EditorGUILayout.EndVertical();
+            int finalBudget = Mathf.FloorToInt(balanceData.InitialWaveBudget + (targetWave - 1) * balanceData.BudgetIncreasePerWave);
+
+            EditorGUILayout.BeginVertical("box");
+            EditorGUILayout.LabelField($"Estimated Player Level: {simulatedLevel}");
+            EditorGUILayout.LabelField($"Cumulative Experience: {simulatedExp}");
+            EditorGUILayout.LabelField($"Wave Budget (Difficulty): {finalBudget}");
+            EditorGUILayout.EndVertical();
         }
 
         private int GetThresholdForLevel(int targetLevel)
@@ -127,35 +105,28 @@ EditorGUILayout.Space(10);
         return Mathf.RoundToInt(total);
         }
 
+    private int previewProgressionLevel = 1;
+    private int previewProjectionWave = 1;
+
     private void DrawPlayerProgressionTable()
     {
         EditorGUILayout.LabelField("Player Progression Preview", EditorStyles.boldLabel);
-        EditorGUILayout.HelpBox("Displays the progression of stats and EXP requirements for each level.", MessageType.Info);
+        previewProgressionLevel = EditorGUILayout.IntSlider("Target Level", previewProgressionLevel, 1, 50);
+        EditorGUILayout.HelpBox("Displays stats and requirements for the selected level.", MessageType.Info);
+
+        int lv = previewProgressionLevel;
+        int hp = Mathf.RoundToInt(balanceData.PlayerBaseHP + (lv - 1) * balanceData.HPIncreasePerLevel);
+        int atk = balanceData.PlayerBaseAttack + (lv - 1) * balanceData.AttackIncreasePerLevel;
+        int nextReq = balanceData.ExpBaseRequirement + (lv - 1) * balanceData.ExpIncreasePerLevel;
+        int gemExp = Mathf.Max(1, nextReq / balanceData.GemExpDivisor);
+        int totalToNext = GetThresholdForLevel(lv + 1);
 
         EditorGUILayout.BeginVertical("box");
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Lv", GUILayout.Width(30));
-        EditorGUILayout.LabelField("HP", GUILayout.Width(50));
-        EditorGUILayout.LabelField("ATK", GUILayout.Width(50));
-        EditorGUILayout.LabelField("Next Req", GUILayout.Width(70));
-        EditorGUILayout.LabelField("Gem EXP", GUILayout.Width(60));
-        EditorGUILayout.EndHorizontal();
-
-        for (int lv = 1; lv <= 20; lv++)
-        {
-            int hp = Mathf.RoundToInt(balanceData.PlayerBaseHP + (lv - 1) * balanceData.HPIncreasePerLevel);
-            int atk = balanceData.PlayerBaseAttack + (lv - 1) * balanceData.AttackIncreasePerLevel;
-            int nextReq = balanceData.ExpBaseRequirement + (lv - 1) * balanceData.ExpIncreasePerLevel;
-            int gemExp = Mathf.Max(1, nextReq / balanceData.GemExpDivisor);
-
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(lv.ToString(), GUILayout.Width(30));
-            EditorGUILayout.LabelField(hp.ToString(), GUILayout.Width(50));
-            EditorGUILayout.LabelField(atk.ToString(), GUILayout.Width(50));
-            EditorGUILayout.LabelField(nextReq.ToString(), GUILayout.Width(70));
-            EditorGUILayout.LabelField(gemExp.ToString(), GUILayout.Width(60));
-            EditorGUILayout.EndHorizontal();
-        }
+        EditorGUILayout.LabelField($"HP: {hp}");
+        EditorGUILayout.LabelField($"Attack: {atk}");
+        EditorGUILayout.LabelField($"Next Level Req: {nextReq} EXP");
+        EditorGUILayout.LabelField($"Gem/Key Match Value: ~{gemExp} EXP");
+        EditorGUILayout.LabelField($"Cumulative EXP for Lv {lv+1}: {totalToNext}");
         EditorGUILayout.EndVertical();
     }
 
