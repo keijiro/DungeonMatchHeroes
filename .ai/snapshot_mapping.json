@@ -2777,6 +2777,12 @@
       "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
       "content": "はい、**\"Match\"** はパズルRPGにおいて最も標準的で、プレイヤーにとっても馴染みのある言葉ですので、そのまま使うのがベストです。\n\nここまでの定義を整理すると以下のようになります：\n\n*   **Match**: 3つ以上の同色ブロックを並べて消すこと（基本操作・連鎖）\n*   **Shatter**: 一番下の行のブロックを叩いて砕くこと（プレイヤーの直接操作）\n*   **Blast**: マッチの衝撃で、隣接する「？」ブロックを消すこと（誘爆）\n\nこれら3つの用語を使って、12個のTIPSを「正確さ」と「分かりやすさ」に全振りして書き直しました。\n\n### 確定版：用語統一済みTIPS（英語）\n\n| 日本語原文 | 英語TIPS（Match, Shatter, Blast を使用） |\n| :--- | :--- |\n| シールドをためることで敵の物理攻撃をブロックできる | **Match Shields to block incoming physical attacks.** |\n| “?” ブロックは揃えても消すことができないので注意 | **\"?\" blocks cannot be matched. Shatter or Blast them.** |\n| 魔法は全体攻撃なので多数の敵に対して有利だ | **Magic matches hit all enemies on screen.** |\n| アイテムブロックを壊すと必ず “?” ブロックが出現する | **Shattering an item drops a \"?\" block from above.** |\n| 魔法攻撃はシールドでブロックできないので注意しよう | **Shields cannot block enemy magic attacks.** |\n| 宝箱を開けるには鍵が必要だが、鍵は１つしか持てない | **A Key is needed for chests, but you can only carry one.** |\n| “?” ブロックを消すと必ずアイテムブロックが出現する | **Shattering or Blasting a \"?\" drops an item from above.** |\n| 宝石ブロックをマッチして経験値を得よう | **Match Gems to gain EXP.** |\n| マッチできなくなったら “?” ブロックを消せば助かるかもしれない | **If stuck, Shatter a block or Blast a \"?\" to find matches.** |\n| HP満タン時に薬ブロックをマッチすると経験値が得られる | **Matching Heal blocks at full HP grants EXP.** |\n| 鍵を持っている時に鍵ブロックをマッチすると経験値が得られる | **Matching Keys while holding one grants EXP.** |\n| 隊列の後ろにいる敵は攻撃速度が遅い | **Enemies in the back row attack more slowly.** |\n\n### この用語セットの利点\n1.  **操作の区別が明確:** 「並べる（Match）」「叩く（Shatter）」「隣で消す（Blast）」という3つの方法が、言葉だけで明確に区別されています。\n2.  **挙動の正確性:** 「？」ブロックの出現についても、\"drops from above\" とすることで、盤面の refill（補充）の仕組みと合致させています。\n3.  **コンパクト:** 各文章が短く、ゲーム画面の下部やロード画面などの限られたスペースでも十分に視認性を確保できます。\n\nこの英語表現で進めてよろしいでしょうか？",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_9",
+      "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
+      "content": "いい感じだと思います。１点だけ懸念があり、\n\nIf stuck, Shatter a block or Blast a \"?\" to find matches.\n\nスタック（マッチできない状況）してしまったら、マッチできないわけですから、そもそも Blast は使えないと言うことになり、ここで Blast せよとアドバイスするのは違う気がします。どん詰まりになったらとにかく \"?\" を Shatter しまくれば打開できるかもしれない・・・というアドバイスになります。",
+      "snapshot_message_type": 0
     }
   ]
 }
