@@ -29,7 +29,12 @@ Each block type corresponds to a specific action for your heroes:
 - <img src="Assets/Sprites/Blocks/Icon_Heal.png" width="40"> **Heal (Green):** Restores your party's HP. If your HP is full, it grants bonus EXP!
 - <img src="Assets/Sprites/Blocks/Icon_Gem.png" width="40"> **Gem (Cyan):** Sharpens your skills, granting Experience Points (EXP).
 - <img src="Assets/Sprites/Blocks/Icon_Key.png" width="40"> **Key (Yellow):** Grants you a Key. Use it to open treasure chests found between waves.
-- <img src="Assets/Sprites/Blocks/Icon_Ska.png" width="40"> **"?" Mystery Block:** Cannot be matched. These must be cleared by **Shattering** them directly or via a **Blast** from an adjacent match.
+
+### ❓ "?" Mystery Block
+The grid contains special blocks marked with a question mark. These blocks follow a unique cycle and cannot be matched like normal elemental blocks.
+- **Clearing:** These blocks must be cleared by **Shattering** them directly or via a **Blast** (an adjacent match).
+- **The Cycle:** Shattering an item block always causes a "?" mystery block to drop from above as a refill. Conversely, clearing a "?" block will always result in a new item block dropping into the grid.
+- **Strategy:** If there are no obvious matches available, focus on shattering "?" blocks to shift the grid and uncover new matches.
 
 ### 🛡️ Combat Mechanics
 - **Real-time Battle:** Enemies don't wait for your turn! They have their own attack timers.
@@ -38,11 +43,3 @@ Each block type corresponds to a specific action for your heroes:
 - **Treasure Chests:** After clearing a wave, you may find a chest. You can only carry one Key at a time, so use it or lose it!
 
 <img src="Assets/Sprites/UI/Chest_Open.png" width="150">
-
----
-
-## 💡 Pro Tips
-
-<img src="Assets/Sprites/UI/Icon_Tip.png" width="150">
-
-Mastering the cycle of the grid is essential for victory. Shattering an item always causes a "?" mystery block to drop from above, while clearing a "?" block through shattering or blasting will reveal a hidden item in return. If you find yourself stuck without any obvious matches, focus your efforts on shattering those "?" blocks to shift the grid and uncover new opportunities.
