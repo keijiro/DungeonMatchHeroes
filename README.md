@@ -3,7 +3,7 @@
 <img src="Assets/Sprites/UI/Title_Logo.png" width="400">
 
 ## ⚔️ The Tale of the Three Heroes
-In the deep, forgotten corridors of the Ancient Dungeon, a trio of heroes—the stalwart Fighter, the mystical Mage, and the ironclad Guardian—awaits your command. To survive, they must harness the power of the **Elemental Grid**. By shattering the very foundations of the grid, they trigger cascading reactions that empower their blades, shields, and spells. Will you guide them to victory, or will they be overwhelmed by the darkness?
+In the deep, forgotten corridors of the Ancient Dungeon, a trio of heroes—the stalwart Fighter, the mystical Mage, and the ironclad Guardian—stands as the last line of defense against an endless tide of monsters. To survive, they must harness the power of the **Elemental Grid**. By shattering the very foundations of the grid, they trigger cascading reactions that empower their blades, shields, and spells. Will you guide them to victory, or will they be overwhelmed by the darkness?
 
 <img src="Assets/Sprites/Characters/Player/Fighter_Base.png" width="150"> <img src="Assets/Sprites/Characters/Player/Mage_Base.png" width="150"> <img src="Assets/Sprites/Characters/Player/Tank_Base.png" width="150">
 
@@ -45,12 +45,4 @@ Each block type corresponds to a specific action for your heroes:
 
 <img src="Assets/Sprites/UI/Icon_Tip.png" width="150">
 
-- **Shattering an item drops a "?" block from above.**
-- **Shattering or Blasting a "?" drops an item from above.**
-- **If stuck, focus on shattering "?" blocks to find new matches.**
-- **Matching Heal blocks at full HP grants EXP.**
-- **Matching Keys while holding one grants EXP.**
-
----
-
-*Developed for the AI Unity Hackathon.*
+Mastering the cycle of the grid is essential for victory. Shattering an item always causes a "?" mystery block to drop from above, while clearing a "?" block through shattering or blasting will reveal a hidden item in return. If you find yourself stuck without any obvious matches, focus your efforts on shattering those "?" blocks to shift the grid and uncover new opportunities.
