@@ -86,8 +86,27 @@ private Label shieldText;
     private VisualElement dialogueBox;
     private Label treasureMessage;
 
+    private static readonly string[] TIPS = new string[]
+    {
+        "Match Shields to block incoming physical attacks.",
+        "\"?\" blocks cannot be matched. Shatter or Blast them.",
+        "Magic matches hit all enemies on screen.",
+        "Shattering an item drops a \"?\" block from above.",
+        "Shields cannot block enemy magic attacks.",
+        "A Key is needed for chests, but you can only carry one.",
+        "Shattering or Blasting a \"?\" drops an item from above.",
+        "Match Gems to gain EXP.",
+        "If stuck, focus on shattering \"?\" blocks to find new matches.",
+        "Matching Heal blocks at full HP grants EXP.",
+        "Matching Keys while holding one grants EXP.",
+        "Enemies in the back row attack more slowly."
+    };
+
+    private static int nextTipIndex = 0;
+    private bool tipClicked = false;
+
     [Header("Player Animators")]
-    public Animator FighterAnimator;
+public Animator FighterAnimator;
     public Animator MageAnimator;
     public Animator TankAnimator;
 
@@ -749,11 +768,64 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
             yield return StartCoroutine(TreasureChestEventRoutine());
         }
 
+        yield return StartCoroutine(ShowTipRoutine());
+
         yield return StartCoroutine(SpawnWaveWithDelay());
     }
 
-    private IEnumerator TreasureChestEventRoutine()
+    private IEnumerator ShowTipRoutine()
     {
+        if (nextTipIndex >= TIPS.Length) yield break;
+        if (treasureOverlay == null || treasureMessage == null) yield break;
+
+        string currentTip = TIPS[nextTipIndex];
+        nextTipIndex++;
+
+        // Setup UI for Tip
+        treasureImage.style.display = DisplayStyle.None;
+        if (dialogueBox != null) dialogueBox.style.top = new Length(50, LengthUnit.Percent);
+        treasureMessage.text = currentTip;
+        
+        // Reset click flag and register callback
+        tipClicked = false;
+        treasureOverlay.pickingMode = PickingMode.Position;
+        treasureOverlay.RegisterCallback<ClickEvent>(OnTipOverlayClicked);
+
+        // Show
+        treasureOverlay.style.display = DisplayStyle.Flex;
+        treasureOverlay.AddToClassList("treasure-overlay--visible");
+        if (dialogueBox != null) dialogueBox.style.opacity = 1;
+
+        // Wait for 2 seconds or click
+        float timer = 2.0f;
+        while (timer > 0 && !tipClicked)
+        {
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+
+        // Hide
+        treasureOverlay.RemoveFromClassList("treasure-overlay--visible");
+        if (dialogueBox != null) dialogueBox.style.opacity = 0;
+        yield return new WaitForSeconds(0.5f);
+
+        // Cleanup
+        treasureOverlay.UnregisterCallback<ClickEvent>(OnTipOverlayClicked);
+        treasureOverlay.style.display = DisplayStyle.None;
+        treasureOverlay.pickingMode = PickingMode.Ignore;
+        
+        // Reset for potential TreasureChestEventRoutine
+        treasureImage.style.display = DisplayStyle.Flex;
+        if (dialogueBox != null) dialogueBox.style.top = new Length(55, LengthUnit.Percent);
+    }
+
+    private void OnTipOverlayClicked(ClickEvent evt)
+    {
+        tipClicked = true;
+    }
+
+    private IEnumerator TreasureChestEventRoutine()
+{
         if (treasureOverlay == null) yield break;
 
         // Reset state
