@@ -784,10 +784,11 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         // Setup UI for Tip
         treasureImage.style.display = DisplayStyle.None;
         if (dialogueBox != null) dialogueBox.style.top = new Length(50, LengthUnit.Percent);
+        treasureMessage.style.unityFontStyleAndWeight = FontStyle.BoldAndItalic;
         treasureMessage.text = "Tip: " + currentTip;
         
         // Reset click flag and register callback
-        tipClicked = false;
+tipClicked = false;
         treasureOverlay.pickingMode = PickingMode.Position;
         treasureOverlay.RegisterCallback<ClickEvent>(OnTipOverlayClicked);
 
@@ -817,7 +818,8 @@ Debug.Log($"Mage casts AOE Magic for {damage} damage to ALL enemies.");
         // Reset for potential TreasureChestEventRoutine
         treasureImage.style.display = DisplayStyle.Flex;
         if (dialogueBox != null) dialogueBox.style.top = new Length(55, LengthUnit.Percent);
-    }
+        treasureMessage.style.unityFontStyleAndWeight = FontStyle.Bold;
+        }
 
     private void OnTipOverlayClicked(ClickEvent evt)
     {
