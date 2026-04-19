@@ -1,11 +1,11 @@
-# Elemental Battle: Match-3 Combat Hybrid
+# Dungeon Match Heroes
 
-![Title Logo](Assets/Sprites/UI/Title_Logo.png)
+<img src="Assets/Sprites/UI/Title_Logo.png" width="400">
 
 ## ⚔️ The Tale of the Three Heroes
 In the deep, forgotten corridors of the Ancient Dungeon, a trio of heroes—the stalwart Fighter, the mystical Mage, and the unbreakable Tank—stands as the last line of defense against an endless tide of monsters. To survive, they must harness the power of the **Elemental Grid**. By shattering the very foundations of the grid, they trigger cascading reactions that empower their blades, shields, and spells. Will you guide them to victory, or will they be overwhelmed by the darkness?
 
-![Heroes](Assets/Sprites/Characters/Player/PartyConcept.png)
+<img src="Assets/Sprites/Characters/Player/Fighter_Base.png" width="150"> <img src="Assets/Sprites/Characters/Player/Mage_Base.png" width="150"> <img src="Assets/Sprites/Characters/Player/Tank_Base.png" width="150">
 
 ---
 
@@ -40,13 +40,13 @@ Each block type corresponds to a specific action for your heroes:
 - **Physical vs. Magic:** Shields are effective against physical strikes but offer no protection against enemy sorcery.
 - **Treasure Chests:** After clearing a wave, you may find a chest. You can only carry one Key at a time, so use it or lose it!
 
-![Chest](Assets/Sprites/UI/Chest_Open.png)
+<img src="Assets/Sprites/UI/Chest_Open.png" width="150">
 
 ---
 
 ## 💡 Pro Tips
 
-![Tip Icon](Assets/Sprites/UI/Icon_Tip.png)
+<img src="Assets/Sprites/UI/Icon_Tip.png" width="150">
 
 - **Match Shields to block incoming physical attacks.**
 - **"?" (Ska) blocks cannot be matched. Shatter or Blast them.**
