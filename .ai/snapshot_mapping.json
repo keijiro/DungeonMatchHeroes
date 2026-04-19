@@ -2867,6 +2867,12 @@
       "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
       "content": "TIPSパネルの横幅は、**`Assets/UI/Main.uss`** 内の以下の箇所で定義しています。\n\n```css\n/* Assets/UI/Main.uss */\n\n.dialogue-box--tip {\n    top: 40%;\n    width: 750px; /* ← ここで横幅を調節できます */\n    flex-direction: row;\n    padding: 15px 30px;\n    justify-content: flex-start;\n}\n```\n\nこの **`width: 750px;`** の数値を変更することで、パネルの幅を自由に調整いただけます。\n\nなお、もしパネル自体の幅ではなく「通常の宝箱イベント時の幅」を変更したい場合は、すぐ上の `.dialogue-box` クラスにある `width: 380px;` を調整してください。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "06f02e06-bc15-43aa-aaa2-7fed0e6b1cfc",
+      "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
+      "content": "TIPSの表示時間をさらに1秒延ばし、合計 **4秒間** に変更しました。\n\n`CombatManager.cs` 内の `ShowTipRoutine` を修正し、タイマーを `4.0f` に設定しています。これにより、少し長めの文章でもプレイヤーが余裕を持って読めるようになりました。もちろん、画面をクリックすればいつでも即座にスキップすることが可能です。",
+      "snapshot_message_type": 1
     }
   ]
 }

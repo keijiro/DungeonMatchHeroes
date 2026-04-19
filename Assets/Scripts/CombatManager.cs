@@ -799,8 +799,8 @@ tipClicked = false;
         treasureOverlay.AddToClassList("treasure-overlay--visible");
         if (dialogueBox != null) dialogueBox.style.opacity = 1;
 
-        // Wait for 3 seconds or click
-        float timer = 3.0f;
+        // Wait for 4 seconds or click
+        float timer = 4.0f;
         while (timer > 0 && !tipClicked)
 {
             timer -= Time.deltaTime;
