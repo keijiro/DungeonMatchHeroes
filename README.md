@@ -5,7 +5,7 @@
 ## ⚔️ The Tale of the Three Heroes
 In the deep, forgotten corridors of the Ancient Dungeon, a trio of heroes—the stalwart Fighter, the mystical Mage, and the ironclad Guardian—stands as the last line of defense against an endless tide of monsters. To survive, they must harness the power of the **Elemental Grid**. By shattering the very foundations of the grid, they trigger cascading reactions that empower their blades, shields, and spells. Will you guide them to victory, or will they be overwhelmed by the darkness?
 
-<img src="Assets/Sprites/Characters/Player/Fighter_Base.png" width="150"> <img src="Assets/Sprites/Characters/Player/Mage_Base.png" width="150"> <img src="Assets/Sprites/Characters/Player/Tank_Base.png" width="150">
+<img src="Assets/Sprites/UI/Title_Heroes.png" width="400">
 
 ---
 
