@@ -1051,9 +1051,33 @@ tipClicked = false;
             if (validIndices.Count == 0) break;
             if (spawnIndex >= EnemySpawnPoints.Length) break;
 
-            int prefabIndex = validIndices[Random.Range(0, validIndices.Count)];
+            // Weighted selection based on Level^2 to favor stronger enemies as budget allows
+            float totalWeight = 0;
+            List<float> weights = new List<float>();
+            foreach (int index in validIndices)
+            {
+                string name = EnemyPrefabs[index].name;
+                int level = enemyDefs[name].Level;
+                float weight = Mathf.Pow(level, 2); // Favor higher level enemies
+                weights.Add(weight);
+                totalWeight += weight;
+            }
+
+            int prefabIndex = validIndices[0];
+            float r = Random.value * totalWeight;
+            float cumulative = 0;
+            for (int i = 0; i < validIndices.Count; i++)
+            {
+                cumulative += weights[i];
+                if (r <= cumulative)
+                {
+                    prefabIndex = validIndices[i];
+                    break;
+                }
+            }
+
             GameObject prefab = EnemyPrefabs[prefabIndex];
-            GameBalanceData.EnemyDefinition def = enemyDefs[prefab.name];
+GameBalanceData.EnemyDefinition def = enemyDefs[prefab.name];
 
             currentBudget -= def.Level;
 

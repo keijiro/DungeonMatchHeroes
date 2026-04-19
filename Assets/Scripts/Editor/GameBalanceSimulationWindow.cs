@@ -142,19 +142,38 @@ EditorGUILayout.Space(10);
         int tempBudget = budget;
         Dictionary<string, int> counts = new Dictionary<string, int>();
 
-        // Limit attempts to avoid infinite loops if data is misconfigured
-        int attempts = 0;
-        while (tempBudget >= 2 && attempts < 15)
+        int spawnCount = 0;
+        int maxSpawn = 5; // Matches EnemySpawnPoints.Length in CombatManager
+
+        while (tempBudget >= 2 && spawnCount < maxSpawn)
         {
             var validEnemies = balanceData.EnemyDefinitions.FindAll(e => e.Level > 0 && e.Level <= tempBudget);
             if (validEnemies.Count == 0) break;
 
-            var selected = validEnemies[Random.Range(0, validEnemies.Count)];
+            // Weighted selection matching CombatManager logic (Level^2)
+            float totalWeight = 0;
+            foreach (var e in validEnemies) totalWeight += Mathf.Pow(e.Level, 2);
+
+            float r = Random.value * totalWeight;
+            float cumulative = 0;
+            GameBalanceData.EnemyDefinition selected = validEnemies[0];
+            
+            foreach (var e in validEnemies)
+            {
+                cumulative += Mathf.Pow(e.Level, 2);
+                if (r <= cumulative)
+                {
+                    selected = e;
+                    break;
+                }
+            }
+
             tempBudget -= selected.Level;
             
             if (counts.ContainsKey(selected.Name)) counts[selected.Name]++;
             else counts[selected.Name] = 1;
-            attempts++;
+            
+            spawnCount++;
         }
 
         if (counts.Count > 0)
