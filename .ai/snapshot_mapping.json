@@ -2711,6 +2711,12 @@
       "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
       "content": "いやちょっとまだ違いますね・・・一度このゲームの仕様について txt/md ファイルから把握を行なってみてもらえますか？",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "7154fc95-4f61-412b-9b04-e3b604ea69a3",
+      "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
+      "content": "ドキュメント（`Project_Overview.md` や `prototype-plan.md`）およびスクリプト（`GridManager.cs`, `CombatManager.cs`, `EnemyUnit.cs`）を詳細に確認いたしました。\n\n特にご指摘いただいた「アイテムブロック」と「？」ブロックの仕様、および「後列の敵の攻撃速度」などのメカニクスを正確に反映した上で、英語のTIPSを再構成しました。\n\n### ゲーム仕様の再確認（反映ポイント）\n*   **手動破壊の仕様:** 最下段をクリックしてブロックを「手動で壊す」操作が重要。\n*   **アイテムと？のサイクル:** アイテム（回復・宝石・鍵）を手動で壊すと「？」になり、「？」を手動で壊すと「アイテム」が出るという相互関係。\n*   **戦闘の属性:** 物理攻撃はシールドで防げるが、魔法は貫通する。\n*   **敵の隊列:** `EnemyUnit.cs` 内で `indexOf(ActiveEnemies)` に基づき、後方の敵ほど `AttackInterval` が長くなる（＝遅くなる）処理を確認。\n\n---\n\n### 英語TIPS案（修正・確定版）\n\n表示面積を抑えつつ、ファンタジーRPGとしての「味」を出した表現にしています。\n\n| 日本語原文 | 英語TIPS案（コンパクト・ファンタジー風） |\n| :--- | :--- |\n| シールドをためることで敵の物理攻撃をブロックできる | **Stockpile Shields to parry physical strikes.** |\n| “?” ブロックは揃えても消すことができないので注意 | **\"?\" blocks cannot be matched. Shatter them manually.** |\n| 魔法は全体攻撃なので多数の敵に対して有利だ | **Spells strike all foes. Use magic to sweep the field.** |\n| アイテムブロックを壊すと必ず “?” ブロックが出現する | **Breaking an Item always leaves a \"?\" Mystery Block.** |\n| 魔法攻撃はシールドでブロックできないので注意しよう | **Sorcery pierces all defenses. Shields cannot block magic.** |\n| 宝箱を開けるには鍵が必要だが、鍵は１つしか持てない | **You can carry but one Key. Find a Chest to use it.** |\n| “?” ブロックを消すと必ずアイテムブロックが出現する | **Shatter a \"?\" block to reveal a hidden Item.** |\n| 宝石ブロックをマッチして経験値を得よう | **Match Gems to sharpen your skills and gain EXP.** |\n| マッチできなくなったら “?” ブロックを消せば助かるかもしれない | **Stuck? Breaking a \"?\" block may shift the tides.** |\n| HP満タン時に薬ブロックをマッチすると経験値が得られる | **Potions grant EXP when your Vigor is full.** |\n| 鍵を持っている時に鍵ブロックをマッチすると経験値が得られる | **Already have a Key? Excess Keys are forged into EXP.** |\n| 隊列の後ろにいる敵は攻撃速度が遅い | **Foes in the rear strike slowly. Face the vanguard first.** |\n\n### 表現のこだわり\n*   **\"Shatter them manually\"**: 揃えて消えない「？」ブロックを、クリック（手動）で壊すという操作を明確にしました。\n*   **\"In its place / Reveal\"**: アイテムを壊すと「？」が残り（leaves）、 「？」を壊すと中身が出る（reveal）という関係性を強調しています。\n*   **\"Vigor\"**: HP（体力）をファンタジーらしく「活力・気力」を意味する語で表現しました。\n*   **\"Forge into EXP\"**: 単に「変わる」ではなく、鍵を経験値に「鍛え直す」というRPG的なメタファーを使っています。\n\nこちらでイメージに合っておりますでしょうか？実装の段階（ランダム表示ロジックやUIToklitへの組み込みなど）に進む準備が必要な際はお申し付けください。",
+      "snapshot_message_type": 1
     }
   ]
 }
