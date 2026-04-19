@@ -2795,6 +2795,12 @@
       "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
       "content": "If stuck, Shatter a block or a \"?\" to find new matches.\n\nうーん、単に block を消すのはいつも行なっている行為なので、ここでは敢えて選択的に \"?\" を壊しに行ってみよう、と言う提案になります。そのニュアンスをうまく含めたいです。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "1bcbd670-e596-4888-b27e-76bbe14f0064",
+      "conversation_id": "a6032af1-1b26-4aad-9556-f082b3750b94",
+      "content": "なるほど、「あえてターゲットを絞って状況を打破する」という戦術的なニュアンスですね。\n\n「単に最下段を消す（Shatter）」という基本動作の延長ではなく、**\"Focus on\"**（～に集中する、重点的に狙う）や **\"Target\"**（ターゲットにする）という言葉を使うことで、「戦略的な選択」であることを強調できます。\n\nまた、それによって道が開けるという期待感を込めて、修正案を作成しました。\n\n### 修正したTIPS（スタック時のアドバイス）\n*   **\"If stuck, focus on shattering \"?\" blocks to find new matches.\"**\n    （詰まった時は、『？』ブロックを重点的に砕いて、新しいマッチを探そう。）\n\n---\n\n### 【最終決定版】用語統一済み・戦術強調TIPSリスト\n\n| 日本語原文 | 英語TIPS（Match, Shatter, Blast を使用） |\n| :--- | :--- |\n| シールドをためることで敵の物理攻撃をブロックできる | **Match Shields to block incoming physical attacks.** |\n| “?” ブロックは揃えても消すことができないので注意 | **\"?\" blocks cannot be matched. Shatter or Blast them.** |\n| 魔法は全体攻撃なので多数の敵に対して有利だ | **Magic matches hit all enemies on screen.** |\n| アイテムブロックを壊すと必ず “?” ブロックが出現する | **Shattering an item drops a \"?\" block from above.** |\n| 魔法攻撃はシールドでブロックできないので注意しよう | **Shields cannot block enemy magic attacks.** |\n| 宝箱を開けるには鍵が必要だが、鍵は１つしか持てない | **A Key is needed for chests, but you can only carry one.** |\n| “?” ブロックを消すと必ずアイテムブロックが出現する | **Shattering or Blasting a \"?\" drops an item from above.** |\n| 宝石ブロックをマッチして経験値を得よう | **Match Gems to gain EXP.** |\n| マッチできなくなったら “?” ブロックを消せば助かるかもしれない | **If stuck, focus on shattering \"?\" blocks to find new matches.** |\n| HP満タン時に薬ブロックをマッチすると経験値が得られる | **Matching Heal blocks at full HP grants EXP.** |\n| 鍵を持っている時に鍵ブロックをマッチすると経験値が得られる | **Matching Keys while holding one grants EXP.** |\n| 隊列の後ろにいる敵は攻撃速度が遅い | **Enemies in the back row attack more slowly.** |\n\n### 調整のポイント\n*   **\"Focus on shattering\"**: 漫然とクリックするのではなく、「？」を狙い撃ちにして状況を変える、という意図を明確にしました。\n*   **整合性**: 他のTIPSと用語（Shatter / Match / Blast）が揃っているため、ゲーム全体としての一貫性が保たれています。\n\n非常にクリアで、かつプレイヤーの思考を助ける良いセットになったと思います。いよいよ、これらをコードやデータとして組み込む段階でしょうか？必要であればお手伝いします！",
+      "snapshot_message_type": 1
     }
   ]
 }
