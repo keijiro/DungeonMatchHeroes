@@ -91,7 +91,7 @@ private Label shieldText;
     {
         "Match Shields to block incoming physical attacks.",
         "\"?\" blocks cannot be matched. Shatter or Blast them.",
-        "Magic matches hit all enemies on screen.",
+        "Magic matches hit the entire enemy party.",
         "Shattering an item drops a \"?\" block from above.",
         "Shields cannot block enemy magic attacks.",
         "A Key is needed for chests, but you can only carry one.",
