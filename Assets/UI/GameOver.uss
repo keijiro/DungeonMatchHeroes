@@ -12,12 +12,32 @@
     align-items: center;
 }
 
+.main-content {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
 .hero-image {
-    width: 60%;
-    height: 60%;
+    width: 400px;
+    height: 400px;
     background-image: url("project://database/Assets/Sprites/UI/GameOver_Heroes.png?fileID=21300000&guid=745f59e0e67d2476cb4135e5c655bfd2&type=3#GameOver_Heroes");
     -unity-background-scale-mode: scale-to-fit;
-    margin-bottom: 20px;
+    margin-right: 40px;
+}
+
+.results-group {
+    align-items: flex-start;
+}
+
+.result-label {
+    color: white;
+    font-size: 42px;
+    margin: 8px 0;
+    -unity-font-style: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .prompt-label {
@@ -47,32 +67,6 @@
 .loss-message--visible {
     opacity: 1;
     scale: 1;
-}
-
-.results-container {
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 20px 40px;
-    border-width: 2px;
-    border-color: var(--color-message);
-    border-radius: 10px;
-    margin-bottom: 30px;
-    align-items: center;
-    transition-property: opacity, translate;
-    transition-duration: 1.5s;
-    transition-delay: 1s;
-    opacity: 0;
-    translate: 0 50px;
-}
-
-.results-container--visible {
-    opacity: 1;
-    translate: 0 0;
-}
-
-.result-label {
-    color: white;
-    font-size: 36px;
-    margin: 5px 0;
 }
 
 .blackout {

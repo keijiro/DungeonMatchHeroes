@@ -11,7 +11,7 @@ public class GameOverScreenController : MonoBehaviour
     private VisualElement blackout;
     private VisualElement root;
     private Label lossMessage;
-    private VisualElement resultsContainer;
+    private VisualElement resultsGroup;
     private Label levelResult;
     private Label expResult;
     private Label waveResult;
@@ -27,7 +27,7 @@ public class GameOverScreenController : MonoBehaviour
         root = uiDocument.rootVisualElement;
         blackout = root.Q("blackout");
         lossMessage = root.Q<Label>("loss-message");
-        resultsContainer = root.Q("results-container");
+        resultsGroup = root.Q("results-group");
         levelResult = root.Q<Label>("level-result");
         expResult = root.Q<Label>("exp-result");
         waveResult = root.Q<Label>("wave-result");
@@ -69,8 +69,6 @@ blackout?.AddToClassList("blackout--active");
         // Show loss message with a scale-up animation
         lossMessage?.AddToClassList("loss-message--visible");
         
-        // Show results
-        resultsContainer?.AddToClassList("results-container--visible");
         }
 
     private void OnRootClicked(PointerDownEvent evt)

@@ -2,13 +2,15 @@
     <Style src="project://database/Assets/UI/GameOver.uss" />
     <ui:VisualElement name="root" class="screen" picking-mode="Position">
         <ui:Label name="loss-message" text="YOUR ADVENTURE ENDS HERE" class="loss-message" picking-mode="Ignore" />
-        <ui:VisualElement name="results-container" class="results-container" picking-mode="Ignore">
-            <ui:Label name="level-result" text="LEVEL: 1" class="result-label" />
-            <ui:Label name="exp-result" text="EXP: 0" class="result-label" />
-            <ui:Label name="wave-result" text="WAVES CLEARED: 0" class="result-label" />
+        <ui:VisualElement name="main-content" class="main-content" picking-mode="Ignore">
+            <ui:VisualElement name="hero-image" class="hero-image" picking-mode="Ignore" />
+            <ui:VisualElement name="results-group" class="results-group" picking-mode="Ignore">
+                <ui:Label name="level-result" text="LEVEL: 1" class="result-label" />
+                <ui:Label name="exp-result" text="EXP: 0" class="result-label" />
+                <ui:Label name="wave-result" text="WAVES CLEARED: 0" class="result-label" />
+            </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="hero-image" class="hero-image" picking-mode="Ignore" />
-<ui:Label name="prompt-label" text="CLICK TO RETURN TO TITLE" class="prompt-label" picking-mode="Ignore" />
-        <ui:VisualElement name="blackout" class="blackout" picking-mode="Ignore" />
+        <ui:Label name="prompt-label" text="CLICK TO RETURN TO TITLE" class="prompt-label" picking-mode="Ignore" />
+<ui:VisualElement name="blackout" class="blackout" picking-mode="Ignore" />
     </ui:VisualElement>
 </ui:UXML>
