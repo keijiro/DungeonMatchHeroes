@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.UIElements;
+using UnityEditor.UIElements;
 using System.Collections.Generic;
 
 public class GameBalanceSimulationWindow : EditorWindow
@@ -7,168 +9,216 @@ public class GameBalanceSimulationWindow : EditorWindow
     private GameBalanceData balanceData;
     private int previewWave = 1;
     private int previewPlayerLevel = 1;
-    private Vector2 scrollPos;
+
+    private VisualElement root;
+    private ObjectField dataField;
+    private SliderInt levelSlider;
+    private SliderInt waveSlider;
+
+    [MenuItem("Window/Combat/Balance Simulator")]
+    public static void ShowWindow()
+    {
+        GetWindow<GameBalanceSimulationWindow>("Balance Simulator");
+    }
 
     public static void Open(GameBalanceData data)
     {
         GameBalanceSimulationWindow window = GetWindow<GameBalanceSimulationWindow>("Balance Simulator");
         window.balanceData = data;
+        window.RefreshUI();
         window.Show();
     }
 
     private void OnEnable()
     {
-        Undo.undoRedoPerformed += OnUndoRedo;
+        Undo.undoRedoPerformed += RefreshUI;
     }
 
     private void OnDisable()
     {
-        Undo.undoRedoPerformed -= OnUndoRedo;
+        Undo.undoRedoPerformed -= RefreshUI;
     }
 
-    private void OnUndoRedo()
+    public void CreateGUI()
     {
-        Repaint();
-    }
+        root = rootVisualElement;
 
-    private void OnGUI()
-    {
-        if (balanceData == null)
+        // Load UXML
+        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/UI/Editor/BalanceSimulator.uxml");
+        if (visualTree == null)
         {
-            EditorGUILayout.HelpBox("Select a GameBalanceData asset and click 'Open Simulation Window'.", MessageType.Warning);
-            balanceData = (GameBalanceData)EditorGUILayout.ObjectField("Balance Data", balanceData, typeof(GameBalanceData), false);
+            root.Add(new Label("Could not find Assets/UI/Editor/BalanceSimulator.uxml"));
             return;
         }
+        visualTree.CloneTree(root);
 
-        if (GUI.changed) Repaint();
+        // Bind Elements
+        dataField = root.Q<ObjectField>("balanceDataField");
+        dataField.objectType = typeof(GameBalanceData);
+        dataField.value = balanceData;
+        dataField.RegisterValueChangedCallback(evt => {
+            balanceData = evt.newValue as GameBalanceData;
+            RefreshUI();
+        });
 
-        scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+        levelSlider = root.Q<SliderInt>("playerLevelSlider");
+        if (levelSlider != null)
+        {
+            levelSlider.value = previewPlayerLevel;
+            levelSlider.RegisterValueChangedCallback(evt => {
+                previewPlayerLevel = evt.newValue;
+                RefreshUI();
+            });
+        }
 
-        EditorGUILayout.LabelField("Simulation & Analysis: " + balanceData.name, EditorStyles.boldLabel);
-        EditorGUILayout.Space(10);
+        waveSlider = root.Q<SliderInt>("waveSlider");
+        if (waveSlider != null)
+        {
+            waveSlider.value = previewWave;
+            waveSlider.RegisterValueChangedCallback(evt => {
+                previewWave = evt.newValue;
+                RefreshUI();
+            });
+        }
 
-        // --- PLAYER SECTION ---
-        EditorGUILayout.LabelField("--- Player & Combat Analysis ---", EditorStyles.miniBoldLabel);
-        previewPlayerLevel = EditorGUILayout.IntSlider("Target Player Level", previewPlayerLevel, 1, 50);
-        EditorGUILayout.Space(5);
-        DrawPlayerStats();
-        EditorGUILayout.Space(10);
-        DrawMonsterCombatAnalysis();
-
-        EditorGUILayout.Space(20);
-
-        // --- WAVE SECTION ---
-        EditorGUILayout.LabelField("--- Wave & Progression Projection ---", EditorStyles.miniBoldLabel);
-        previewWave = EditorGUILayout.IntSlider("Target Wave", previewWave, 1, 100);
-        EditorGUILayout.Space(5);
-        DrawWaveSimulator();
-        EditorGUILayout.Space(10);
-        DrawLevelProjection();
-
-        EditorGUILayout.EndScrollView();
+        RefreshUI();
     }
 
-    private void DrawPlayerStats()
+    public void RefreshUI()
     {
-        EditorGUILayout.LabelField("Player Stats Preview", EditorStyles.boldLabel);
+        if (root == null) return;
+
+        bool hasData = balanceData != null;
         
+        // Update basic field values
+        if (dataField != null && dataField.value != balanceData) 
+        {
+            dataField.SetValueWithoutNotify(balanceData);
+        }
+
+        if (!hasData) return;
+
+        UpdatePlayerStats();
+        UpdateMonsterAnalysis();
+        UpdateWaveSimulator();
+        UpdateProgressionProjection();
+    }
+
+    private void UpdatePlayerStats()
+    {
         int lv = previewPlayerLevel;
         int hp = Mathf.RoundToInt(balanceData.PlayerBaseHP + (lv - 1) * balanceData.HPIncreasePerLevel);
         int atk = balanceData.PlayerBaseAttack + (lv - 1) * balanceData.AttackIncreasePerLevel;
         int nextReq = balanceData.ExpBaseRequirement + (lv - 1) * balanceData.ExpIncreasePerLevel;
-        int gemExp = Mathf.Max(1, nextReq / balanceData.GemExpDivisor);
-        int totalToNext = GetThresholdForLevel(lv + 1);
 
-        EditorGUILayout.BeginVertical("box");
-        EditorGUILayout.LabelField($"HP: {hp}");
-        EditorGUILayout.LabelField($"Attack: {atk}");
-        EditorGUILayout.LabelField($"Next Level Req: {nextReq} EXP");
-        EditorGUILayout.LabelField($"Gem/Key Match Value: ~{gemExp} EXP");
-        EditorGUILayout.LabelField($"Cumulative EXP for Lv {lv+1}: {totalToNext}");
-        EditorGUILayout.EndVertical();
+        var hpLabel = root.Q<Label>("playerHpValue");
+        if (hpLabel != null) hpLabel.text = hp.ToString();
+
+        var atkLabel = root.Q<Label>("playerAtkValue");
+        if (atkLabel != null) atkLabel.text = atk.ToString();
+
+        var expLabel = root.Q<Label>("playerExpValue");
+        if (expLabel != null) expLabel.text = $"{nextReq} EXP";
     }
 
-    private void DrawMonsterCombatAnalysis()
+    private void UpdateMonsterAnalysis()
     {
-        EditorGUILayout.LabelField("Monster vs. Player Analysis", EditorStyles.boldLabel);
-        EditorGUILayout.HelpBox($"Combat simulation vs a Lv{previewPlayerLevel} player.", MessageType.Info);
+        var container = root.Q<VisualElement>("monsterAnalysisList");
+        if (container == null) return;
+        
+        container.Clear();
 
         int playerAtk = balanceData.PlayerBaseAttack + (previewPlayerLevel - 1) * balanceData.AttackIncreasePerLevel;
         int playerHP = Mathf.RoundToInt(balanceData.PlayerBaseHP + (previewPlayerLevel - 1) * balanceData.HPIncreasePerLevel);
 
         if (balanceData.EnemyDefinitions == null || balanceData.EnemyDefinitions.Count == 0)
         {
-            EditorGUILayout.HelpBox("No enemies defined.", MessageType.Warning);
+            container.Add(new Label("No enemies defined."));
             return;
         }
 
         foreach (var enemy in balanceData.EnemyDefinitions)
         {
             if (string.IsNullOrEmpty(enemy.Name)) continue;
+
             float hitsToKillEnemy = playerAtk > 0 ? (float)enemy.HP / playerAtk : float.PositiveInfinity;
             float hitsToKillPlayer = enemy.ATK > 0 ? (float)playerHP / enemy.ATK : float.PositiveInfinity;
-            EditorGUILayout.LabelField($"{enemy.Name}: {hitsToKillEnemy:F1} hits to kill / {hitsToKillPlayer:F1} hits to die");
+
+            var item = new VisualElement();
+            item.AddToClassList("enemy-analysis-item");
+
+            var nameLabel = new Label(enemy.Name);
+            nameLabel.AddToClassList("enemy-analysis-name");
+            item.Add(nameLabel);
+
+            var statsLabel = new Label($"{hitsToKillEnemy:F1} hits to kill / {hitsToKillPlayer:F1} hits to die");
+            statsLabel.AddToClassList("enemy-analysis-stats");
+            item.Add(statsLabel);
+
+            container.Add(item);
         }
     }
 
-    private void DrawWaveSimulator()
+    private void UpdateWaveSimulator()
     {
-        EditorGUILayout.LabelField("Wave Content Simulator", EditorStyles.boldLabel);
-        
         int budget = Mathf.FloorToInt(balanceData.InitialWaveBudget + (previewWave - 1) * balanceData.BudgetIncreasePerWave);
-        EditorGUILayout.LabelField($"Budget for Wave {previewWave}: {budget}");
+        
+        var budgetLabel = root.Q<Label>("waveBudgetValue");
+        if (budgetLabel != null) budgetLabel.text = budget.ToString();
 
-        if (balanceData.EnemyDefinitions == null || balanceData.EnemyDefinitions.Count == 0) return;
-
-        Random.State oldState = Random.state;
-        Random.InitState(previewWave * 100);
-
-        string composition = "Example Party: ";
-        int tempBudget = budget;
-        int spawnCount = 0;
-        int maxSpawn = 5;
-        Dictionary<string, int> counts = new Dictionary<string, int>();
-
-        float power = -1.0f + (float)previewWave / 10.0f;
-
-        while (tempBudget >= 2 && spawnCount < maxSpawn)
+        string composition = "";
+        if (balanceData.EnemyDefinitions != null && balanceData.EnemyDefinitions.Count > 0)
         {
-            var validEnemies = balanceData.EnemyDefinitions.FindAll(e => e.Level > 0 && e.Level <= tempBudget);
-            if (validEnemies.Count == 0) break;
+            Random.State oldState = Random.state;
+            Random.InitState(previewWave * 100);
 
-            float totalWeight = 0;
-            foreach (var e in validEnemies) totalWeight += Mathf.Pow(e.Level, power);
-            float r = Random.value * totalWeight;
-            float cumulative = 0;
-            GameBalanceData.EnemyDefinition selected = validEnemies[0];
-            foreach (var e in validEnemies)
+            int tempBudget = budget;
+            int spawnCount = 0;
+            int maxSpawn = 5;
+            Dictionary<string, int> counts = new Dictionary<string, int>();
+            float power = -1.0f + (float)previewWave / 10.0f;
+
+            while (tempBudget >= 2 && spawnCount < maxSpawn)
             {
-                cumulative += Mathf.Pow(e.Level, power);
-                if (r <= cumulative) { selected = e; break; }
+                var validEnemies = balanceData.EnemyDefinitions.FindAll(e => e.Level > 0 && e.Level <= tempBudget);
+                if (validEnemies.Count == 0) break;
+
+                float totalWeight = 0;
+                foreach (var e in validEnemies) totalWeight += Mathf.Pow(e.Level, power);
+                float r = Random.value * totalWeight;
+                float cumulative = 0;
+                GameBalanceData.EnemyDefinition selected = validEnemies[0];
+                foreach (var e in validEnemies)
+                {
+                    cumulative += Mathf.Pow(e.Level, power);
+                    if (r <= cumulative) { selected = e; break; }
+                }
+                tempBudget -= selected.Level;
+                if (counts.ContainsKey(selected.Name)) counts[selected.Name]++;
+                else counts[selected.Name] = 1;
+                spawnCount++;
             }
-            tempBudget -= selected.Level;
-            if (counts.ContainsKey(selected.Name)) counts[selected.Name]++;
-            else counts[selected.Name] = 1;
-            spawnCount++;
-        }
 
-        if (counts.Count > 0)
+            if (counts.Count > 0)
+            {
+                foreach (var pair in counts) composition += $"{pair.Value}x {pair.Key}, ";
+                composition = composition.TrimEnd(' ', ',');
+            }
+            else composition = "None (Budget too low)";
+
+            Random.state = oldState;
+        }
+        else
         {
-            foreach (var pair in counts) composition += $"{pair.Value}x {pair.Key}, ";
-            composition = composition.TrimEnd(' ', ',');
+            composition = "No enemies defined.";
         }
-        else composition += "None (Budget too low)";
 
-        GUIStyle labelStyle = new GUIStyle(EditorStyles.label) { wordWrap = true };
-        EditorGUILayout.LabelField(composition, labelStyle);
-        Random.state = oldState;
+        var partyLabel = root.Q<Label>("partyCompositionText");
+        if (partyLabel != null) partyLabel.text = composition;
     }
 
-    private void DrawLevelProjection()
+    private void UpdateProgressionProjection()
     {
-        EditorGUILayout.LabelField("Progression Projection", EditorStyles.boldLabel);
-        EditorGUILayout.HelpBox($"Estimates status at end of Wave {previewWave}.", MessageType.Info);
-
         int simulatedLevel = 1;
         int simulatedExp = 0;
 
@@ -182,10 +232,11 @@ public class GameBalanceSimulationWindow : EditorWindow
             while (simulatedExp >= GetThresholdForLevel(simulatedLevel + 1)) simulatedLevel++;
         }
 
-        EditorGUILayout.BeginVertical("box");
-        EditorGUILayout.LabelField($"Estimated Player Level: {simulatedLevel}");
-        EditorGUILayout.LabelField($"Cumulative Experience: {simulatedExp}");
-        EditorGUILayout.EndVertical();
+        var estLevelLabel = root.Q<Label>("estLevelValue");
+        if (estLevelLabel != null) estLevelLabel.text = simulatedLevel.ToString();
+
+        var cumExpLabel = root.Q<Label>("cumulativeExpValue");
+        if (cumExpLabel != null) cumExpLabel.text = simulatedExp.ToString();
     }
 
     private int GetThresholdForLevel(int targetLevel)

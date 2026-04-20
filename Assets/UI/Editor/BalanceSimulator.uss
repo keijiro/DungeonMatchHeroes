@@ -1,0 +1,82 @@
+:root {
+    --color-bg-panel: #2b2b2b;
+    --color-bg-card: #383838;
+    --color-border: #1a1a1a;
+    --color-header: #4da3ff;
+    --spacing-sm: 4px;
+    --spacing-md: 8px;
+    --spacing-lg: 12px;
+}
+
+.root-container {
+    padding: var(--spacing-md);
+    background-color: var(--color-bg-panel);
+}
+
+.section-header {
+    font-size: 14px;
+    -unity-font-style: bold;
+    color: var(--color-header);
+    margin-bottom: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+    border-bottom-width: 1px;
+    border-bottom-color: var(--color-header);
+}
+
+.card {
+    background-color: var(--color-bg-card);
+    border-width: 1px;
+    border-color: var(--color-border);
+    border-radius: 4px;
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.card-title {
+    font-size: 12px;
+    -unity-font-style: bold;
+    margin-bottom: var(--spacing-sm);
+}
+
+.data-row {
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 2px;
+}
+
+.data-label {
+    color: #aaaaaa;
+}
+
+.data-value {
+    color: #ffffff;
+    -unity-font-style: bold;
+}
+
+.enemy-analysis-item {
+    padding: var(--spacing-sm);
+    border-bottom-width: 1px;
+    border-bottom-color: #2a2a2a;
+}
+
+.enemy-analysis-name {
+    -unity-font-style: bold;
+}
+
+.enemy-analysis-stats {
+    font-size: 10px;
+    color: #cccccc;
+}
+
+.scroll-view {
+    flex-grow: 1;
+}
+
+.party-composition {
+    white-space: normal;
+    font-size: 11px;
+    color: #eeeeee;
+    padding: var(--spacing-sm);
+    background-color: #222222;
+    border-radius: 2px;
+}

@@ -8,13 +8,17 @@ public class GameBalanceDataEditor : Editor
 
     private void OnEnable()
     {
-        descriptionStyle = new GUIStyle(EditorStyles.miniLabel);
-        descriptionStyle.wordWrap = true;
-        descriptionStyle.normal.textColor = new Color(0.6f, 0.6f, 0.6f);
     }
 
     public override void OnInspectorGUI()
     {
+        if (descriptionStyle == null)
+        {
+            descriptionStyle = new GUIStyle(EditorStyles.miniLabel);
+            descriptionStyle.wordWrap = true;
+            descriptionStyle.normal.textColor = new Color(0.6f, 0.6f, 0.6f);
+        }
+
         GameBalanceData data = (GameBalanceData)target;
 
         serializedObject.Update();
@@ -70,14 +74,15 @@ DrawFieldWithDescription("PlayerBaseHP", "Maximum HP at Level 1.");
 
         private void RepaintSimulatorIfOpen()
         {
-        GameBalanceSimulationWindow[] windows = Resources.FindObjectsOfTypeAll<GameBalanceSimulationWindow>();
-        if (windows != null)
-        {
-            foreach (var window in windows)
+            GameBalanceSimulationWindow[] windows = Resources.FindObjectsOfTypeAll<GameBalanceSimulationWindow>();
+            if (windows != null)
             {
-                window.Repaint();
+                foreach (var window in windows)
+                {
+                    window.RefreshUI();
+                    window.Repaint();
+                }
             }
-        }
         }
 
     private void DrawFieldWithDescription(string propertyName, string description)

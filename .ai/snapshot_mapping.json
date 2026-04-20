@@ -3023,6 +3023,12 @@
       "conversation_id": "30cca2ae-d526-49bd-874f-1f796a4c0114",
       "content": "これを UI Toolkit へ移行させたうえで、表示内容を見やすく整理して下さい。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "0681022d-5196-4e21-b96d-e9601f754a1f",
+      "conversation_id": "30cca2ae-d526-49bd-874f-1f796a4c0114",
+      "content": "`Balance Simulator` ウィンドウを IMGUI から **UI Toolkit** へ完全に移行し、表示内容を見やすく整理しました。\n\n### 実施内容\n\n1.  **UI Toolkit への移行**:\n    *   `Assets/UI/Editor/BalanceSimulator.uxml`: ウィンドウの構造を定義。セクションごとに分割し、スクロール可能なレイアウトにしました。\n    *   `Assets/UI/Editor/BalanceSimulator.uss`: カード形式のスタイル（背景色、枠線、余白）を適用し、情報の視認性を向上させました。\n    *   `Assets/Scripts/Editor/GameBalanceSimulationWindow.cs`: 命令的な IMGUI 描画から、イベント駆動型の UI Toolkit 実装に書き換えました。\n\n2.  **表示内容の整理と改善**:\n    *   **情報の階層化**: 「Player & Combat Analysis（プレイヤーと戦闘）」「Wave & Progression Projection（ウェーブと進行予測）」といったヘッダーで情報をグループ化しました。\n    *   **リアルタイム更新**: スライダーやデータアセットを変更すると、即座に計算結果（HP、攻撃力、敵の討伐手数、ウェーブ構成案など）が反映されるようにしました。\n    *   **デザインの洗練**: 重要な数値を太字にし、敵の分析リストを個別のアイテムとしてリスト表示することで、バランスの崩れを素早く察知できるようにしました。\n\n3.  **既存のバグ修正**:\n    *   `GameBalanceDataEditor.cs` で発生していた `NullReferenceException`（EditorStyles の初期化タイミングの問題）を修正し、安定性を向上させました。\n\n### 使い方\n1.  `GameBalanceData` アセットを選択し、インスペクター上の **\"Open Simulation Window\"** ボタンをクリックします。\n2.  または、メニューの **Window > Combat > Balance Simulator** からウィンドウを開き、`Balance Data Asset` フィールドにアセットをドラッグ＆ドロップします。\n3.  スライダーを動かすことで、異なるレベルやウェーブでのパワーバランスを即座にシミュレーションできます。",
+      "snapshot_message_type": 1
     }
   ]
 }
