@@ -3149,6 +3149,12 @@
       "conversation_id": "30cca2ae-d526-49bd-874f-1f796a4c0114",
       "content": "敵の選出重みを計算する際の係数 `10.0` を、`GameBalanceData` から調整可能な **`WaveWeightShiftFactor`** として切り出しました。\n\n### 実施内容\n1.  **`GameBalanceData.cs`**: 新しく `WaveWeightShiftFactor` (デフォルト値: 10.0) を追加しました。\n2.  **`CombatManager.cs`**: 実際の敵スポーン処理において、ハードコードされていた `10.0f` を `balanceData.WaveWeightShiftFactor` を参照するように変更しました。\n3.  **`GameBalanceSimulationWindow.cs`**: シミュレーターの計算ロジックも同様に更新し、この係数の変更が即座に予測結果に反映されるようにしました。\n4.  **`GameBalanceDataEditor.cs`**: インスペクター上に説明文付きでフィールドを表示するように設定しました。\n\n### 調整のヒント\n*   **値を小さくする（例: 5.0）**: 敵が強力になるスピードが上がります。早い段階から高レベルの敵が出現しやすくなります。\n*   **値を大きくする（例: 20.0）**: 敵の構成が変化するスピードが緩やかになります。より長い間、低レベルの敵が混ざるようになります。\n\nこれにより、難易度の「質（どのタイプの敵が出やすいか）」の遷移速度をインスペクターから自在に調整できるようになりました。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "f1bf66e5-83ff-46ca-8ee5-c71e45aaba38",
+      "conversation_id": "30cca2ae-d526-49bd-874f-1f796a4c0114",
+      "content": "はい、**`Example Party Composition` にも正しく反映されています。**\n\n先ほどの修正（`GameBalanceSimulationWindow.cs` の変更）により、シミュレーター内の計算ロジックも `balanceData.WaveWeightShiftFactor` を参照するように書き換えています。\n\n```csharp\n// GameBalanceSimulationWindow.cs 内の修正箇所\nfloat power = -1.0f + (float)previewWave / balanceData.WaveWeightShiftFactor;\n```\n\n### 反射の仕組み\n1.  **スライダー操作時**: `Target Wave` スライダーを動かすと、その時点での `WaveWeightShiftFactor` を用いて「出現の重み」が再計算されます。\n2.  **データ変更時**: インスペクターで `WaveWeightShiftFactor` の値を書き換えると、シミュレーターウィンドウに通知が飛び、`Example Party Composition` の表示内容が即座に更新されます。\n\n例えば、`WaveWeightShiftFactor` を極端に小さく（例：`2.0`）すると、同じウェーブ数でも表示される敵の編成がより強力なもの（高コストな敵）に偏る様子が、ウィンドウ上で確認できるはずです。",
+      "snapshot_message_type": 1
     }
   ]
 }
