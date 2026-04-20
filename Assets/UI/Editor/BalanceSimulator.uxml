@@ -26,6 +26,10 @@
             <ui:VisualElement class="card">
                 <ui:Label text="Estimated Player Stats" class="card-title" />
                 <ui:VisualElement class="data-row">
+                    <ui:Label text="Total Accumulated EXP" class="data-label" />
+                    <ui:Label name="cumulativeExpValue" text="0" class="data-value" />
+                </ui:VisualElement>
+                <ui:VisualElement class="data-row">
                     <ui:Label text="Projected Level" class="data-label" />
                     <ui:Label name="estLevelValue" text="1" class="data-value" />
                 </ui:VisualElement>
@@ -40,10 +44,6 @@
                 <ui:VisualElement class="data-row">
                     <ui:Label text="Next Level Req" class="data-label" />
                     <ui:Label name="playerExpValue" text="0 EXP" class="data-value" />
-                </ui:VisualElement>
-                <ui:VisualElement class="data-row" style="margin-top: 4px; border-top-width: 1px; border-top-color: #444; padding-top: 4px;">
-                    <ui:Label text="Total Accumulated EXP" class="data-label" />
-                    <ui:Label name="cumulativeExpValue" text="0" class="data-value" />
                 </ui:VisualElement>
             </ui:VisualElement>
 
