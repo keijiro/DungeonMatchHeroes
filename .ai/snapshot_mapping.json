@@ -3155,6 +3155,12 @@
       "conversation_id": "30cca2ae-d526-49bd-874f-1f796a4c0114",
       "content": "はい、**`Example Party Composition` にも正しく反映されています。**\n\n先ほどの修正（`GameBalanceSimulationWindow.cs` の変更）により、シミュレーター内の計算ロジックも `balanceData.WaveWeightShiftFactor` を参照するように書き換えています。\n\n```csharp\n// GameBalanceSimulationWindow.cs 内の修正箇所\nfloat power = -1.0f + (float)previewWave / balanceData.WaveWeightShiftFactor;\n```\n\n### 反射の仕組み\n1.  **スライダー操作時**: `Target Wave` スライダーを動かすと、その時点での `WaveWeightShiftFactor` を用いて「出現の重み」が再計算されます。\n2.  **データ変更時**: インスペクターで `WaveWeightShiftFactor` の値を書き換えると、シミュレーターウィンドウに通知が飛び、`Example Party Composition` の表示内容が即座に更新されます。\n\n例えば、`WaveWeightShiftFactor` を極端に小さく（例：`2.0`）すると、同じウェーブ数でも表示される敵の編成がより強力なもの（高コストな敵）に偏る様子が、ウィンドウ上で確認できるはずです。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "a5b2f034-bf09-43fd-b9a4-3bd2d58a246d",
+      "conversation_id": "30cca2ae-d526-49bd-874f-1f796a4c0114",
+      "content": "現状の実装では、**タッチ入力には対応していません。**\n\n調査の結果、`GridManager.cs` の入力処理（`Update` メソッド）において、新 Input System の **`Mouse.current`（マウス入力）のみ** を参照していることが判明しました。\n\n### 技術的な原因\n1.  **マウス専用の記述**: コード内で `Mouse.current.leftButton.wasPressedThisFrame` および `Mouse.current.position.ReadValue()` を直接使用しており、これらは物理的なマウス（またはマウスエミュレーションが有効な環境）以外の入力を受け付けません。\n2.  **タッチ操作の欠如**: `Touchscreen.current`（タッチスクリーン入力）や、マウスとタッチの両方を抽象化して扱える `Pointer` クラス（`Pointer.current`）が使用されていません。\n\n### 解決策（方針）\nこの問題を解決するには、`Mouse.current` への参照を **`Pointer.current`** に書き換えるか、マウスとタッチの両方の入力を監視するようにコードを修正する必要があります。これにより、モバイルブラウザのタッチスクリーンでもブロックの操作（クリック/タップ）が可能になります。",
+      "snapshot_message_type": 1
     }
   ]
 }
