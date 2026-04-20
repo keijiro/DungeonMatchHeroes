@@ -185,10 +185,10 @@ public class GameBalanceSimulationWindow : EditorWindow
             int spawnCount = 0;
             int maxSpawn = 5;
             Dictionary<string, int> counts = new Dictionary<string, int>();
-            float power = -1.0f + (float)previewWave / 10.0f;
+            float power = -1.0f + (float)previewWave / balanceData.WaveWeightShiftFactor;
 
             while (tempBudget >= 2 && spawnCount < maxSpawn)
-            {
+{
                 var validEnemies = balanceData.EnemyDefinitions.FindAll(e => e.Level > 0 && e.Level <= tempBudget);
                 if (validEnemies.Count == 0) break;
 

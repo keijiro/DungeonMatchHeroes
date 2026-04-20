@@ -1051,10 +1051,11 @@ tipClicked = false;
             if (validIndices.Count == 0) break;
             if (spawnIndex >= EnemySpawnPoints.Length) break;
 
-            // Dynamic weighted selection: Weight = Level ^ (-1.0 + WaveCount / 10)
+            // Dynamic weighted selection: Weight = Level ^ (-1.0 + WaveCount / WaveWeightShiftFactor)
             // Starts by favoring weaker enemies and shifts to favor stronger ones as waves progress.
-            float power = -1.0f + (float)WaveCount / 10.0f;
-            float totalWeight = 0;
+            float shiftFactor = (balanceData != null) ? balanceData.WaveWeightShiftFactor : 10.0f;
+            float power = -1.0f + (float)WaveCount / shiftFactor;
+float totalWeight = 0;
             List<float> weights = new List<float>();
             foreach (int index in validIndices)
             {

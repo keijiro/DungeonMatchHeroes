@@ -62,6 +62,7 @@ DrawFieldWithDescription("PlayerBaseHP", "Maximum HP at Level 1.");
         EditorGUILayout.LabelField("Wave Balancing", EditorStyles.boldLabel);
         DrawFieldWithDescription("InitialWaveBudget", "The combined level budget for the enemy party at Wave 1.");
         DrawFieldWithDescription("BudgetIncreasePerWave", "The increase in level budget for each subsequent wave.");
+        DrawFieldWithDescription("WaveWeightShiftFactor", "Controls how fast the game shifts from weak to strong enemies. Higher = Slower shift.");
         DrawFieldWithDescription("FormationPenaltyFactor", "The attack frequency reduction factor for enemies in the back row. (e.g., 0.75 means 25% slower).");
 
         if (EditorGUI.EndChangeCheck())

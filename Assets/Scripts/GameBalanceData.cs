@@ -25,6 +25,7 @@ public float MagicAttackRatio = 0.33f;
 
     public float InitialWaveBudget = 6f;
     public float BudgetIncreasePerWave = 1.2f;
+    public float WaveWeightShiftFactor = 10.0f;
     public float FormationPenaltyFactor = 0.75f;
 
     [System.Serializable]
