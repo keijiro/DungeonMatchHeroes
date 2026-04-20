@@ -58,4 +58,5 @@ MonoBehaviour:
     IsMagic: 0
   InitialWaveBudget: 6
   BudgetIncreasePerWave: 1.2
+  WaveWeightShiftFactor: 8
   FormationPenaltyFactor: 0.66
