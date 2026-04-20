@@ -3101,6 +3101,12 @@
       "conversation_id": "30cca2ae-d526-49bd-874f-1f796a4c0114",
       "content": "パズルによる推定獲得EXPについて、次のような計算に変更して下さい。\n- １ウェーブにおいて15個のGemを消滅させる想定。\n- 宝箱の開封に 50% の確率で成功すると想定。",
       "snapshot_message_type": 0
+    },
+    {
+      "message_id": "INT_5",
+      "conversation_id": "30cca2ae-d526-49bd-874f-1f796a4c0114",
+      "content": "パズルによる推定獲得EXPについて、次のような計算に変更して下さい。\n- １ウェーブにおいて15個のGemを消滅させる想定。\n- 宝箱の開封に 50% の確率で成功すると想定。",
+      "snapshot_message_type": 0
     }
   ]
 }
