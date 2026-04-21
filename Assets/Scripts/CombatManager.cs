@@ -93,15 +93,15 @@ private Label shieldText;
 
     private static readonly string[] TIPS = new string[]
     {
-        "Match Shields to block incoming physical attacks.",
         "\"?\" blocks cannot be matched. Shatter or Blast them.",
-        "Magic matches hit the entire enemy party.",
         "Shattering an elemental block drops a \"?\" block from above.",
+        "Shattering or Blasting a \"?\" drops an elemental block from above.",
+        "If stuck, focus on shattering \"?\" blocks to find new matches.",
+        "Match Shields to block incoming physical attacks.",
+        "Magic matches hit the entire enemy party.",
         "Shields cannot block enemy magic attacks.",
         "A Key is needed for chests, but you can only carry one.",
-        "Shattering or Blasting a \"?\" drops an elemental block from above.",
-"Match Gems to gain EXP.",
-        "If stuck, focus on shattering \"?\" blocks to find new matches.",
+        "Match Gems to gain EXP.",
         "Matching Heal blocks at full HP grants EXP.",
         "Matching Keys while holding one grants EXP.",
         "Enemies in the back row attack more slowly."
