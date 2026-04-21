@@ -3215,6 +3215,12 @@
       "conversation_id": "172083c7-d841-4279-ac97-7a7cd5c65c74",
       "content": "ご要望の改良を以下の通り完了しました。\n\n### 1. TIPS 表示時の背景減衰（ディム）の追加\nTIPS 表示の際にも、宝箱イベント時と同様に背景が少し暗くなるように修正しました。\n*   `CombatManager.cs` 内の `ShowTipRoutine` において、`treasure-overlay` 要素を宝箱イベントと同じ手順で表示するように統一しました。\n*   USS で定義されている `background-color: rgba(0, 0, 0, 0.4)` が適用されるため、ユーザーに「現在はメッセージ確認モードである」ことが視覚的に伝わりやすくなります。\n\n### 2. モーダル状態によるグリッド操作の抑制\nメッセージが表示されている間、パズルのブロックが反応しないように「モーダル（操作不能）状態」を導入しました。\n*   `CombatManager.cs` に `isModalActive` というフラグを追加し、TIPS や宝箱イベントの開始から終了までを管理するようにしました。\n*   `GridManager.cs` の `Update` メソッドでこのフラグをチェックし、**メッセージが表示されている間はブロックのクリック判定を完全にスキップ**するように改良しました。\n*   これにより、クリックしてメッセージをスキップする操作が、誤って背後のブロックを壊す操作として反応することがなくなります。\n\n### 3. スキップ機能の共通化\n*   `WaitForSecondsOrClick` という共通の待機メソッドを作成し、宝箱の演出や TIPS の表示時間をクリックで短縮できる挙動を、全メッセージイベントで一貫させました。\n\n修正後のスクリプトは正常に動作し、コンパイルエラーも発生しておりません。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "21f6fae7-863d-403d-bcc7-f66e8a2cf78f",
+      "conversation_id": "172083c7-d841-4279-ac97-7a7cd5c65c74",
+      "content": "`CombatManager.cs` 内で定義されている TIPS の表示順序は以下の通りです。配列の先頭から順番に、1ウェーブクリアするごとに1つずつ表示されます。\n\n1.  **物理防御**: 「Match Shields to block incoming physical attacks.」（シールドを消して物理攻撃を防ごう）\n2.  **特殊ブロック（Ska）**: 「\"?\" blocks cannot be matched. Shatter or Blast them.」（「?」ブロックはマッチできません。直接クリックで砕くか爆発させよう）\n3.  **魔法攻撃**: 「Magic matches hit the entire enemy party.」（魔法のマッチは敵全体を攻撃します）\n4.  **連鎖の法則**: 「Shattering an elemental block drops a \"?\" block from above.」（属性ブロックを砕くと、上から「?」ブロックが降ってきます）\n5.  **魔法の貫通**: 「Shields cannot block enemy magic attacks.」（シールドでは敵の魔法攻撃を防げません）\n6.  **鍵の所持**: 「A Key is needed for chests, but you can only carry one.」（宝箱には鍵が必要ですが、一度に持てるのは1つだけです）\n7.  **Ska浄化**: 「Shattering or Blasting a \"?\" drops an elemental block from above.」（「?」を砕くか爆発させると、上から属性ブロックが降ってきます）\n8.  **経験値**: 「Match Gems to gain EXP.」（ジェムを消して経験値を獲得しよう）\n9.  **詰まった時**: 「If stuck, focus on shattering \"?\" blocks to find new matches.」（行き詰まったら「?」ブロックを砕いて新しいマッチを探そう）\n10. **回復の転換**: 「Matching Heal blocks at full HP grants EXP.」（HP満タン時に回復ブロックを消すと経験値になります）\n11. **鍵の転換**: 「Matching Keys while holding one grants EXP.」（鍵を持っている時にさらに鍵を消すと経験値になります）\n12. **敵の隊列**: 「Enemies in the back row attack more slowly.」（後列の敵は攻撃速度が遅くなります）\n\n`nextTipIndex` という静的変数で管理されており、すべての TIPS を表示し終えると、それ以降は表示されなくなります。",
+      "snapshot_message_type": 1
     }
   ]
 }
