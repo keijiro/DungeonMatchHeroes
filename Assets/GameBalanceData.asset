@@ -16,11 +16,11 @@ MonoBehaviour:
   SkaDivisor: 3
   PlayerBaseHP: 100
   PlayerBaseAttack: 10
-  HPIncreasePerLevel: 3
-  AttackIncreasePerLevel: 1
+  HPIncreasePerLevel: 3.3
+  AttackIncreasePerLevel: 1.1
   MagicAttackRatio: 0.33333334
   ExpBaseRequirement: 80
-  ExpIncreasePerLevel: 35
+  ExpIncreasePerLevel: 32
   GemExpDivisor: 20
   ChestExpDivisor: 8
   HealAttackRatio: 0.6
