@@ -93,6 +93,7 @@ private Label shieldText;
 
     private static readonly string[] TIPS = new string[]
     {
+        "Blasting \"?\" blocks near your matches slightly increases their power.",
         "\"?\" blocks cannot be matched. Shatter or Blast them.",
         "Shattering an elemental block drops a \"?\" block from above.",
         "Shattering or Blasting a \"?\" drops an elemental block from above.",
@@ -105,9 +106,8 @@ private Label shieldText;
         "Match Gems to gain EXP.",
         "Matching Heal blocks at full HP grants EXP.",
         "Matching Keys while holding one grants EXP.",
-        "Enemies in the back row attack more slowly.",
-        "Blasting \"?\" blocks near your matches slightly increases their power."
-        };
+        "Enemies in the back row attack more slowly."
+    };
 
     private static int nextTipIndex = 0;
     private bool overlayClicked = false;
