@@ -3191,6 +3191,12 @@
       "conversation_id": "172083c7-d841-4279-ac97-7a7cd5c65c74",
       "content": "いいえ、**全く大掛かりな作業ではありません。** 非常に限定的な修正で対応可能です。\n\n具体的には、以下の**2ステップ（数行の追加）**で実装できるため、作業規模としては「極小」の部類に入ります。\n\n### 実装のイメージ\n\n#### 1. `CombatManager.cs` への判定メソッド追加\nキューの中に特定の敵が「送り主（`SourceEnemy`）」として登録されているアクションがあるかどうかを確認するメソッドを追加します。\n\n```csharp\n// CombatManager.cs に追加するイメージ\npublic bool HasPendingAction(EnemyUnit enemy)\n{\n    foreach (var action in eventQueue)\n    {\n        if (action.SourceEnemy == enemy) return true;\n    }\n    return false;\n}\n```\n\n#### 2. `EnemyUnit.cs` の `Update` での判定\nタイマーを減らす前に、自分が既にキューにいるかを確認する条件を追加します。\n\n```csharp\n// EnemyUnit.cs の Update 内\nvoid Update()\n{\n    if (IsDead) return;\n    \n    // 追加：既に自分の攻撃が予約されているなら、タイマーは進めない\n    if (CombatManager.Instance.HasPendingAction(this)) return;\n\n    timer -= Time.deltaTime;\n    // ... 以下、既存の攻撃処理\n}\n```\n\n### この修正によるメリット\n*   **多重予約の防止**: 演出が長引いている間に同じ敵の攻撃が2回、3回とキューに溜まることがなくなります。\n*   **自然な攻撃間隔の維持**: 攻撃が「実行」されてキューから消えた瞬間から次のカウントダウンが始まるため、どんなに演出が遅延しても、設定された `AttackInterval` 以上の間隔が必ず保証されるようになります。\n\n### 考慮すべき点（補足）\nさらに厳密にするなら、**「今まさに攻撃アニメーションを実行中の敵」**も判定に含める必要があります。現在の `CombatManager` はアクションを実行する際に `eventQueue` から取り出してしまうため、実行中のアクションの `SourceEnemy` もチェック対象に含めると、より完璧に「連続攻撃」を防ぐことができます。\n\nこのように、影響範囲が明確でコード量も少ないため、修正のハードルは非常に低いと言えます。",
       "snapshot_message_type": 1
+    },
+    {
+      "message_id": "INT_3",
+      "conversation_id": "172083c7-d841-4279-ac97-7a7cd5c65c74",
+      "content": "それではこの変更を行なって下さい。",
+      "snapshot_message_type": 0
     }
   ]
 }
