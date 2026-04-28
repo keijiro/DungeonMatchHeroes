@@ -63,12 +63,6 @@
       "source": "builtin",
       "dependencies": {}
     },
-    "com.unity.game-data-collection": {
-      "version": "file:com.unity.game-data-collection",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
-    },
     "com.unity.inputsystem": {
       "version": "1.19.0",
       "depth": 0,
