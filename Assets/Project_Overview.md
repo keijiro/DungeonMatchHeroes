@@ -1,7 +1,7 @@
 # Project Overview: RPG Match-3 Battle System
 
 ## 1. Project Description
-This project is a high-polish RPG Match-3 hybrid built in Unity 6, designed for WebGL. It combines classic grid-clearing mechanics with turn-based combat systems. Players manage a party of three heroes (Fighter, Mage, Tank) by matching blocks on a 7x7 grid to trigger attacks, spells, heals, and defensive maneuvers. The core experience is defined by a "Tactical Match" loop where players must balance offensive matches with defensive "Ska-Cleansing" (removing dead blocks) to survive escalating waves of enemies.
+This project is a high-polish RPG Match-3 hybrid built in Unity 6, designed for WebGL. It combines classic grid-clearing mechanics with turn-based combat systems. Players manage a party of three heroes (Fighter, Mage, Tank) by matching blocks on a 7x7 grid to trigger attacks, spells, heals, and defensive maneuvers. The core experience is defined by a "Tactical Match" loop where players must balance offensive matches with defensive "Junk-Cleansing" (removing dead blocks) to survive escalating waves of enemies.
 
 ## 2. Gameplay Flow / User Loop
 1.  **Title Screen**: The entry point where the user starts the session.
@@ -26,9 +26,9 @@ The project follows a **Manager-Centric Pattern** with a heavy emphasis on **Eve
 
 ### Match-3 & Grid System
 Manages a 7x7 grid using a logical array and physical `SpriteRenderer` objects. It supports gravity, refilling, and cluster-based match detection.
-*   `GridManager`: The core controller for matching, gravity, and "Ska" (dead block) mechanics.
+*   `GridManager`: The core controller for matching, gravity, and "Junk" (dead block) mechanics.
 *   `RowHighlighter`: Provides visual feedback for valid interaction zones (bottom row).
-*   `Ska Blocks`: Unique gray blocks that cannot be matched normally; they must be cleared by proximity to other matches.
+*   `Junk Blocks`: Unique gray blocks that cannot be matched normally; they must be cleared by proximity to other matches.
 `Location: Assets/Scripts`
 
 ### Combat & Party System
@@ -69,4 +69,4 @@ The project uses **UI Toolkit (UITK)** for all menus and HUD elements, styled wi
 *   **Bottom Row Only**: Players can only click the bottom row (y=0) to trigger clearing; this is a design constraint enforced in `GridManager.HandleClick`.
 *   **Queue Priority**: Player actions are inserted at the *head* of the `CombatAction` queue (`AddFirst`) to ensure immediate responsiveness even if enemy actions were previously queued.
 *   **Animation Synchronization**: The `CombatManager` uses a `WaitForAnimation` coroutine helper that relies on specific animator state names ("Attack", "Magic"). Renaming animator states will break combat timing.
-*   **Ska-Cleansing**: Cleansing a "Ska" block (matching next to it) triggers a unique flag in the refill logic to prevent immediate Ska re-generation, rewarding tactical play.
+*   **Junk-Cleansing**: Cleansing a "Junk" block (matching next to it) triggers a unique flag in the refill logic to prevent immediate Junk re-generation, rewarding tactical play.

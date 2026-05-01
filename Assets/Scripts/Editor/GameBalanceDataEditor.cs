@@ -32,7 +32,7 @@ public class GameBalanceDataEditor : Editor
 
         EditorGUILayout.LabelField("Matching Rules", EditorStyles.boldLabel);
         DrawFieldWithDescription("BaseMatchCount", "The standard number of blocks that count as one 'unit' of action. (Usually 3).");
-        DrawFieldWithDescription("SkaDivisor", "The multiplier for Ska blocks. (e.g., if set to 3.0, 3 Ska blocks count as 1 normal match).");
+        DrawFieldWithDescription("JunkDivisor", "The multiplier for Junk blocks. (e.g., if set to 3.0, 3 Junk blocks count as 1 normal match).");
 
         EditorGUILayout.Space(10);
         EditorGUILayout.LabelField("Player Scaling", EditorStyles.boldLabel);

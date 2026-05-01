@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class GameBalanceData : ScriptableObject
 {
     public float BaseMatchCount = 3.0f;
-    public float SkaDivisor = 3.0f;
+    public float JunkDivisor = 3.0f;
 
     public int PlayerBaseHP = 100;
     public int PlayerBaseAttack = 10;

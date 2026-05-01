@@ -17,7 +17,7 @@ public class GridManager : MonoBehaviour
         Heal = 3,    // Green
         Gem = 4,     // Yellow
         Key = 5,     // White
-        Ska = 6      // Gray (Empty effect)
+        Junk = 6      // Gray (Empty effect)
     }
 
     public const int GridWidth = 7;
@@ -47,14 +47,14 @@ public class GridManager : MonoBehaviour
         Color.green,    // Heal
         Color.cyan,     // Gem
         Color.yellow,   // Key
-        Color.gray      // Ska
+        Color.gray      // Junk
     };
 
     [Header("Generation Settings")]
-    [Tooltip("Weights for Sword, Shield, Magic, Heal, Gem, Key (Ska is handled separately)")]
+    [Tooltip("Weights for Sword, Shield, Magic, Heal, Gem, Key (Junk is handled separately)")]
     [SerializeField] private float[] typeWeights = new float[6] { 1.0f, 1.0f, 0.5f, 0.5f, 0.2f, 0.2f };
     [Range(0f, 1f)]
-    [SerializeField] private float manualSkaRate = 1.0f; // Default 100%
+    [SerializeField] private float manualJunkRate = 1.0f; // Default 100%
 
     private BlockType[,] grid = new BlockType[GridWidth, GridHeight];
     private SpriteRenderer[,] renderers = new SpriteRenderer[GridWidth, GridHeight];
@@ -217,8 +217,8 @@ public class GridManager : MonoBehaviour
     {
         isProcessing = true;
 
-        // Ska-Cleansing: Identify if the target was a Ska block to prevent immediate re-generation.
-        bool clickedSka = (grid[x, y] == BlockType.Ska);
+        // Junk-Cleansing: Identify if the target was a Junk block to prevent immediate re-generation.
+        bool clickedJunk = (grid[x, y] == BlockType.Junk);
 
         // Perform manual destruction animation
         yield return StartCoroutine(AnimateManualDestroy(renderers[x, y].gameObject));
@@ -226,16 +226,16 @@ public class GridManager : MonoBehaviour
         // Logical destruction
         DestroyBlock(x, y);
 
-        // Gravity and refill. Manual destruction usually leads to Ska refill, 
-        // except when 'clickedSka' is true (Cleansing mechanic).
+        // Gravity and refill. Manual destruction usually leads to Junk refill, 
+        // except when 'clickedJunk' is true (Cleansing mechanic).
         bool firstRefill = true;
         bool hasMatches;
         int comboCount = 0;
 
         do
         {
-            // Force non-Ska refill if the user successfully 'cleansed' a Ska block.
-            yield return StartCoroutine(HandleGravityAndRefill(firstRefill, clickedSka && firstRefill));
+            // Force non-Junk refill if the user successfully 'cleansed' a Junk block.
+            yield return StartCoroutine(HandleGravityAndRefill(firstRefill, clickedJunk && firstRefill));
             firstRefill = false;
 
             // Match detection
@@ -320,7 +320,7 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    private System.Collections.IEnumerator HandleGravityAndRefill(bool isManualRefill, bool forceNoSka = false)
+    private System.Collections.IEnumerator HandleGravityAndRefill(bool isManualRefill, bool forceNoJunk = false)
     {
         // 1. Identify all falling blocks and refill blocks
         var fallingBlocks = new List<FallingBlockInfo>();
@@ -358,7 +358,7 @@ public class GridManager : MonoBehaviour
             for (int i = 0; i < emptyCount; i++)
             {
                 int targetY = GridHeight - emptyCount + i;
-                BlockType newType = DecideNewBlockType(isManualRefill, forceNoSka);
+                BlockType newType = DecideNewBlockType(isManualRefill, forceNoJunk);
 
                 // Spawn above the grid
                 Vector3 spawnPos = GetWorldPosition(x, GridHeight + i + 0.5f);
@@ -423,12 +423,12 @@ public class GridManager : MonoBehaviour
         public bool isLanded = false;
     }
 
-    private BlockType DecideNewBlockType(bool isManualRefill, bool forceNoSka = false)
+    private BlockType DecideNewBlockType(bool isManualRefill, bool forceNoJunk = false)
     {
         if (isManualRefill)
         {
-            // Ska-Cleansing: If forceNoSka is true, skip the Ska check
-            if (!forceNoSka && Random.value < manualSkaRate) return BlockType.Ska;
+            // Junk-Cleansing: If forceNoJunk is true, skip the Junk check
+            if (!forceNoJunk && Random.value < manualJunkRate) return BlockType.Junk;
             return GetWeightedRandomType();
         }
         else
@@ -449,7 +449,7 @@ public class GridManager : MonoBehaviour
             for (int x = 0; x < GridWidth - 2; x++)
             {
                 BlockType type = grid[x, y];
-                if ((int)type == -1 || type == BlockType.Ska) continue;
+                if ((int)type == -1 || type == BlockType.Junk) continue;
                 if (grid[x + 1, y] == type && grid[x + 2, y] == type)
                 {
                     triggerSet.Add((x, y)); triggerSet.Add((x + 1, y)); triggerSet.Add((x + 2, y));
@@ -463,7 +463,7 @@ public class GridManager : MonoBehaviour
             for (int y = 0; y < GridHeight - 2; y++)
             {
                 BlockType type = grid[x, y];
-                if ((int)type == -1 || type == BlockType.Ska) continue;
+                if ((int)type == -1 || type == BlockType.Junk) continue;
                 if (grid[x, y + 1] == type && grid[x, y + 2] == type)
                 {
                     triggerSet.Add((x, y)); triggerSet.Add((x, y + 1)); triggerSet.Add((x, y + 2));
@@ -484,8 +484,8 @@ public class GridManager : MonoBehaviour
                 BlockType type = grid[pos.Item1, pos.Item2];
                 FindCluster(pos.Item1, pos.Item2, type, cluster, visited);
 
-                // Find unique Ska blocks adjacent to this cluster
-                HashSet<(int, int)> skaInCluster = new HashSet<(int, int)>();
+                // Find unique Junk blocks adjacent to this cluster
+                HashSet<(int, int)> junkInCluster = new HashSet<(int, int)>();
                 int[] dx = { 1, -1, 0, 0 }, dy = { 0, 0, 1, -1 };
                 foreach (var c in cluster)
                 {
@@ -494,25 +494,25 @@ public class GridManager : MonoBehaviour
                         int nx = c.Item1 + dx[i], ny = c.Item2 + dy[i];
                         if (nx >= 0 && nx < GridWidth && ny >= 0 && ny < GridHeight)
                         {
-                            if (grid[nx, ny] == BlockType.Ska) skaInCluster.Add((nx, ny));
+                            if (grid[nx, ny] == BlockType.Junk) junkInCluster.Add((nx, ny));
                         }
                     }
                 }
 
-                // Calculate center world position of the cluster and its adjacent Ska blocks
+                // Calculate center world position of the cluster and its adjacent Junk blocks
                 Vector3 centerWorldPos = Vector3.zero;
                 foreach (var c in cluster) centerWorldPos += GetWorldPosition(c.Item1, c.Item2);
-                foreach (var s in skaInCluster) centerWorldPos += GetWorldPosition(s.Item1, s.Item2);
-                centerWorldPos /= (cluster.Count + skaInCluster.Count);
+                foreach (var s in junkInCluster) centerWorldPos += GetWorldPosition(s.Item1, s.Item2);
+                centerWorldPos /= (cluster.Count + junkInCluster.Count);
 
                 // Notify CombatManager for each cluster found
                 if (CombatManager.Instance != null)
                 {
-                    CombatManager.Instance.AddPlayerAction(type, cluster.Count, skaInCluster.Count, centerWorldPos);
+                    CombatManager.Instance.AddPlayerAction(type, cluster.Count, junkInCluster.Count, centerWorldPos);
                 }
 
                 foreach (var c in cluster) matchedSet.Add(c);
-                foreach (var s in skaInCluster) matchedSet.Add(s);
+                foreach (var s in junkInCluster) matchedSet.Add(s);
             }
 
             foreach (var pos in matchedSet) finalSet.Add(pos);

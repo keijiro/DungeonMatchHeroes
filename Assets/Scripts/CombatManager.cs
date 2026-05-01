@@ -332,12 +332,12 @@ public class CombatManager : MonoBehaviour
         StartCoroutine(QueueProcessor());
     }
 
-    public void AddPlayerAction(GridManager.BlockType type, int matchCount, int skaCount, Vector3 worldPos)
+    public void AddPlayerAction(GridManager.BlockType type, int matchCount, int junkCount, Vector3 worldPos)
     {
-        // effectiveCount factors in adjacent Ska blocks to boost the action's power.
-        float divisor = (balanceData != null) ? balanceData.SkaDivisor : 3.0f;
+        // effectiveCount factors in adjacent Junk blocks to boost the action's power.
+        float divisor = (balanceData != null) ? balanceData.JunkDivisor : 3.0f;
         float baseMatch = (balanceData != null) ? balanceData.BaseMatchCount : 3.0f;
-        int effectiveCount = matchCount + Mathf.FloorToInt(skaCount / divisor);
+        int effectiveCount = matchCount + Mathf.FloorToInt(junkCount / divisor);
         if (effectiveCount <= 0) return;
 
         CombatAction action = new CombatAction();
