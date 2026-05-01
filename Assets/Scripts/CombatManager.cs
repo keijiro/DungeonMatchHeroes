@@ -93,10 +93,10 @@ public class CombatManager : MonoBehaviour
 
     private static readonly string[] TIPS = new string[]
     {
-        "\"Ska\" (?) blocks cannot be matched. Shatter or Blast them.",
-        "Shattering an elemental block drops a \"Ska\" block from above.",
-        "Shattering or Blasting a \"Ska\" block drops an elemental block from above.",
-        "If stuck, focus on shattering \"Ska\" blocks to find new matches.",
+        "\"?\" blocks cannot be matched. Shatter or Blast them.",
+        "Shattering an elemental block drops a \"?\" block from above.",
+        "Shattering or Blasting a \"?\" drops an elemental block from above.",
+        "If stuck, focus on shattering \"?\" blocks to find new matches.",
         "Match Shields to block incoming physical attacks.",
         "Magic matches hit the entire enemy party.",
         "Shields cannot exceed your Max HP.",
@@ -106,7 +106,7 @@ public class CombatManager : MonoBehaviour
         "Matching Heal blocks at full HP grants EXP.",
         "Matching Keys while holding one grants EXP.",
         "Enemies in the back row attack more slowly.",
-        "Blasting \"Ska\" blocks near your matches slightly increases their power."
+        "Blasting \"?\" blocks near your matches slightly increases their power."
     };
 
     private static int nextTipIndex = 0;
