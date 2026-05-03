@@ -94,10 +94,10 @@ public class CombatManager : MonoBehaviour
 
     private static readonly string[] TIPS = new string[]
     {
-        "\"?\" blocks cannot be matched. Shatter or Blast them.",
-        "Shattering an elemental block drops a \"?\" block from above.",
-        "Shattering or Blasting a \"?\" drops an elemental block from above.",
-        "If stuck, focus on shattering \"?\" blocks to find new matches.",
+        "\"?\" blocks cannot be matched. Click to shatter or match nearby to blast them.",
+        "Clicking to shatter an elemental block drops a \"?\" block from above.",
+        "Shattering (clicking) or blasting (matching) a \"?\" drops an elemental block from above.",
+        "If stuck, focus on clicking to shatter \"?\" blocks to find new matches.",
         "Match Shields to block incoming physical attacks.",
         "Magic matches hit the entire enemy party.",
         "Shields cannot exceed your Max HP.",
@@ -107,15 +107,15 @@ public class CombatManager : MonoBehaviour
         "Matching Heal blocks at full HP grants EXP.",
         "Matching Keys while holding one grants EXP.",
         "Enemies in the back row attack more slowly.",
-        "Blasting \"?\" blocks near your matches slightly increases their power."
+        "Blasting \"?\" blocks with a nearby match slightly increases its power."
     };
 
     private static readonly string[] TIPS_JP = new string[]
     {
-        "「？」ブロックは揃えることができません。砕くか爆破しましょう。",
-        "属性ブロックを砕くと、上から「？」ブロックが降ってきます。",
-        "「？」を砕いたり爆破したりすると、属性ブロックが降ってきます。",
-        "行き詰まったら、「？」ブロックを砕いて新しいマッチを探しましょう。",
+        "「？」は揃えることができません。クリックで砕くか、隣で揃えて爆破しましょう。",
+        "属性ブロックをクリックで砕くと、上から「？」ブロックが降ってきます。",
+        "「？」をクリックで砕くかマッチで爆破すると、属性ブロックが降ってきます。",
+        "行き詰まったら、「？」をクリックで砕いて新しいマッチを探しましょう。",
         "シールドを揃えると、敵の物理攻撃を防ぐことができます。",
         "魔法を揃えると、敵パーティ全体を攻撃できます。",
         "シールド量は最大HPを超えることはできません。",
@@ -125,7 +125,7 @@ public class CombatManager : MonoBehaviour
         "HP満タン時に回復ブロックを揃えると、EXPを獲得できます。",
         "鍵を持っている時にさらに鍵を揃えると、EXPを獲得できます。",
         "後列の敵は、前列よりも攻撃の頻度が低くなります。",
-        "マッチの近くで「？」を爆破すると、その攻撃力が少しアップします。"
+        "マッチの隣で「？」を爆破すると、その攻撃力が少しアップします。"
     };
 
     private static int nextTipIndex = 0;
