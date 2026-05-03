@@ -90,6 +90,7 @@ public class CombatManager : MonoBehaviour
     private VisualElement tipIcon;
     private VisualElement dialogueBox;
     private Label treasureMessage;
+    private Label treasureMessageJp;
 
     private static readonly string[] TIPS = new string[]
     {
@@ -107,6 +108,24 @@ public class CombatManager : MonoBehaviour
         "Matching Keys while holding one grants EXP.",
         "Enemies in the back row attack more slowly.",
         "Blasting \"?\" blocks near your matches slightly increases their power."
+    };
+
+    private static readonly string[] TIPS_JP = new string[]
+    {
+        "「？」ブロックは揃えることができません。砕くか爆破しましょう。",
+        "属性ブロックを砕くと、上から「？」ブロックが降ってきます。",
+        "「？」を砕いたり爆破したりすると、属性ブロックが降ってきます。",
+        "行き詰まったら、「？」ブロックを砕いて新しいマッチを探しましょう。",
+        "シールドを揃えると、敵の物理攻撃を防ぐことができます。",
+        "魔法を揃えると、敵パーティ全体を攻撃できます。",
+        "シールド量は最大HPを超えることはできません。",
+        "シールドで敵の魔法攻撃を防ぐことはできません。",
+        "宝箱を開けるには鍵が必要ですが、持てる鍵は1つだけです。",
+        "ジェムを揃えると、EXP（経験値）を獲得できます。",
+        "HP満タン時に回復ブロックを揃えると、EXPを獲得できます。",
+        "鍵を持っている時にさらに鍵を揃えると、EXPを獲得できます。",
+        "後列の敵は、前列よりも攻撃の頻度が低くなります。",
+        "マッチの近くで「？」を爆破すると、その攻撃力が少しアップします。"
     };
 
     private static int nextTipIndex = 0;
@@ -213,6 +232,7 @@ public class CombatManager : MonoBehaviour
         tipIcon = root.Q<VisualElement>("tip-icon");
         dialogueBox = root.Q<VisualElement>("dialogue-box");
         treasureMessage = root.Q<Label>("treasure-message");
+        treasureMessageJp = root.Q<Label>("treasure-message-jp");
 
         UpdateUI();
     }
@@ -793,9 +813,10 @@ public class CombatManager : MonoBehaviour
     private IEnumerator ShowTipRoutine()
     {
         if (nextTipIndex >= TIPS.Length) yield break;
-        if (treasureOverlay == null || treasureMessage == null) yield break;
+        if (treasureOverlay == null || treasureMessage == null || treasureMessageJp == null) yield break;
 
         string currentTip = TIPS[nextTipIndex];
+        string currentTipJp = TIPS_JP[nextTipIndex];
         nextTipIndex++;
 
         // Reset state
@@ -809,6 +830,8 @@ public class CombatManager : MonoBehaviour
         if (tipIcon != null) tipIcon.style.display = DisplayStyle.Flex;
         if (dialogueBox != null) dialogueBox.AddToClassList("dialogue-box--tip");
         treasureMessage.text = currentTip;
+        treasureMessageJp.text = currentTipJp;
+        treasureMessageJp.style.display = DisplayStyle.Flex;
 
         // Show
         treasureOverlay.style.display = DisplayStyle.Flex;
@@ -868,6 +891,8 @@ public class CombatManager : MonoBehaviour
         }
 
         treasureMessage.text = "You found a chest!";
+        treasureMessageJp.text = "";
+        treasureMessageJp.style.display = DisplayStyle.None;
         if (dialogueBox != null) dialogueBox.style.opacity = 1;
 
         // Show overlay
@@ -900,6 +925,8 @@ public class CombatManager : MonoBehaviour
 
             // Sync fade in for both dialogue box (with new message) and open chest
             treasureMessage.text = "Unlocked with the key!\nBonus EXP obtained!";
+            treasureMessageJp.text = "";
+            treasureMessageJp.style.display = DisplayStyle.None;
             treasureImage.style.opacity = 1;
             if (dialogueBox != null) dialogueBox.style.opacity = 1;
 
@@ -912,6 +939,8 @@ public class CombatManager : MonoBehaviour
             yield return StartCoroutine(WaitForSecondsOrClick(0.3f));
 
             treasureMessage.text = "No key to open it...";
+            treasureMessageJp.text = "";
+            treasureMessageJp.style.display = DisplayStyle.None;
             if (dialogueBox != null) dialogueBox.style.opacity = 1;
             yield return StartCoroutine(WaitForSecondsOrClick(1.5f));
         }

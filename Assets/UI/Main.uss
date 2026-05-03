@@ -329,12 +329,26 @@ text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.9);
         flex-shrink: 1;
     }
 
-    .dialogue-text {
+    .dialogue-text-container {
+        flex-grow: 1;
+        justify-content: center;
+    }
+
+    .dialogue-text-en {
         color: white;
-        font-size: 34px;
+        font-size: 32px;
         -unity-text-align: middle-left;
         -unity-font-definition: url("project://database/Assets/UI/Jersey_10/Jersey10-Regular SDF.asset");
         white-space: normal;
+    }
+
+    .dialogue-text-jp {
+        color: white;
+        font-size: 20px;
+        -unity-text-align: middle-left;
+        -unity-font-definition: url("project://database/Assets/UI/DotGothic16/DotGothic16-Regular SDF.asset");
+        white-space: normal;
+        margin-top: 4px;
     }
 
 .tip-icon {

@@ -13,7 +13,10 @@
     <ui:VisualElement name="treasure-chest-image" class="treasure-chest-image" />
     <ui:VisualElement name="dialogue-box" class="dialogue-box">
         <ui:VisualElement name="tip-icon" class="tip-icon" />
-        <ui:Label name="treasure-message" text="You found a treasure chest!" class="dialogue-text" />
+        <ui:VisualElement name="dialogue-text-container" class="dialogue-text-container">
+            <ui:Label name="treasure-message" text="You found a treasure chest!" class="dialogue-text-en" />
+            <ui:Label name="treasure-message-jp" text="" class="dialogue-text-jp" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:VisualElement>
 <ui:VisualElement name="hud" class="hud-bottom">
