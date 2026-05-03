@@ -95,8 +95,8 @@ public class CombatManager : MonoBehaviour
     private static readonly string[] TIPS = new string[]
     {
         "\"?\" blocks cannot be matched. Click to shatter or match nearby to blast them.",
-        "Clicking to shatter an elemental block drops a \"?\" block from above.",
-        "Shattering (clicking) or blasting (matching) a \"?\" drops an elemental block from above.",
+        "Clicking to shatter an item block drops a \"?\" block from above.",
+        "Shattering (clicking) or blasting (matching) a \"?\" drops an item block from above.",
         "If stuck, focus on clicking to shatter \"?\" blocks to find new matches.",
         "Match Shields to block incoming physical attacks.",
         "Magic matches hit the entire enemy party.",
@@ -113,8 +113,8 @@ public class CombatManager : MonoBehaviour
     private static readonly string[] TIPS_JP = new string[]
     {
         "「？」は揃えることができません。クリックで砕くか、隣で揃えて爆破しましょう。",
-        "属性ブロックをクリックで砕くと、上から「？」ブロックが降ってきます。",
-        "「？」をクリックで砕くかマッチで爆破すると、属性ブロックが降ってきます。",
+        "アイテムブロックをクリックで砕くと、上から「？」ブロックが降ってきます。",
+        "「？」をクリックで砕くかマッチで爆破すると、アイテムブロックが降ってきます。",
         "行き詰まったら、「？」をクリックで砕いて新しいマッチを探しましょう。",
         "シールドを揃えると、敵の物理攻撃を防ぐことができます。",
         "魔法を揃えると、敵パーティ全体を攻撃できます。",
