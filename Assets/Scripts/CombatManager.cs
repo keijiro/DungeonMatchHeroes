@@ -838,8 +838,8 @@ public class CombatManager : MonoBehaviour
         treasureOverlay.AddToClassList("treasure-overlay--visible");
         if (dialogueBox != null) dialogueBox.style.opacity = 1;
 
-        // Wait for 4 seconds or click
-        yield return StartCoroutine(WaitForSecondsOrClick(4.0f));
+        // Wait for 5 seconds total, but first 1 second is unskippable
+        yield return StartCoroutine(WaitForSecondsOrClick(5.0f, 1.0f));
 
         // Hide
         treasureOverlay.RemoveFromClassList("treasure-overlay--visible");
@@ -863,11 +863,12 @@ public class CombatManager : MonoBehaviour
         overlayClicked = true;
     }
 
-    private IEnumerator WaitForSecondsOrClick(float seconds)
+    private IEnumerator WaitForSecondsOrClick(float seconds, float unskippableSeconds = 0f)
     {
         float timer = seconds;
-        while (timer > 0 && !overlayClicked)
+        while (timer > 0)
         {
+            if (timer <= (seconds - unskippableSeconds) && overlayClicked) break;
             timer -= Time.deltaTime;
             yield return null;
         }
