@@ -96,10 +96,10 @@ public class CombatManager : MonoBehaviour
     {
         "\"?\" blocks cannot be matched. Click to shatter or match nearby to blast them.",
         "Clicking to shatter an item block drops a \"?\" block from above.",
-        "Shattering (clicking) or blasting (matching) a \"?\" drops an item block from above.",
+        "Clearing a \"?\" block drops an item block from above.",
         "If stuck, focus on clicking to shatter \"?\" blocks to find new matches.",
         "Match Shields to block incoming physical attacks.",
-        "Magic matches hit the entire enemy party.",
+        "Magic Wand matches hit the entire enemy party.",
         "Shields cannot exceed your Max HP.",
         "Shields cannot block enemy magic attacks.",
         "A Key is needed for chests, but you can only carry one.",
@@ -112,12 +112,12 @@ public class CombatManager : MonoBehaviour
 
     private static readonly string[] TIPS_JP = new string[]
     {
-        "「？」は揃えることができません。クリックで砕くか、隣で揃えて爆破しましょう。",
+        "「？」はマッチできません。クリックで砕くか、マッチに巻き込んで消しましょう。",
         "アイテムブロックをクリックで砕くと、上から「？」ブロックが降ってきます。",
-        "「？」をクリックで砕くかマッチで爆破すると、アイテムブロックが降ってきます。",
+        "「？」ブロックを消せば、アイテムブロックが降ってきます。",
         "行き詰まったら、「？」をクリックで砕いて新しいマッチを探しましょう。",
         "シールドを揃えると、敵の物理攻撃を防ぐことができます。",
-        "魔法を揃えると、敵パーティ全体を攻撃できます。",
+        "魔法の杖を揃えると、敵パーティ全体を攻撃できます。",
         "シールド量は最大HPを超えることはできません。",
         "シールドで敵の魔法攻撃を防ぐことはできません。",
         "宝箱を開けるには鍵が必要ですが、持てる鍵は1つだけです。",

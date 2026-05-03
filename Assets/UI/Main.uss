@@ -349,6 +349,7 @@ text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.9);
         -unity-font-definition: url("project://database/Assets/UI/DotGothic16/DotGothic16-Regular SDF.asset");
         white-space: normal;
         margin-top: 4px;
+        -unity-text-overflow-position: end;
     }
 
 .tip-icon {
