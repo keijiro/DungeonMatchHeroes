@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.unity.ai.assistant": "2.7.0-pre.2",
+    "com.unity.ai.assistant": "2.7.0-pre.3",
     "com.unity.inputsystem": "1.19.0",
     "com.unity.render-pipelines.universal": "17.3.0",
     "jp.keijiro.ai.assistant.extensions": "1.1.1",
